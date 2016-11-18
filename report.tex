@@ -134,9 +134,14 @@ Hei.
 %
 \subsection{Forward Euler}
 
-\subsubsection{Derivation}
+\subsubsection{Derivation and error analysis}
+The Forward Euler scheme is an explicit scheme based on Taylor polynomials. To find an approximation of the time derivative of \(u\) at point \(x_i,t_j\), a first order Taylor polynomial around \(x_i,t_j\) is used to calculate \(u(x_i,t_{j+1})\) is used:
+\[
+u_{i,j+1} = u_{i,j} + \Delta t\pdv{u_{i,j}}{t} + \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_i,\tilde{t})}{t} \implies \pdv{u_{i,j}}{t} = \frac{u_{i,j+1}-u_{i,j}}{\Delta t} + \frac{1}{2}\Delta t\pdv[2]{u(x_i,\tilde{t})}{t}
+\]
+where \(\tilde{t}\in(t_j,t_{j+1})\) and the last term is the truncation error.
 
-\subsubsection{Error analysis}
+\subsubsection{Stability analysis}
 
 
 
@@ -148,9 +153,9 @@ Hei.
 %
 \subsection{Backward Euler}
 
-\subsubsection{Derivation}
+\subsubsection{Derivation and error analysis}
 
-\subsubsection{Error analysis}
+\subsubsection{Stability analysis}
 
 
 
@@ -163,9 +168,9 @@ Hei.
 %
 \subsection{Crank-Nicolson}
 
-\subsubsection{Derivation}
+\subsubsection{Derivation and error analysis}
 
-\subsubsection{Error analysis}
+\subsubsection{Stability analysis}
 
 
 
