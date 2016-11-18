@@ -142,12 +142,28 @@ The Forward Euler scheme is an explicit scheme based on Taylor polynomials. To f
 \]
 where \(\tilde{t}\in(t_j,t_{j+1})\) and the last term is the truncation error, which is proportional to \(\Delta t\).
 
-Similarly, the three point approximation to the second derivative (derived in \autocite{oblig1})) with its error term is used to approximate the second derivative of \(u\) at point \((x_i,t_j)\) with respect to position:
+Similarly, the three point approximation to the second derivative (derived in \autocite{oblig1}) with its error is used to approximate the second derivative of \(u\) at point \((x_i,t_j)\) with respect to position:
 \[
-    \pdv[2]{u_{i,j}}{x} = \frac{u_{i+1,j} + u_{i-1,j} - 2u_{i,j}}{h^2} +
+    \pdv[2]{u_{i,j}}{x} = \frac{u_{i+1,j} + u_{i-1,j} - 2u_{i,j}}{h^2} - \frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x}
 \]
+where the last term is the truncation error, which for this approximation is proportional to \(h^2\). The observation \(\tilde{x}\in(x_{i-1,j} + x_{i+1,j})\) is shown in the referenced report.
+
+Inserting these two expressions into the diffusion equation gives
+\[
+    \frac{u_{i,j+1}-u_{i,j}}{\Delta t} + \frac{1}{2}\Delta t\pdv[2]{u(x_i,\tilde{t})}{t}
+    = \frac{u_{i+1,j} + u_{i-1,j} - 2u_{i,j}}{h^2} - \frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x}
+\]
+The goal is to find the value of \(u\) at the next time step, i.e. \(u_{i,j+1}\). Multiplying by \(\Delta t\) on both sides of the equation and moving one term to the right, we get
+\begin{alignat*}{2}
+    u_{i,j+1} &= u_{i,j} + \frac{\Delta t}{h^2}\qty(u_{i+1,j} + u_{i-1,j}-2u_{i,j}) + \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_i,\tilde{t})}{t} - \Delta t\cdot\frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x}
+    \intertext{The quantity \(\Delta t/h^2\) can be defined as \(\alpha\), which, with a slight reorganisation yields the final expression}
+    u_{i,j+1} &= \qty(1-2\alpha)u_{i,j} + \alpha\qty(u_{i+1,j}+u_{i-1,j}) +  \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_i,\tilde{t})}{t} - \Delta t\cdot\frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x}
+\end{alignat*}
+The two error terms are proportional to \(\qty(\Delta t)^2\) and \(\Delta t\cdot h^2\). As per usual, the global error is one order lower, as the error is accumulated. This gives one error term proportional to \(\Delta t\) and one propotional to \(h^2\). The order of \(h\) is not reduced, as this error is not accumulated.
+
 
 \subsubsection{Stability analysis}
+
 
 
 
