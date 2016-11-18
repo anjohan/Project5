@@ -28,7 +28,7 @@
 
 \labelformat{section}{section~#1}
 \labelformat{subsection}{section~#1}
-\labelformat{subsubsection}{paragraph~#1}
+\labelformat{subsubsection}{section~#1}
 \labelformat{equation}{equation~(#1)}
 \labelformat{figure}{figure~#1}
 \labelformat{table}{table~#1}
@@ -123,8 +123,9 @@ Hei.
 \end{abstract}
 \clearpage
 
+\section{Introduction}
 \section{Mathematical theory}
-
+We will now take a look into how we can numerically approximate the given problem. As there exists many different approaches, we have chosen to look at three different methods, namely forward Euler, backward Euler and Crank-Nicolson. 
 
 %  _____                                _   _____      _
 % |  ___|__  _ ____      ____ _ _ __ __| | | ____|   _| | ___ _ __
@@ -134,11 +135,11 @@ Hei.
 %
 \subsection{Forward Euler}
 
-\subsubsection{Derivation and error analysis}
+\subsubsection{Derivation and error analysis}\label{sec:ForwardEulerDerivation}
 The Forward Euler scheme is an explicit scheme based on Taylor polynomials. To find an approximation of the time derivative of \(u\) at point \((x_i,t_j)\), a first order Taylor polynomial around \(x_i,t_j\) is used to calculate \(u(x_i,t_{j+1})\) is used:
 \[
     u_{i,j+1} = u_{i,j} + \Delta t\pdv{u_{i,j}}{t} + \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_i,\tilde{t})}{t}
-    \implies \pdv{u_{i,j}}{t} = \frac{u_{i,j+1}-u_{i,j}}{\Delta t} + \frac{1}{2}\Delta t\pdv[2]{u(x_i,\tilde{t})}{t}
+    \implies \pdv{u_{i,j}}{t} = \frac{u_{i,j+1}-u_{i,j}}{\Delta t} + \frac{1}{2}\Delta t\pdv[2]{u(x_i,\tilde{t})}{t} 
 \]
 where \(\tilde{t}\in(t_j,t_{j+1})\) and the last term is the truncation error, which is proportional to \(\Delta t\).
 
@@ -174,8 +175,24 @@ The two error terms are proportional to \(\qty(\Delta t)^2\) and \(\Delta t\cdot
 % |____/ \__,_|\___|_|\_\  \_/\_/ \__,_|_|  \__,_| |_____\__,_|_|\___|_|
 %
 \subsection{Backward Euler}
-hei
+The idea of backward Euler is similar to the forward Euler. Actually, the only difference lies in how we approximate the time derivative of \(u\). 
 \subsubsection{Derivation and error analysis}
+We can also use Taylor polynomials of \(u(x_i,t_{j-1})\)to write an approximation of the time derivative of \(u\) around \(x_i,t_j\):
+\[
+u_{i,j-1} = u_{i,j} - \Delta t\pdv{u_{i,j}}{t} + \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_i,\tilde{t})}{t} 
+\implies \pdv{u_{i,j}}{t} = \frac{u_{i,j}-u_{i,j-1}}{\Delta t} + \frac{1}{2}\Delta t\pdv[2]{u(x_i,\tilde{t})}{t}
+\]
+where \(\tilde{t}\) and the second term is the same as defined in \vref{sec:ForwardEulerDerivation}. We have also the very same approximation of the second derivative of \(u\) with respect to x as in \autocite{oblig1}.\\
+\hfill \\
+truncation error 
+\\
+If we set up the approximations of the derivatives as in the given problem, we get
+\begin{align*}
+\frac{u_{i+1,j}  - 2u_{i,j} + u_{i-1,j}}{h^2} &= \frac{u_{i,j}-u_{i,j-1}}{\Delta t} \\
+r(u_{i+1,j}  - 2u_{i,j} + u_{i-1,j})&=u_{i,j}-u_{i,j-1}, \quad\quad r = \frac{\Delta t}{h^2}\\
+u_{i+1,j} &= \frac{1}{r}\qty(u_{i,j}(1+2r) - u_{i,j-1} - ru_{i-1,j}) \\
+\frac{1}{r}u_{i,j-1}  &= \frac{1+2r}{r}u_{i,j}- u_{i+1,j}  - u_{i-1,j}
+\end{align*}
 
 \subsubsection{Stability analysis}
 
