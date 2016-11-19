@@ -300,7 +300,25 @@ So, what remains now is to find \(c_k\). We have not yet taken into account the 
 \[
 f(x) = c_k\sin(x\frac{k \pi}{L})
 \]
-Multiplying  the equation above by\(\sin(x\frac{k \pi}{L})\)
+Multiplying  the equation above by\(\sin(x\frac{k \pi}{L})\), integrating both sides and use the orthogonality of sine (note that this sine is \(L\)-periodic), gives us
+\begin{align*}
+\int_0^Lf(x)\sin(x\frac{k \pi}{L})dx &= c_k\frac{L}{2} \\
+\frac{2}{L}\int_0^Lf(x)\sin(x\frac{k \pi}{L})dx &= c_k
+\end{align*}
+However, we are not looking for one particular solution of \(v\), but for all solutions of the function. But from the principle of superposition, every particular solution contributes to another solution. Especially, this means that
+\[
+v(x,t) = \sum_{k=1}^\infty v_k(x,t)
+\]
+
+So, if we take a step back and go to what we originally started with, 
+\[
+v(x,t) = u(x,t) + w(x,t)
+\]
+we now have only one unknown in the equation above, namely \(u(x,t)\). But as we have found the expression of \(v(x,t)\) and \(w(x,t)\), we can simply rearrange the equation to find \(u(x,t)\), i.e
+\[
+v(x,t)- w(x,t) = u(x,t)
+\]
+
 \subsection{Discretization}
 
 For the diffusion equation to be numerically solvable, it must be discretized. This is done in the standard way: Discretize \(x\) as \(x_0,x_1,\dots,x_n\) with \(h=\qty(x_n-x_0)/n\), and \(t\) as \(t_0,t_1,\dots,t_m\) with \(\Delta t = \qty(t_m-t_0)/m\). The function itself is also discretized, with the notation \(u_{i,j} = u(x_i,t_j)\).
