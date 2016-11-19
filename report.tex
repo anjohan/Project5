@@ -3,6 +3,7 @@
 \usepackage[usenames,dvipsnames]{xcolor}
 \usepackage[includeheadfoot,margin=0.8 in,top=0.6 in]{geometry}
 \usepackage{siunitx,physics,cancel,upgreek,varioref,listings,booktabs,tocloft, pdfpages}
+\usepackage{todonotes}
 \usepackage{mathtools}
 \usepackage{babel}
 \usepackage{graphicx}
@@ -28,7 +29,7 @@
 
 \labelformat{section}{section~#1}
 \labelformat{subsection}{section~#1}
-\labelformat{subsubsection}{paragraph~#1}
+\labelformat{subsubsection}{section~#1}
 \labelformat{equation}{equation~(#1)}
 \labelformat{figure}{figure~#1}
 \labelformat{table}{table~#1}
@@ -123,9 +124,188 @@ Hei.
 \end{abstract}
 \clearpage
 
+\section{Introduction}
+Partial differential equations is a subject of many fields. These equations can describe the behavior of many natural phenomenas such as waves of sound or sea, the flow of a liquid, growth of a population or diffusion of different processes. \\
+These equations are often solved numerically since an analytical solution is difficult, or perhaps impossible to find. An example is the Navier-Stokes equation to model the flow of a viscous flow when not certain assumptions to simply the equations has been made. \\ 
+\begin{center}
+skrive noe kult om diffusjon?
+\end{center}
+In this report we will focus on how we can numerically solve the diffusion equation, which is given by
+\begin{equation}\label{eq:diffusion}
+\begin{aligned}
+\pdv[2]{u(x,t)}{x} &= \pdv{u(x,t)}{t} &\: t>0, \:\:x\in[0,L] \\
+u(x,0) &= 0  &0 < x < L\\
+u(0,t) &= 0 &t>0 \\
+u(L,t) &= 1&t>0
+\end{aligned}
+\end{equation}
+
+\begin{center}
+noen forklaringer paa boundaries
+\end{center}
+
 \section{Mathematical theory}
+Before we can begin our analysis on how it is possible to numerically solve \vref{eq:diffusion}, we will first take a look at the analytical solution. When having an analytical solution at hand, we can use it further to find which conditions the numerical methods must hold to give us stable results. 
+\subsection{Analytical solution of the diffusion equation}
+Consider the diffusion equation with the given boundaries:
+\begin{equation}\label{eq:problem}
+\begin{aligned}
+\pdv[2]{u(x,t)}{x} &= \pdv{u(x,t)}{t} &\: t>0, \:\:x\in[0,L] \\
+u(x,0) &= g(x)  &0 < x < L\\
+u(0,t) &=  a & a \in \mathbb{R},  t>0 \\
+u(L,t) &= b &b \in \mathbb{R}, t>0
+\end{aligned}
+\end{equation}
+First, we notice the boundaries at \(x = 0\) and \(x = L\). As we will see, having these boundaries equal to 0 would make the problem much easier to solve. Therefore, we introduce a new function
+\[
+v(x,t) = u(x,t) + w(x,t)
+\]
+where we want the following to hold:
+\begin{equation}\label{eq:dummy}
+\begin{aligned}
+\pdv[2]{v(x,t)}{x} &= \pdv{v(x,t)}{t} &\: t>0, \:\:x\in[0,L] \\
+v(x,0) &= f(x)  &0 < x < L\\
+v(0,t) &=  0 &  t>0 \\
+v(L,t) &= 0 & t>0
+\end{aligned}
+\end{equation}
+By introducing this new function \(v(x,t)\), we have also introduced a new problem; what does \(w(x,t)\) actually look like? We note that 
+\begin{alignat*}{2}
+\pdv[2]{v(x,t)}{x} &= \pdv{v(x,t)}{t}  \\
+\pdv[2]{u(x,t)}{x} + \pdv[2]{w(x,t)}{x} &= \pdv{u(x,t)}{t} + \pdv{w(x,t)}{t} 
+\end{alignat*}
+We know from \ref{eq:problem} that 
+\[
+\pdv[2]{u(x,t)}{x} = \pdv{u(x,t)}{t}
+\]
+This means that if we set 
+\begin{equation} \label{eq:dummy1}
+ \pdv[2]{w(x,t)}{x}  = 0
+\end{equation}
+and 
+\begin{equation} \label{eq:dummy2}
+ \pdv{w(x,t)}{t} = 0 
+\end{equation}
+the first condition for our "dummy" function in \vref{eq:dummy} will hold. We can now find a general solution for \(w\). From \vref{eq:dummy1}, we have that 
+\begin{align}
+	\pdv[2]{w(x,t)}{x}  &= 0 \nonumber \\
+	\implies\pdv{w(x,t)}{x} &= A  \quad A \in \mathbb{R} \nonumber \\
+	\implies w(x,t) &= Ax + B + h_1(t) \quad B \in \mathbb{R} \label{eq:wX}
+\end{align}
+From \vref{eq:dummy2}, we get that
+\begin{align}
+\pdv{w(x,t)}{t} &= 0 \nonumber \\
+w(x,t) &= C + h_2(x) , \quad C \in \mathbb{R} \label{eq:wT}
+\end{align}
+From \vref{eq:wX} and \vref{eq:wT}, we see that 
+\[
+w(x,t) = w(x) = Ax + D, \quad D=B+C
+\]
+because there is no dependence of \(t\) in \vref{eq:wT}.
+We have now found how \(w\) looks like in general. \\ 
+However, we need to decide the values of \(A\) and \(D\). This can be done by looking at the boundaries for \vref{eq:dummy} at \(x = 0 \) and \(x = L\):
+\begin{align*}
+v(0,t) &= 0 \\
+0 &= u(0,t) + w(x=0) \\
+0 &= a+D
+\end{align*}
+which implies \(D = -a\). Same goes for the boundary at \(x = L\), which gives
+\begin{align*}
+v(L,t) &= 0 \\
+0 &= u(L,t) + w(x=L) \\
+0 &= b+AL-a \\
+\frac{a-b}{L} &= A
+\end{align*} 
+In conclusion, we have 
+\[
+w(x) = \frac{a-b}{L}x - a
+\]
+As the expression of \(w\) has been found, we have also found \(f(x)\) in \vref{eq:dummy}:
+\begin{align*}
+	v(x,0) &= u(x,0) + w(x) \\
+	&= g(x)+w(x) \\
+	&=f(x)
+\end{align*}
+Having set up the problem properly, we are now ready to solve for \(v(x,t)\). To do so, we make an ansatz that 
+\[
+v(x,t) = F(x)G(t)
+\]
+which gives 
+\begin{align}
+\pdv[2]{v(x,t)}{x} &= \pdv{v(x,t)}{t} \nonumber \\
+F''(x)G(t) &= F(x)G'(t) \nonumber \\
+\frac{F''(x)}{F(x)} &= \frac{G'(t)}{G(t)} \label{eq:ration}
+\end{align}
+Since the ratios of functions of different variables equals each other, they must be equal to a constant, thus giving
+\[
+\frac{F''(x)}{F(x)} = \frac{G'(t)}{G(t)} = -\lambda
+\]
+Solving for \(F\) we get
+\[
+	F'' = -\lambda F
+\]
+with a general solution
+\[
+F(x) = c_1\cos(x\sqrt{\lambda} ) + c_2\sin(x\sqrt{\lambda})
+\]
+To find the constants \(c_1,c_2\), we will use the boundaries for \(v(x,t)\) at \(x = 0\) and \(x = L\). It is at this point we will see that it is advantageous for us to have the boundaries equal to zero.\\
+Since 
+\[
+v(x,t) = F(x)G(t)
+\]
+We have
+\[
+0 = F(0)G(t) \implies F(0) = 0
+\]
+and 
+\[
+0 = F(L)G(t) \implies F(L) = 0
+\]
+At \(x = 0\), the general solution becomes
+\[
+0 = c_1
+\]
+and at \(x = L\):
+\[
+0 =  c_2\sin(L\sqrt{\lambda})
+\]
+Of course, we could set \(c_2 = 0\) too, but this will only give us a trivial solution which is of no interest. Therefore, we must have 
+\[
+0 = \sin(L\sqrt{\lambda})
+\]
+Since sine is zero for every multiple of \(\pi\), we have that
+\begin{align*}
+L\sqrt{\lambda} &= k\pi \quad k\in \mathbb{N}\\
+\lambda &= \qty(\frac{k \pi}{L})^2
+\end{align*}
+We notice that we have infinite solutions since \(k \in \mathbb{N}\). Therefore, we might have a different scaling of sine for every \(k\), meaning \(c_2 = c_k\).\\  For every \(k\) we have the particular solution 
+\[
+F_k(x) = c_k\sin(x\frac{k \pi}{L})
+\]
+Similar calculations goes for finding \(G(t)\), which also will vary with \(k\):\\
+From \vref{eq:ration} we have
+\[
+G_k'(t) = -\lambda_k G_k(t)
+\]
+this gives
+\[
+G_k(t) = e^{-\qty(\frac{k \pi}{L})^2t}
+\]
+and so we have found the \(k\)th particular solution of \(G(t)\). \\
+Therefore, we have that 
+\[
+v_k(x,t) = c_ke^{-\qty(\frac{k \pi}{L})^2t}\sin(x\frac{k \pi}{L})
+\]
+So, what remains now is to find \(c_k\). We have not yet taken into account the boundary of \(v(x,t)\) when \(t = 0\). At \(t = 0\), we have that
+\[
+f(x) = c_k\sin(x\frac{k \pi}{L})
+\]
+Multiplying  the equation above by\(\sin(x\frac{k \pi}{L})\)
+\subsection{Discretization}
 
+For the diffusion equation to be numerically solvable, it must be discretized. This is done in the standard way: Discretize \(x\) as \(x_0,x_1,\dots,x_n\) with \(h=\qty(x_n-x_0)/n\), and \(t\) as \(t_0,t_1,\dots,t_m\) with \(\Delta t = \qty(t_m-t_0)/m\). The function itself is also discretized, with the notation \(u_{i,j} = u(x_i,t_j)\).
 
+We will now take a look into how we can numerically approximate the given problem. As there exist many different approaches, we have chosen to look at three different methods, namely Forward Euler, Backward Euler and Crank-Nicolson.
 %  _____                                _   _____      _
 % |  ___|__  _ ____      ____ _ _ __ __| | | ____|   _| | ___ _ __
 % | |_ / _ \| '__\ \ /\ / / _` | '__/ _` | |  _|| | | | |/ _ \ '__|
@@ -134,17 +314,17 @@ Hei.
 %
 \subsection{Forward Euler}
 
-\subsubsection{Derivation and error analysis}
-The Forward Euler scheme is an explicit scheme based on Taylor polynomials. To find an approximation of the time derivative of \(u\) at point \((x_i,t_j)\), a first order Taylor polynomial around \(x_i,t_j\) is used to calculate \(u(x_i,t_{j+1})\) is used:
+\subsubsection{Derivation and error analysis}\label{sec:ForwardEulerDerivation}
+The Forward Euler scheme is an explicit scheme based on Taylor polynomials. To find an approximation of the time derivative of \(u\) at point \((x_i,t_j)\), a first order Taylor polynomial around \(x_i,t_j\) is used to calculate \(u(x_i,t_{j+1})\):
 \[
     u_{i,j+1} = u_{i,j} + \Delta t\pdv{u_{i,j}}{t} + \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_i,\tilde{t})}{t}
-    \implies \pdv{u_{i,j}}{t} = \frac{u_{i,j+1}-u_{i,j}}{\Delta t} + \frac{1}{2}\Delta t\pdv[2]{u(x_i,\tilde{t})}{t}
+    \implies \pdv{u_{i,j}}{t} = \frac{u_{i,j+1}-u_{i,j}}{\Delta t} + \frac{1}{2}\Delta t\pdv[2]{u(x_i,\tilde{t})}{t}\eqtag{asymmnewton}
 \]
 where \(\tilde{t}\in(t_j,t_{j+1})\) and the last term is the truncation error, which is proportional to \(\Delta t\).
 
 Similarly, the three point approximation to the second derivative (derived in \autocite{oblig1}) with its error is used to approximate the second derivative of \(u\) at point \((x_i,t_j)\) with respect to position:
 \[
-    \pdv[2]{u_{i,j}}{x} = \frac{u_{i+1,j} + u_{i-1,j} - 2u_{i,j}}{h^2} - \frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x}
+    \pdv[2]{u_{i,j}}{x} = \frac{u_{i+1,j} + u_{i-1,j} - 2u_{i,j}}{h^2} - \frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x}\eqtag{andrederivert}
 \]
 where the last term is the truncation error, which for this approximation is proportional to \(h^2\). The observation \(\tilde{x}\in(x_{i-1,j} + x_{i+1,j})\) is shown in the referenced report.
 
@@ -163,7 +343,10 @@ The two error terms are proportional to \(\qty(\Delta t)^2\) and \(\Delta t\cdot
 
 
 \subsubsection{Stability analysis}
-
+\begin{center}
+Sette inn plot av stabil vs ikke stabil og spoerre oss selv hvorfor dette skjer?
+\end{center}
+As we now have set up the algorithm using Forward Euler to approximate the derivatives, we might ask ourselves whether this method gives us stable results. We 
 
 
 
@@ -174,11 +357,70 @@ The two error terms are proportional to \(\qty(\Delta t)^2\) and \(\Delta t\cdot
 % |____/ \__,_|\___|_|\_\  \_/\_/ \__,_|_|  \__,_| |_____\__,_|_|\___|_|
 %
 \subsection{Backward Euler}
-hei
+The idea of backward Euler is similar to the forward Euler. Actually, the only difference lies in how we approximate the time derivative of \(u\).
 \subsubsection{Derivation and error analysis}
+We can also use Taylor polynomials of \(u(x_i,t_{j-1})\)to write an approximation of the time derivative of \(u\) around \(x_i,t_j\):
+\[
+    u_{i,j-1} = u_{i,j} - \Delta t\pdv{u_{i,j}}{t} + \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_i,\tilde{t})}{t}
+    \implies \pdv{u_{i,j}}{t} = \frac{u_{i,j}-u_{i,j-1}}{\Delta t} + \frac{1}{2}\Delta t\pdv[2]{u(x_i,\tilde{t})}{t}
+\]
+where \(\tilde{t}\) and the second term are the same as defined in \vref{sec:ForwardEulerDerivation}. \Vref{andrederivert} can be reused as an approximation to the second derivative.
+
+With these approximations, the diffusion equation can be written as
+\begin{align*}
+    \frac{u_{i,j}-u_{i,j-1}}{\Delta t} + \frac{1}{2}\Delta t\pdv[2]{u(x_j,\tilde{t})}{t}
+    &= \frac{u_{i+1,j}  - 2u_{i,j} + u_{i-1,j}}{h^2} + \frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x}  \\
+    u_{i,j}-u_{i,j-1} &= \alpha(u_{i+1,j}  - 2u_{i,j} + u_{i-1,j}) + \Delta t\cdot \frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x}  - \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_j,\tilde{t})}{t}\\
+    -\alpha u_{i-1,j} + \qty(1+2\alpha)u_{i,j} - \alpha u_{i+1,j} &= u_{i,j-1} + \Delta t\cdot \frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x}  - \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_j,\tilde{t})}{t}
+\end{align*}
+In this equation, only the \(u\) on the right hand side is known, while the \(u\)'s on the left side are the ones we are interested in. As it is not possible to find an explicit expression for the quantities of interest, this leads to an implicit scheme. Observe that the error is the same as for the Forward Euler scheme.
+
+To solve the equation above, note that it must hold for all \(i\in\qty[1,n]\cap\mathbb{N}\), giving the following set of equations:
+\[
+    \begin{array}{ccccccc}
+        -\alpha \overbrace{u_{0,j}}^0 &+& (1+2\alpha)u_{1,j} &-& \alpha u_{2,j} &=& u_{1,j-1}\\
+        -\alpha u_{1,j} &+& (1+2\alpha)u_{2,j} &-& \alpha u_{3,j} &=& u_{2,j-1}\\
+        -\alpha u_{2,j} &+& (1+2\alpha)u_{3,j} &-& \alpha u_{4,j} &=& u_{3,j-1}\\
+        \vdots && \vdots && \vdots && \vdots\\
+        -\alpha u_{n-3,j} &+& (1+2\alpha)u_{n-2,j} &-& \alpha u_{n-1,j} &=& u_{n-2,j-1}\\
+        -\alpha u_{n-2,j} &+& (1+2\alpha)u_{n-1,j} &-& \alpha \underbrace{u_{n,j}}_1 &=& u_{n-1,j-1}\\
+    \end{array}
+\]
+This can then be written on a matrix form:
+\[
+    \begin{bmatrix}
+        1 + 2\alpha & -\alpha & 0 & 0 & 0 & \dots & 0 & 0 & 0 & 0  \\
+        -\alpha & 1+2\alpha & -\alpha & 0 & 0 & \dots & 0 & 0 & 0 & 0  \\
+        0 & -\alpha & 1+2\alpha & -\alpha & 0 & \dots & 0 & 0 & 0 & 0 \\
+        \vdots & \vdots &  \ddots & \ddots & \ddots & \vdots & \vdots & \vdots & \vdots & \vdots\\
+        0 & 0 & 0 & 0 & 0 & \dots & -\alpha & 1+2\alpha & - \alpha & 0\\
+        0 & 0 & 0 & 0 & 0 & 0 & \dots & -\alpha & 1+2\alpha & - \alpha\\
+        0 & 0 & 0 & 0 & 0 & 0 & 0 & \dots & -\alpha & 1+2\alpha\\
+    \end{bmatrix}
+    \begin{bmatrix}
+        u_{1,j}\\
+        u_{2,j}\\
+        u_{3,j}\\
+        \vdots\\
+        u_{n-3,j}\\
+        u_{n-2,j}\\
+        u_{n-1,j}\\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        u_{1,j-1}\\
+        u_{2,j-1}\\
+        u_{3,j-1}\\
+        \vdots\\
+        u_{n-3,j-1}\\
+        u_{n-2,j-1}\\
+        u_{n-1,j-1} + \alpha\\
+    \end{bmatrix}
+\]
+This is a simple, linear system with a tridiagonal matrix, for which an efficient solving algorithm was developed and implemented in project 1\cite{oblig1}.
+
 
 \subsubsection{Stability analysis}
-
 
 
 
