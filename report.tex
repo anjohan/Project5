@@ -126,7 +126,7 @@ Hei.
 
 \section{Introduction}
 Partial differential equations is a subject of many fields. These equations can describe the behavior of many natural phenomenas such as waves of sound or sea, the flow of a liquid, growth of a population or diffusion of different processes. \\
-These equations are often solved numerically since an analytical solution is difficult, or perhaps impossible to find. An example is the Navier-Stokes equation to model the flow of a viscous flow when not certain assumptions to simplify the equations has been made. \\ 
+These equations are often solved numerically since an analytical solution is difficult, or perhaps impossible to find. An example is the Navier-Stokes equation to model the flow of a viscous flow when not certain assumptions to simplify the equations has been made. \\
 \begin{center}
 skrive noe kult om diffusjon?
 \end{center}
@@ -145,7 +145,7 @@ noen fysiske forklaringer paa boundaries
 \end{center}
 
 \section{Mathematical theory}
-Before we can begin our analysis on how it is possible to numerically solve \vref{eq:diffusion}, we will first take a look at the analytical solution. When having an analytical solution at hand, we can use it further to find which conditions the numerical methods must hold to give us stable results. 
+Before we can begin our analysis on how it is possible to numerically solve \vref{eq:diffusion}, we will first take a look at the analytical solution. When having an analytical solution at hand, we can use it further to find which conditions the numerical methods must hold to give us stable results.
 \subsection{Analytical solution of the diffusion equation}
 Consider the diffusion equation with the given boundaries:
 \begin{equation}\label{eq:problem}
@@ -169,24 +169,24 @@ v(0,t) &=  0 &  t>0 \\
 v(L,t) &= 0 & t>0
 \end{aligned}
 \end{equation}
-By introducing \(v(x,t)\), we have also introduced a new problem; what does \(w(x,t)\) actually look like? We note that 
+By introducing \(v(x,t)\), we have also introduced a new problem; what does \(w(x,t)\) actually look like? We note that
 \begin{alignat*}{2}
 \pdv[2]{v(x,t)}{x} &= \pdv{v(x,t)}{t}  \\
-\implies \pdv[2]{U(x,t)}{x} + \pdv[2]{w(x,t)}{x} &= \pdv{U(x,t)}{t} + \pdv{w(x,t)}{t} 
+\implies \pdv[2]{U(x,t)}{x} + \pdv[2]{w(x,t)}{x} &= \pdv{U(x,t)}{t} + \pdv{w(x,t)}{t}
 \end{alignat*}
-From \ref{eq:problem} we have that 
+From \ref{eq:problem} we have that
 \[
 \pdv[2]{U(x,t)}{x} = \pdv{U(x,t)}{t}
 \]
-This means that if we set 
+This means that if we set
 \begin{equation} \label{eq:dummy1}
  \pdv[2]{w(x,t)}{x}  = 0
 \end{equation}
-and 
+and
 \begin{equation} \label{eq:dummy2}
- \pdv{w(x,t)}{t} = 0 
+ \pdv{w(x,t)}{t} = 0
 \end{equation}
-the first condition for \(v(x,t)\) in \vref{eq:dummy} will hold. We can now find a general solution for \(w\). From \vref{eq:dummy1}, we have that 
+the first condition for \(v(x,t)\) in \vref{eq:dummy} will hold. We can now find a general solution for \(w\). From \vref{eq:dummy1}, we have that
 \begin{align}
 	\pdv[2]{w(x,t)}{x}  &= 0 \nonumber \\
 	\implies\pdv{w(x,t)}{x} &= A  \quad A \in \mathbb{R} \nonumber \\
@@ -197,12 +197,12 @@ From \vref{eq:dummy2}, we get that
 \pdv{w(x,t)}{t} &= 0 \nonumber \\
 w(x,t) &= C + h_2(x) , \quad C \in \mathbb{R} \label{eq:wT}
 \end{align}
-From \vref{eq:wX} and \vref{eq:wT}, we see that 
+From \vref{eq:wX} and \vref{eq:wT}, we see that
 \[
 w(x,t) = w(x) = Ax + D, \quad D=B+C
 \]
 because there is no dependence of \(t\) in \vref{eq:wT}.
-We have now found how \(w\) looks like in general. \\ 
+We have now found how \(w\) looks like in general. \\
 However, we need to decide the values of \(A\) and \(D\). This can be done by looking at the boundaries for \vref{eq:dummy} at \(x = 0 \) and \(x = L\):
 \begin{align*}
 v(0,t) &= 0 \\
@@ -215,8 +215,8 @@ v(L,t) &= 0 \\
 0 &= U(L,t) + w(x=L) \\
 0 &= b+AL-a \\
 \frac{a-b}{L} &= A
-\end{align*} 
-In conclusion, we have 
+\end{align*}
+In conclusion, we have
 \[
 w(x) = \frac{a-b}{L}x - a
 \]
@@ -226,11 +226,11 @@ As the expression of \(w\) has been found, we have also found \(f(x)\) in \vref{
 	&= g(x)+w(x) \\
 	&=f(x)
 \end{align*}
-Having set up the problem properly, we are now ready to solve for \(v(x,t)\). To do so, we make an ansatz that 
+Having set up the problem properly, we are now ready to solve for \(v(x,t)\). To do so, we make an ansatz that
 \[
 v(x,t) = F(x)G(t)
 \]
-which gives 
+which gives
 \begin{align}
 \pdv[2]{v(x,t)}{x} &= \pdv{v(x,t)}{t} \nonumber \\
 F''(x)G(t) &= F(x)G'(t) \nonumber \\
@@ -249,7 +249,7 @@ with a general solution
 F(x) = c_1\cos(x\sqrt{\lambda} ) + c_2\sin(x\sqrt{\lambda})
 \]
 To find the constants \(c_1,c_2\), we will use the boundaries for \(v(x,t)\) at \(x = 0\) and \(x = L\). At this point we will see that it is advantageous for us to have the boundaries equal to zero.\\
-Since 
+Since
 \[
 v(x,t) = F(x)G(t)
 \]
@@ -257,7 +257,7 @@ We have
 \[
 0 = F(0)G(t) \implies F(0) = 0
 \]
-and 
+and
 \[
 0 = F(L)G(t) \implies F(L) = 0
 \]
@@ -269,7 +269,7 @@ and at \(x = L\):
 \[
 0 =  c_2\sin(L\sqrt{\lambda})
 \]
-Of course, we could set \(c_2 = 0\) too, but this will only give us a trivial solution which is of no interest. Therefore, we must have 
+Of course, we could set \(c_2 = 0\) too, but this will only give us a trivial solution which is of no interest. Therefore, we must have
 \[
 0 = \sin(L\sqrt{\lambda})
 \]
@@ -278,7 +278,7 @@ Since sine is zero for every multiple of \(\pi\), we have that
 L\sqrt{\lambda} &= k\pi \quad k\in \mathbb{N}\\
 \lambda &= \qty(\frac{k \pi}{L})^2
 \end{align*}
-We notice that we have infinite solutions since \(k \in \mathbb{N}\). Therefore, we might have a different scaling of sine for every \(k\), meaning \(c_2 = c_k\).\\  For every \(k\) we have the particular solution 
+We notice that we have infinite solutions since \(k \in \mathbb{N}\). Therefore, we might have a different scaling of sine for every \(k\), meaning \(c_2 = c_k\).\\  For every \(k\) we have the particular solution
 \[
 F_k(x) = c_k\sin(x\frac{k \pi}{L})
 \]
@@ -292,7 +292,7 @@ this gives
 G_k(t) = e^{-\qty(\frac{k \pi}{L})^2t}
 \]
 and so we have found the \(k\)th particular solution of \(G(t)\). \\
-Therefore, we have that 
+Therefore, we have that
 \[
 v_k(x,t) = c_ke^{-\qty(\frac{k \pi}{L})^2t}\sin(x\frac{k \pi}{L})
 \]
@@ -310,7 +310,7 @@ However, we are not looking for one particular solution of \(v\), but for all so
 v(x,t) = \sum_{k=1}^\infty v_k(x,t)
 \]
 
-So, if we step back to what we originally started with, 
+So, if we step back to what we originally started with,
 \[
 v(x,t) = U(x,t) + w(x,t)
 \]
@@ -320,35 +320,32 @@ we now have only one unknown in the equation above, namely \(U(x,t)\), thus givi
  &=  \sum_{k=1}^\infty v_k(x,t) - w(x) \\
  &=\sum_{k=1}^\infty c_ke^{-\qty(\frac{k \pi}{L})^2t}\sin(x\frac{k \pi}{L})  -\qty(\frac{a-b}{L}x - a)
 \end{align*}
-with 
+with
 \[
-c_k = \frac{2}{L}\int_0^Lf(x)\sin(x\frac{k \pi}{L})dx 
+c_k = \frac{2}{L}\int_0^Lf(x)\sin(x\frac{k \pi}{L})dx
 \]
 \hfill \\
 For our case, that is \vref{eq:diffusion}, we have that \(a = 0\), \(b = 1\), \(g \equiv 0\) and \(L = 1\). Inserting this into the solution of \vref{eq:dummy} gives us
 \begin{equation}\label{eq:analyticalSolution}
-	u(x,t) = \sum_{k=1}^\infty c_ke^{-(k\pi)^2t}\sin(xk\pi)  + x 
+	u(x,t) = \sum_{k=1}^\infty c_ke^{-(k\pi)^2t}\sin(xk\pi)  + x
 \end{equation}
-with 
+with
 \begin{align*}
 c_k &= 2\int_0^1(0-x)\cdot\sin(xk\pi)dx \\
 &= - \frac{2}{k\pi}\qty[\frac{\sin(k\pi x)}{k\pi} - x\cos(k\pi x)]_0^1 \\
 &= \frac{2(-1)^{k+2}}{k\pi} \\
-&=  \frac{2(-1)^k}{k\pi} 
+&=  \frac{2(-1)^k}{k\pi}
 \end{align*}
 
 \subsection{Discretization}
 
-\begin{center}
-	\todo{forslag}
-	Forslag: \normal Since the solution is an infinite series of Fourier coefficients, it cannot be computed directly numerically. Therefore, it must be discretized. 
-\end{center}
+\todo[inline]{Forslag: Since the solution is an infinite series of Fourier coefficients, it cannot be computed directly numerically. Therefore, it must be discretized.}
 
-For the diffusion equation to be numerically solvable, it must be discretized. 
+For the diffusion equation to be numerically solvable, it must be discretized.
 
-This is done in the standard way: Discretize \(x\) as \(x_0,x_1,\dots,x_n\) with \(h=\qty(x_n-x_0)/n\), and \(t\) as \(t_0,t_1,\dots,t_m\) with \(\Delta t = \qty(t_m-t_0)/m\). The function itself is also discretized, with the notation \(u_{i,j} \approx u(x_i,t_j)\). 
+This is done in the standard way: Discretize \(x\) as \(x_0,x_1,\dots,x_n\) with \(h=\qty(x_n-x_0)/n\), and \(t\) as \(t_0,t_1,\dots,t_m\) with \(\Delta t = \qty(t_m-t_0)/m\). The function itself is also discretized, with the notation \(u_{i,j} \approx u(x_i,t_j)\).
 
-We will now take a look into how we can numerically approximate the given problem. As there exist many different approaches, we have chosen to look at three different methods, namely Forward Euler, Backward Euler and Crank-Nicolson. The difference between Forward Euler and Backward Euler is how the time derivative is approximated, as the Crank-Nicolson method is a combination of both. 
+We will now take a look into how we can numerically approximate the given problem. As there exist many different approaches, we have chosen to look at three different methods, namely Forward Euler, Backward Euler and Crank-Nicolson. The difference between Forward Euler and Backward Euler is how the time derivative is approximated, as the Crank-Nicolson method is a combination of both.
 %  _____                                _   _____      _
 % |  ___|__  _ ____      ____ _ _ __ __| | | ____|   _| | ___ _ __
 % | |_ / _ \| '__\ \ /\ / / _` | '__/ _` | |  _|| | | | |/ _ \ '__|
@@ -378,19 +375,19 @@ Inserting these two expressions into the diffusion equation gives
 \]
 The goal is to find the value of \(u\) at the next time step, i.e. \(u_{i,j+1}\). Multiplying by \(\Delta t\) on both sides of the equation and moving one term to the right, we get
 \begin{alignat*}{2}
-    u_{i,j+1} &= u_{i,j} + \frac{\Delta t}{h^2}\qty(u_{i+1,j} + u_{i-1,j}-2u_{i,j}) + \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_i,\tilde{t})}{t} - \Delta t\cdot\frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x} 
+    u_{i,j+1} &= u_{i,j} + \frac{\Delta t}{h^2}\qty(u_{i+1,j} + u_{i-1,j}-2u_{i,j}) + \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_i,\tilde{t})}{t} - \Delta t\cdot\frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x}
     \intertext{The quantity \(\Delta t/h^2\) can be defined as \(\alpha\), which, with a slight reorganisation yields the final expression}
-    u_{i,j+1} &= \qty(1-2\alpha)u_{i,j} + \alpha\qty(u_{i+1,j}+u_{i-1,j}) +  \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_i,\tilde{t})}{t} - \Delta t\cdot\frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x} 
+    u_{i,j+1} &= \qty(1-2\alpha)u_{i,j} + \alpha\qty(u_{i+1,j}+u_{i-1,j}) +  \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_i,\tilde{t})}{t} - \Delta t\cdot\frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x}
 \end{alignat*}
-The two error terms are proportional to \(\qty(\Delta t)^2\) and \(\Delta t\cdot h^2\). As per usual, the global error is one order lower, as the error is accumulated. This gives one error term proportional to \(\Delta t\) and one propotional to \(h^2\). The order of \(h\) is not reduced, as this error is not accumulated. If we truncate the errors in \(u_{i,j}\) , we get the numerical approximation of \(u(x_i,t_j)\) to be 
+The two error terms are proportional to \(\qty(\Delta t)^2\) and \(\Delta t\cdot h^2\). As per usual, the global error is one order lower, as the error is accumulated. This gives one error term proportional to \(\Delta t\) and one propotional to \(h^2\). The order of \(h\) is not reduced, as this error is not accumulated. If we truncate the errors in \(u_{i,j}\) , we get the numerical approximation of \(u(x_i,t_j)\) to be
 \begin{equation}\label{eq:forwardEuler}
 u_{i,j+1} = \qty(1-2\alpha)u_{i,j} + \alpha\qty(u_{i+1,j}+u_{i-1,j})
 \end{equation}
 
-As we now have set up the algorithm using Forward Euler to approximate the derivatives, we might ask ourselves whether this method gives us stable results. This is an important question, since it may happen that the numerical errors that we are doing propagate in such matter that it will corrupt our final results. To see whether this is the case, we will use the method of Von Neumann to study the stability of the Forward Euler scheme, as well as for the Backward Euler in \vref{sec:backwardEuler} and Crank-Nicolson in \vref{sec:crankNicolson}. 
+As we now have set up the algorithm using Forward Euler to approximate the derivatives, we might ask ourselves whether this method gives us stable results. This is an important question, since it may happen that the numerical errors that we are doing propagate in such matter that it will corrupt our final results. To see whether this is the case, we will use the method of Von Neumann to study the stability of the Forward Euler scheme, as well as for the Backward Euler in \vref{sec:backwardEuler} and Crank-Nicolson in \vref{sec:crankNicolson}.
 \subsubsection{The idea behind Von Neumann stability analysis}
 The problem of approximating \(u(x,t)\) is to sufficiently approximate the infinite series given in \vref{eq:analyticalSolution} and the exact value of the \(c_k\)s. Since \( x\) does not include infinity and therefore can be computed directly, thus assuming that \(x\) will not contribute to the propagation of error. Therefore, we must look at the stability when calculating \( \sum_{k=1}^\infty c_ke^{-(k\pi)^2t}\sin(xk\pi) \), i.e the solution of \(v(x,t)\) to make sure it will not blow up the solution of \(u(x,t)\). \\ \\
-As stated in \vref{sec:ForwardEulerDerivation}, the errors accumulates for every timestep, and not for every spatial step. The error we are doing in \(v_{i,j}\) is therefore a function of time. 
+As stated in \vref{sec:ForwardEulerDerivation}, the errors accumulates for every timestep, and not for every spatial step. The error we are doing in \(v_{i,j}\) is therefore a function of time.
 If we proceed in the similar manner as for finding the analytical solution and making the ansatz that
 \[
 v_{k_{i,j}} = F_k(x_i)G_k(t_j)
@@ -399,7 +396,7 @@ and introducing \(D_x^2\) and \(D_t\) as the numerical approximations of the spa
 \[
 G(t_j)\:\qty(D_x^2F_k(x))_i = F(x_i)\:\qty(D_tG(t))_j
 \]
-which gives that 
+which gives that
 \begin{equation}\label{eq:discreteRatios}
 \frac{\qty(D_x^2F_k(x))_i }{ F(x_i)} = \frac{\qty(D_tG(t))_j}{G(t_j)} = -\mu_{k_{i,j}}
 \end{equation}
@@ -407,7 +404,7 @@ We know the second derivative of \(x\) which is the very same that we used to de
 \begin{align*}
 \qty(D_x^2F_k(x))_i &= -\mu_{k_{i,j}}F(x_i) \\
 \frac{F(x_{i-1}) -2F(x_i) + F(x_{i+1}) }{h^2} &= -\mu_{k_{i,j}}F(x_i) \\
-\sin(k\pi x_{i-1}) -2\sin(k\pi x_i) + \sin(k \pi x_{i+1}) &= -h^2\mu_{k_{i,j}}\sin(k \pi x_i) 
+\sin(k\pi x_{i-1}) -2\sin(k\pi x_i) + \sin(k \pi x_{i+1}) &= -h^2\mu_{k_{i,j}}\sin(k \pi x_i)
 \end{align*}
 Using the trigonometric identities
 \[
@@ -415,7 +412,7 @@ Using the trigonometric identities
 \]
 we get
 \[
-\sin(k\pi x_i)(2\cos(k\pi h) - 2) = -h^2\mu_{k_{i,j}}\sin(k \pi x_i) 
+\sin(k\pi x_i)(2\cos(k\pi h) - 2) = -h^2\mu_{k_{i,j}}\sin(k \pi x_i)
 \]
 The \(\sin(k\pi x_i) \) can never be zero, as we differentiate over \(x \in (0,1) \) since we know the values of \( v(x,t) \) at the boundaries. The eigenvalue \(\mu_{k_{i,j}}\) of the approximation of the second derivative over\(x \), \( D_x^2 \), is therefore
 \begin{equation}\label{eq:eigenvalue1}
@@ -437,7 +434,7 @@ Now we have proven that assuming \(F_k(x_i) = \sin(k\pi x_i)\) is not a such bad
 \[
 u_{k_{i,j}} = a_{k_{j}}\sin(k \pi x_i)
 \]
-where the factor \(a_{k_j}\) is the growth of the computed solution over time, also called the amplification factor. 
+where the factor \(a_{k_j}\) is the growth of the computed solution over time, also called the amplification factor.
 %  ____             _                           _   _____      _
 % | __ )  __ _  ___| | ____      ____ _ _ __ __| | | ____|   _| | ___ _ __
 % |  _ \ / _` |/ __| |/ /\ \ /\ / / _` | '__/ _` | |  _|| | | | |/ _ \ '__|
