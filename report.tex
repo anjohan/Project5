@@ -2,7 +2,7 @@
 \pdfobjcompresslevel=0
 \usepackage[usenames,dvipsnames]{xcolor}
 \usepackage[includeheadfoot,margin=0.8 in,top=0.6 in]{geometry}
-\usepackage{siunitx,physics,cancel,upgreek,varioref,listings,booktabs,tocloft, pdfpages, tikz}
+\usepackage{siunitx,physics,cancel,upgreek,varioref,listings,booktabs,tocloft, pdfpages}
 \usepackage{todonotes}
 \usepackage{mathtools}
 \usepackage{babel}
@@ -122,14 +122,14 @@ breaklines=true,
 \begin{abstract}
 Hei.
 \end{abstract}
-\listoftodos
 \clearpage
 
 \section{Introduction}
-Partial differential equations is a subject of many fields. These equations can describe the behavior of many natural phenomenas such as waves of sound or sea, the flow of a liquid, growth of a population or diffusion of different processes.
-
-These equations are often solved numerically since an analytical solution is difficult, or perhaps impossible to find. An example is the Navier-Stokes equation to model the flow of a viscous flow when not certain assumptions to simplify the equations has been made.
-\todo[inline]{skrive noe kult om diffusjon?}
+Partial differential equations is a subject of many fields. These equations can describe the behavior of many natural phenomenas such as waves of sound or sea, the flow of a liquid, growth of a population or diffusion of different processes. \\
+These equations are often solved numerically since an analytical solution is difficult, or perhaps impossible to find. An example is the Navier-Stokes equation to model the flow of a viscous flow when not certain assumptions to simplify the equations has been made. \\
+\begin{center}
+skrive noe kult om diffusjon?
+\end{center}
 In this report we will focus on how we can numerically solve the diffusion equation, which is given by
 \begin{equation}\label{eq:diffusion}
 \begin{aligned}
@@ -140,94 +140,9 @@ u(L,t) &= 1&t>0
 \end{aligned}
 \end{equation}
 with \(L = 1\).
-\todo[inline]{noen fysiske forklaringer paa boundaries}
-
-
-%   __           _ _    _
-%  / _|_   _ ___(_) | _| | __
-% | |_| | | / __| | |/ / |/ /
-% |  _| |_| \__ \ |   <|   <
-% |_|  \__, |___/_|_|\_\_|\_\
-%      |___/
-\section{Physical theory of diffusion}
-Diffusion is simply the net movement of particles as a result of a random walk, and can be modelled as each atom constantly making a jump in a random  direction. It may seem a little counterintuitive that random motion can lead to a net flow, but consider that if there are \(10\) particles to the left, of which half move to the right, and \(100\) particles on the right, of which half move to the left, the net result is \(45\) particles moving to the left. The opposite of diffusion is drift, where the net motion is a result of an external driving force, for example an electric field.
-
-The two most important equations in diffusion are Fick's laws, which, in one dimension, state that
-\[
-J = -D\pdv{C}{x} \qquad \qquad \pdv{C}{t} = D\pdv[2]{C}{x}
-\]
-where \(D\) is the diffusion coefficient, \(J\) the flux, i.e. the number of particles moving per area, and \(C\) the concentration, i.e. the number of particles per volume. Observe that Fick's second law, which is also simply called the diffusion equation, is the partial differential equation which is solved numerically on a dimensionless form in this project.
-
-\subsection{Derivation of Fick's first law in one dimension}
-\begin{figure}[H]
-    \centering
-    \begin{tikzpicture}[thick]
-        \draw (0,0,2) -- (0,2,2) -- (0,2,0);
-        \draw[dashed] (0,0,0) -- (0,0,2) (0,2,0) -- (0,0,0);
-        \draw[dashed] (0,0,0) -- (4,0,0);
-        \draw (0,0,2) -- (4,0,2);
-        \draw (0,2,2) -- (4,2,2);
-        \draw (0,2,0) -- (4,2,0);
-        \fill[black!20!white,opacity=0.8] (4,0,0) -- (4,0,2) node[anchor=north] {\(x\)} -- (4,2,2) -- (4,2,0) -- (4,0,0);
-        \draw[dashed] (4,0,0) -- (4,0,2) node[anchor=north] {\(x\)} -- (4,2,2) -- (4,2,0) -- (4,0,0);
-        \draw[dashed] (6,0,0) -- (4,0,0);
-        \draw (6,0,2) -- (4,0,2);
-        \draw (6,2,2) -- (4,2,2);
-        \draw (6,2,0) -- (4,2,0);
-        \fill[black!20!white,opacity=0.8] (6,0,0) -- (6,0,2) -- (6,2,2) -- (6,2,0) -- (6,0,0);
-
-        \draw[dashed] (6,0,0) -- (6,0,2) node[anchor=north] {\(x+\Delta x\)} -- (6,2,2) -- (6,2,0) -- (6,0,0);
-        \draw[dashed] (6,0,0) -- (10,0,0);
-        \draw (6,0,2) -- (10,0,2);
-        \draw (6,2,2) -- (10,2,2);
-        \draw (6,2,0) -- (10,2,0);
-        \draw (10,0,0) -- (10,0,2) -- (10,2,2) -- (10,2,0) -- (10,0,0);
-    \end{tikzpicture}
-    \caption{Sketch of the infinitesimal volume element used the derivation of Fick's laws in one dimension.}\label{fig:fick}
-\end{figure}
-
-As stated above, diffusion is the process of random walk. In one dimension, this means that each particle will have a \(\SI{50}{\percent}\) probability of moving one step to the left, and a \(\SI{50}{\percent}\) probability of moving one step to the right. As such, the net movement of particles to the right between \(x\) and \(x+\Delta x\) equals half the particles at point \(x\) minus half the particles at point \(x+\Delta x\). Since the flux is the movement of particles per cross-section area \(A\) (marked with grey in the figure) per time interval \(\Delta t\), this can be formulated mathematically as
-\[
-    J = -\frac{N(x+\Delta x, t) - N(x,t)}{2A\Delta t}
-\]
-Multiplying by \(\qty(\Delta x)^2\) in both the numerator and the denominator, and factoring out the \(\Delta t\), we get
-\[
-    J = -\frac{\qty(\Delta x)^2}{2\Delta t}\qty(\frac{N(x+\Delta x,t) - N(x,t)}{A\Delta x\cdot\Delta x})
-\]
-Since \(A\Delta x\) is a small volume element, \(C=N/\qty(A\Delta x)\):
-\[
-    J = -\frac{\qty(\Delta x)^2}{2\Delta t} \qty(\frac{C(x+\Delta x,t) - C(x,t)}{\Delta x})
-\]
-Defining \(D=\qty(\Delta x)^2/2\Delta t\) and letting \(\Delta x\to0\) gives Fick's first law:
-\[
-    J = -D\pdv{C}{x}
-\]
-
-\subsection{Derivation of Fick's second law in one dimension}
-The derivation of Fick's second law is based on finding two different expressions for the change in the number of particles between \(x\) and \(x+\Delta x\), setting them equal to each other and inserting Fick's first law into the result.
-
-To find the change in number of particles between the two grey surfaces in \vref{fig:fick} over a time interval \(\Delta t\), remember that the flux is defined as the number of particles passing per cross-section \(A\) per time interval \(\Delta t\). Therefore, the number of particles moving out of the volume between \(x\) and \(x+\Delta x\) in a time interval \(\Delta t\) is \(J(x+\Delta x,t)A\Delta t\), while the number of particles moving into the volume is \(J(x,t)A\Delta t\). Thus, the net change in the number of particles between \(x\) and \(\Delta x\) can be written as
-\[
-    \qty(J(x,t) - J(x + \Delta x,t))A\Delta t = -\qty(J(x+\Delta x,t) - J(x,t))A\Delta t
-\]
-On the other hand, this change in the number of particles must also equal the change in concentration \(C(x,t+\Delta t) - C(x,t)\), multiplied with the volume, \(A\Delta x\). Since these two methods of calculating the change in the number of particles must give the same result, the following equation must hold:
-\begin{alignat*}{2}
-    -\qty(J(x+\Delta x,t) - J(x,t))A\Delta t &= \qty(C(x,t+\Delta t) - C(x,t)) A\Delta x\\
-    \frac{J(x+\Delta x,t) - J(x,t)}{\Delta x} &= -\frac{C(x,t+\Delta t) - C(x,t)}{\Delta t}
-\end{alignat*}
-Letting \(\Delta x\to0\) and \(\Delta t\to0\), we get the so-called continuity equation:
-\[
-    \pdv{J}{x} = -\pdv{C}{t}
-\]
-Inserting Fick's first law for \(J\) on the left hand side, Fick's second law appears:
-\begin{alignat*}{2}
-    \pdv{x}\qty(-D\pdv{C}{x}) &= -\pdv{C}{t}\\
-    D\pdv[2]{C}{x} &= \pdv{C}{t}
-\end{alignat*}
-
-
-
-
+\begin{center}
+noen fysiske forklaringer paa boundaries
+\end{center}
 
 \section{Mathematical theory}
 Before we can begin our analysis on how it is possible to numerically solve \vref{eq:diffusion}, we will first take a look at the analytical solution. When having an analytical solution at hand, we can use it further to find which conditions the numerical methods must hold to give us stable results.
@@ -469,10 +384,15 @@ The two error terms are proportional to \(\qty(\Delta t)^2\) and \(\Delta t\cdot
 u_{i,j+1} = \qty(1-2\alpha)u_{i,j} + \alpha\qty(u_{i+1,j}+u_{i-1,j})
 \end{equation}
 
-As we now have set up the algorithm using Forward Euler to approximate the derivatives, we might ask ourselves whether this method gives us stable results. This is an important question, since it may happen that the numerical errors that we are doing propagate in such matter that it will corrupt our final results. To see whether this is the case, we will use the method of Von Neumann to study the stability of the Forward Euler scheme, as well as for the Backward Euler in \vref{sec:backwardEuler} and Crank-Nicolson in \vref{sec:crankNicolson}.
 \subsubsection{The idea behind Von Neumann stability analysis}
-The problem of approximating \(u(x,t)\) is to sufficiently approximate the infinite series given in \vref{eq:analyticalSolution} and the exact value of the \(c_k\)s. Since \( x\) does not include infinity and therefore can be computed directly, thus assuming that \(x\) will not contribute to the propagation of error. Therefore, we must look at the stability when calculating \( \sum_{k=1}^\infty c_ke^{-(k\pi)^2t}\sin(xk\pi) \), i.e the solution of \(v(x,t)\) to make sure it will not blow up the solution of \(u(x,t)\). \\ \\
-As stated in \vref{sec:ForwardEulerDerivation}, the errors accumulates for every timestep, and not for every spatial step. The error we are doing in \(v_{i,j}\) is therefore a function of time.
+As we now have set up the algorithm using Forward Euler to approximate the derivatives, we might ask ourselves whether this method gives us stable results. This is an important question, since it may happen that the numerical errors that we are doing propagate in such matter that it will corrupt our final results. To see whether this is the case, we will use the method of Von Neumann to study the stability of the Forward Euler scheme, as well as for the Backward Euler in \vref{sec:backwardEuler} and Crank-Nicolson in \vref{sec:crankNicolson}.
+
+
+The problem of approximating \(u(x,t)\) is to sufficiently approximate the infinite series given in \vref{eq:analyticalSolution} and the exact value of the \(c_k\)s. Since \( x\) does not include infinity and therefore can be computed directly, we can assume that \(x\) will not contribute to the propagation of error. Therefore, we must look at the stability when calculating \( \sum_{k=1}^\infty c_ke^{-(k\pi)^2t}\sin(xk\pi) \), i.e the solution of \(v(x,t)\) to make sure it will not blow up the solution of \(u(x,t)\). 
+% \eqtag{}
+
+As stated in \vref{sec:ForwardEulerDerivation}, the errors accumulates for every timestep, and not for every spatial step. The error we are doing in \(v_{i,j}\) is therefore a function of time. We must therefore take a look at the time dependent part of \(v_{i,j}\). 
+
 If we proceed in the similar manner as for finding the analytical solution and making the ansatz that
 \[
 v_{k_{i,j}} = F_k(x_i)G_k(t_j)
@@ -485,7 +405,8 @@ which gives that
 \begin{equation}\label{eq:discreteRatios}
 \frac{\qty(D_x^2F_k(x))_i }{ F(x_i)} = \frac{\qty(D_tG(t))_j}{G(t_j)} = -\mu_{k_{i,j}}
 \end{equation}
-We know the second derivative of \(x\) which is the very same that we used to derive \vref{eq:forwardEuler}, and from the analytical solution, we can assume that \(F(x) = \sin(k \pi x)\). This gives
+The second derivative of \(x\) is approximated using the second order central difference equation, i.e \vref{andrederivert}. 
+and from the analytical solution, we can assume that \(F(x) = \sin(k \pi x)\). This gives
 \begin{align*}
 \qty(D_x^2F_k(x))_i &= -\mu_{k_{i,j}}F(x_i) \\
 \frac{F(x_{i-1}) -2F(x_i) + F(x_{i+1}) }{h^2} &= -\mu_{k_{i,j}}F(x_i) \\
@@ -513,7 +434,13 @@ and by inserting this into \vref{eq:eigenvalue1}, we get the following eigenvalu
 \[
 \frac{4\sin^2\qty(\frac{k\pi h}{2})}{h^2} =\mu_{k_{i,j}}
 \]
-Now we have proven that assuming \(F_k(x_i) = \sin(k\pi x_i)\) is not a such bad idea. The discrete ratio \vref{eq:discreteRatios} for \(F_k(x_i)\) holds, and therefore we have found the eigenvalue of both \(D_x^2\) and \(D_t\). \\
+Now we have proven that assuming \(F_k(x_i) = \sin(k\pi x_i)\) is not a such bad idea. The discrete ratio \vref{eq:discreteRatios} for \(F_k(x_i)\) holds, and therefore we have found the eigenvalue of both \(D_x^2\) and \(D_t\). 
+
+We can expect that \( D_tG(t))_j\) includes at least one term which is either one time step ahead or behind \(G(t_j)\) since the approximations mostly is an interpolation of some sort. We see from To make sure that the error in time do not propagate, we must see if the ratios of the timesteps is not greater than one. If they are so, this means that the error in time propagate
+\[
+\frac{\qty(D_tG(t))_j}{G(t_j)} = -\mu_{k_{i,j}}
+\]
+Since the approximation of the time derivative is dependent on which scheme we are looking at, we must 
 \todo{stoppet her;må fortsette}
 
 \[
@@ -544,7 +471,6 @@ With these approximations, the diffusion equation can be written as
     -\alpha u_{i-1,j} + \qty(1+2\alpha)u_{i,j} - \alpha u_{i+1,j} &= u_{i,j-1} + \Delta t\cdot \frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x}  - \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_j,\tilde{t})}{t}
 \end{align*}
 In this equation, only the \(u\) on the right hand side is known, while the \(u\)'s on the left side are the ones we are interested in. As it is not possible to find an explicit expression for the quantities of interest, this leads to an implicit scheme. Observe that the error is the same as for the Forward Euler scheme.
-
 
 To solve the equation above, note that it must hold for all \(i\in\qty[1,n]\cap\mathbb{N}\), giving the following set of equations:
 \[
