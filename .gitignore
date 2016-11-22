@@ -1,3 +1,9 @@
+*.o
+*.x
+*.dat
+*.plt
+
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof

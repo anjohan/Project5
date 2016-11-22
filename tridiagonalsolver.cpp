@@ -1,6 +1,6 @@
 #include <ctime>
 
-double generell(double* a, double* b, double* c, double* d, double* v, int n){
+double tridiagonalsolver(double* a, double* b, double* c, double* d, double* v, int n){
     /* Parameterne er som beskrevet i algoritmen
      * for generelle, tridiagonale matriser.
      */

@@ -425,7 +425,7 @@ c_k &= 2\int_0^1(0-x)\cdot\sin(xk\pi)dx \\
 
 For the diffusion equation to be numerically solvable, it must be discretized.
 
-This is done in the standard way: Discretize \(x\) as \(x_0,x_1,\dots,x_n\) with \(h=\qty(x_n-x_0)/n\), and \(t\) as \(t_0,t_1,\dots,t_m\) with \(\Delta t = \qty(t_m-t_0)/m\). The function itself is also discretized, with the notation \(u_{i,j} \approx u(x_i,t_j)\).
+This is done in the standard way: Discretize \(x\) as \(x_0,x_1,\dots,x_n\) with \(\Delta x=\qty(x_n-x_0)/n\), and \(t\) as \(t_0,t_1,\dots,t_m\) with \(h = \qty(t_m-t_0)/m\). The function itself is also discretized, with the notation \(u_{i,j} \approx u(x_i,t_j)\).
 
 We will now take a look into how we can numerically approximate the given problem. As there exist many different approaches, we have chosen to look at three different methods, namely Forward Euler, Backward Euler and Crank-Nicolson. The difference between Forward Euler and Backward Euler is how the time derivative is approximated, as the Crank-Nicolson method is a combination of both.
 %  _____                                _   _____      _
@@ -439,29 +439,29 @@ We will now take a look into how we can numerically approximate the given proble
 \subsubsection{Derivation and error analysis}\label{sec:ForwardEulerDerivation}
 The Forward Euler scheme is an explicit scheme based on Taylor polynomials. To find an approximation of the time derivative of \(u\) at point \((x_i,t_j)\), a first order Taylor polynomial around \(x_i,t_j\) is used to calculate \(u(x_i,t_{j+1})\):
 \[
-    u_{i,j+1} = u_{i,j} + \Delta t\pdv{u_{i,j}}{t} + \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_i,\tilde{t})}{t}
-    \implies \pdv{u_{i,j}}{t} = \frac{u_{i,j+1}-u_{i,j}}{\Delta t} + \frac{1}{2}\Delta t\pdv[2]{u(x_i,\tilde{t})}{t}\eqtag{asymmnewton}
+    u_{i,j+1} = u_{i,j} + h\pdv{u_{i,j}}{t} + \frac{1}{2}h^2\pdv[2]{u(x_i,\tilde{t})}{t}
+    \implies \pdv{u_{i,j}}{t} = \frac{u_{i,j+1}-u_{i,j}}{h} + \frac{1}{2}h\pdv[2]{u(x_i,\tilde{t})}{t}\eqtag{asymmnewton}
 \]
-where \(\tilde{t}\in(t_j,t_{j+1})\) and the last term is the truncation error, which is proportional to \(\Delta t\).
+where \(\tilde{t}\in(t_j,t_{j+1})\) and the last term is the truncation error, which is proportional to \(h\).
 
 Similarly, the three point approximation to the second derivative (derived in \autocite{oblig1}) with its error is used to approximate the second derivative of \(u\) at point \((x_i,t_j)\) with respect to position:
 \[
-    \pdv[2]{u_{i,j}}{x} = \frac{u_{i+1,j} + u_{i-1,j} - 2u_{i,j}}{h^2} - \frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x}\eqtag{andrederivert}
+    \pdv[2]{u_{i,j}}{x} = \frac{u_{i+1,j} + u_{i-1,j} - 2u_{i,j}}{\qty(\Delta x)^2} - \frac{1}{12}\qty(\Delta x)^2\pdv[4]{u(\tilde{x},t_j)}{x}\eqtag{andrederivert}
 \]
-where the last term is the truncation error, which for this approximation is proportional to \(h^2\). The observation \(\tilde{x}\in(x_{i-1,j} + x_{i+1,j})\) is shown in the referenced report.
+where the last term is the truncation error, which for this approximation is proportional to \(\qty(\Delta x)^2\). The observation \(\tilde{x}\in(x_{i-1,j} + x_{i+1,j})\) is shown in the referenced report.
 
 Inserting these two expressions into the diffusion equation gives
 \[
-    \frac{u_{i,j+1}-u_{i,j}}{\Delta t} + \frac{1}{2}\Delta t\pdv[2]{u(x_i,\tilde{t})}{t}
-    = \frac{u_{i+1,j} + u_{i-1,j} - 2u_{i,j}}{h^2} - \frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x}
+    \frac{u_{i,j+1}-u_{i,j}}{h} + \frac{1}{2}h\pdv[2]{u(x_i,\tilde{t})}{t}
+    = \frac{u_{i+1,j} + u_{i-1,j} - 2u_{i,j}}{\qty(\Delta x)^2} - \frac{1}{12}\qty(\Delta x)^2\pdv[4]{u(\tilde{x},t_j)}{x}
 \]
-The goal is to find the value of \(u\) at the next time step, i.e. \(u_{i,j+1}\). Multiplying by \(\Delta t\) on both sides of the equation and moving one term to the right, we get
+The goal is to find the value of \(u\) at the next time step, i.e. \(u_{i,j+1}\). Multiplying by \(h\) on both sides of the equation and moving one term to the right, we get
 \begin{alignat*}{2}
-    u_{i,j+1} &= u_{i,j} + \frac{\Delta t}{h^2}\qty(u_{i+1,j} + u_{i-1,j}-2u_{i,j}) + \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_i,\tilde{t})}{t} - \Delta t\cdot\frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x}
-    \intertext{The quantity \(\Delta t/h^2\) can be defined as \(\alpha\), which, with a slight reorganisation yields the final expression}
-    u_{i,j+1} &= \qty(1-2\alpha)u_{i,j} + \alpha\qty(u_{i+1,j}+u_{i-1,j}) +  \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_i,\tilde{t})}{t} - \Delta t\cdot\frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x}
+    u_{i,j+1} &= u_{i,j} + \frac{h}{\qty(\Delta x)^2}\qty(u_{i+1,j} + u_{i-1,j}-2u_{i,j}) + \frac{1}{2}h^2\pdv[2]{u(x_i,\tilde{t})}{t} - h\cdot\frac{1}{12}\qty(\Delta x)^2\pdv[4]{u(\tilde{x},t_j)}{x}
+    \intertext{The quantity \(h/\qty(\Delta x)^2\) can be defined as \(\alpha\), which, with a slight reorganisation yields the final expression}
+    u_{i,j+1} &= \qty(1-2\alpha)u_{i,j} + \alpha\qty(u_{i+1,j}+u_{i-1,j}) +  \frac{1}{2}h^2\pdv[2]{u(x_i,\tilde{t})}{t} - h\cdot\frac{1}{12}\qty(\Delta x)^2\pdv[4]{u(\tilde{x},t_j)}{x}
 \end{alignat*}
-The two error terms are proportional to \(\qty(\Delta t)^2\) and \(\Delta t\cdot h^2\). As per usual, the global error is one order lower, as the error is accumulated. This gives one error term proportional to \(\Delta t\) and one propotional to \(h^2\). The order of \(h\) is not reduced, as this error is not accumulated. If we truncate the errors in \(u_{i,j}\) , we get the numerical approximation of \(u(x_i,t_j)\) to be
+The two error terms are proportional to \(h^2\) and \(h\cdot \qty(\Delta x)^2\). As per usual, the global error is one order lower, as the error is accumulated. This gives one error term proportional to \(h\) and one propotional to \(\qty(\Delta x)^2\). The order of \(\qty(\Delta x)\) is not reduced, as this error is not accumulated. If we truncate the errors in \(u_{i,j}\) , we get the numerical approximation of \(u(x_i,t_j)\) to be
 \begin{equation}\label{eq:forwardEuler}
 u_{i,j+1} = \qty(1-2\alpha)u_{i,j} + \alpha\qty(u_{i+1,j}+u_{i-1,j})
 \end{equation}
@@ -539,17 +539,17 @@ The idea of backward Euler is similar to the forward Euler. Actually, the only d
 \subsubsection{Derivation and error analysis}
 We can also use Taylor polynomials of \(u(x_i,t_{j-1})\)to write an approximation of the time derivative of \(u\) around \(x_i,t_j\):
 \[
-    u_{i,j-1} = u_{i,j} - \Delta t\pdv{u_{i,j}}{t} + \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_i,\tilde{t})}{t}
-    \implies \pdv{u_{i,j}}{t} = \frac{u_{i,j}-u_{i,j-1}}{\Delta t} + \frac{1}{2}\Delta t\pdv[2]{u(x_i,\tilde{t})}{t}
+    u_{i,j-1} = u_{i,j} - h\pdv{u_{i,j}}{t} + \frac{1}{2}h^2\pdv[2]{u(x_i,\tilde{t})}{t}
+    \implies \pdv{u_{i,j}}{t} = \frac{u_{i,j}-u_{i,j-1}}{h} + \frac{1}{2}h\pdv[2]{u(x_i,\tilde{t})}{t}
 \]
 where \(\tilde{t}\) and the second term are the same as defined in \vref{sec:ForwardEulerDerivation}. \Vref{andrederivert} can be reused as an approximation to the second derivative.
 
 With these approximations, the diffusion equation can be written as
 \begin{align*}
-    \frac{u_{i,j}-u_{i,j-1}}{\Delta t} + \frac{1}{2}\Delta t\pdv[2]{u(x_j,\tilde{t})}{t}
-    &= \frac{u_{i+1,j}  - 2u_{i,j} + u_{i-1,j}}{h^2} + \frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x}  \\
-    u_{i,j}-u_{i,j-1} &= \alpha(u_{i+1,j}  - 2u_{i,j} + u_{i-1,j}) + \Delta t\cdot \frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x}  - \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_j,\tilde{t})}{t}\\
-    -\alpha u_{i-1,j} + \qty(1+2\alpha)u_{i,j} - \alpha u_{i+1,j} &= u_{i,j-1} + \Delta t\cdot \frac{1}{12}h^2\pdv[4]{u(\tilde{x},t_j)}{x}  - \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_j,\tilde{t})}{t}
+    \frac{u_{i,j}-u_{i,j-1}}{h} + \frac{1}{2}h\pdv[2]{u(x_j,\tilde{t})}{t}
+    &= \frac{u_{i+1,j}  - 2u_{i,j} + u_{i-1,j}}{\qty(\Delta x)^2} + \frac{1}{12}\qty(\Delta x)^2\pdv[4]{u(\tilde{x},t_j)}{x}  \\
+    u_{i,j}-u_{i,j-1} &= \alpha(u_{i+1,j}  - 2u_{i,j} + u_{i-1,j}) + h\cdot \frac{1}{12}\qty(\Delta x)^2\pdv[4]{u(\tilde{x},t_j)}{x}  - \frac{1}{2}h^2\pdv[2]{u(x_j,\tilde{t})}{t}\\
+    -\alpha u_{i-1,j} + \qty(1+2\alpha)u_{i,j} - \alpha u_{i+1,j} &= u_{i,j-1} + h\cdot \frac{1}{12}\qty(\Delta x)^2\pdv[4]{u(\tilde{x},t_j)}{x}  - \frac{1}{2}h^2\pdv[2]{u(x_j,\tilde{t})}{t}
 \end{align*}
 In this equation, only the \(u\) on the right hand side is known, while the \(u\)'s on the left side are the ones we are interested in. As it is not possible to find an explicit expression for the quantities of interest, this leads to an implicit scheme. Observe that the error is the same as for the Forward Euler scheme.
 
