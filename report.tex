@@ -461,7 +461,7 @@ The goal is to find the value of \(u\) at the next time step, i.e. \(u_{i,j+1}\)
     \intertext{The quantity \(h/\qty(\Delta x)^2\) can be defined as \(\alpha\), which, with a slight reorganisation yields the final expression}
     u_{i,j+1} &= \qty(1-2\alpha)u_{i,j} + \alpha\qty(u_{i+1,j}+u_{i-1,j}) +  \frac{1}{2}h^2\pdv[2]{u(x_i,\tilde{t})}{t} - h\cdot\frac{1}{12}\qty(\Delta x)^2\pdv[4]{u(\tilde{x},t_j)}{x}
 \end{alignat*}
-The two error terms are proportional to \(h^2\) and \(h\cdot \qty(\Delta x)^2\). As per usual, the global error is one order lower, as the error is accumulated. This gives one error term proportional to \(h\) and one propotional to \(\qty(\Delta x)^2\). The order of \(\qty(\Delta x)\) is not reduced, as this error is not accumulated. If we truncate the errors in \(u_{i,j}\) , we get the numerical approximation of \(u(x_i,t_j)\) to be
+The two error terms are proportional to \(h^2\) and \(h\cdot \qty(\Delta x)^2\). As per usual, the global error is one order lower, as the error is accumulated. This gives one error term proportional to \(h\) and one propotional to \(\qty(\Delta x)^2\). The order of \(\qty(\Delta x)\) is not reduced, as this error is not accumulated. If we truncate the errors in \(u_{i,j}\) , we get the numerical approximation of \(u(x_i,t_{j+1})\) to be
 \begin{equation}\label{eq:forwardEuler}
 u_{i,j+1} = \qty(1-2\alpha)u_{i,j} + \alpha\qty(u_{i+1,j}+u_{i-1,j})
 \end{equation}
