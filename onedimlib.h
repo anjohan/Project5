@@ -3,6 +3,7 @@
 
 #include <cstdio>
 #include <cmath>
+#include "tridiagonalsolver.h"
 
 class OneDimSolver{
     public:
@@ -16,6 +17,7 @@ class OneDimSolver{
         }
         void output(int i);
         void forward_Euler(int output_dn);
+        void backward_Euler(int output_dn);
     private:
         FILE *file;
         double end_t, L, alpha, h;

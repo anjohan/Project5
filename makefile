@@ -7,8 +7,10 @@ onedimlib.o: onedimlib.cpp onedimlib.h
 	${gpp} -c -fopenmp onedimlib.cpp
 test.o: test.cpp
 	${gpp} -c test.cpp
-test.x: test.o onedimlib.o
-	${gpp} -fopenmp -o test.x test.o onedimlib.o
+test.x: test.o onedimlib.o tridiagonalsolver.o
+	${gpp} -fopenmp -o test.x test.o onedimlib.o tridiagonalsolver.o
+tridiagonalsolver.o: tridiagonalsolver.cpp tridiagonalsolver.h
+	${gpp} -c tridiagonalsolver.cpp
 clean:
 	latexmk -c
 	rm *.dat

@@ -47,7 +47,7 @@ void OneDimSolver::forward_Euler(int output_dn){
     output(0);
     for(int i = 0; i<n_t; i++){
         //Calculate new values in parallel
-        //#pragma omp parallel for
+        #pragma omp parallel for
         for(int j = 1; j<n_x-1; j++){
             u_new[j] = prefactor * u[j] + alpha*(u[j+1] + u[j-1]);
         }
@@ -62,4 +62,35 @@ void OneDimSolver::forward_Euler(int output_dn){
     }
     //Print final result
     output(n_t);
+}
+
+void OneDimSolver::backward_Euler(int output_dn){
+    double prefactor = 1 + 2*alpha;
+    double *tmp;
+    double *a = new double[n_x];
+    double *b = new double[n_x];
+    double *c = new double[n_x];
+    for(int i = 0; i<n_x; i++){
+        a[i] = -alpha;
+        b[i] = prefactor;
+        c[i] = -alpha;
+    }
+    output(0);
+    for(int i = 0; i<n_t; i++){
+        u[n_x-2] += alpha;
+        tridiagonalsolver(a,b,c,u,u_new,n_x-1);
+        //Swap new and old
+        tmp = u_new;
+        u_new = u;
+        u = tmp;
+        //Print if requested
+        if(i % output_dn == 0){
+            output(i+1);
+        }
+    }
+    //Print final result
+    output(n_t);
+    delete [] a;
+    delete [] b;
+    delete [] c;
 }
