@@ -11,6 +11,10 @@ test.x: test.o onedimlib.o tridiagonalsolver.o
 	${gpp} -fopenmp -o test.x test.o onedimlib.o tridiagonalsolver.o
 tridiagonalsolver.o: tridiagonalsolver.cpp tridiagonalsolver.h
 	${gpp} -c tridiagonalsolver.cpp
+onedim_ui.o: onedim_ui.cpp
+	${gpp} -c onedim_ui.cpp
+onedim_ui.x: onedim_ui.o onedimlib.o tridiagonalsolver.o
+	${gpp} -fopenmp -o onedim_ui.x onedim_ui.o onedimlib.o tridiagonalsolver.o
 clean:
 	latexmk -c
 	rm *.dat
