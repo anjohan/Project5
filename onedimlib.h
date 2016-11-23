@@ -7,7 +7,7 @@
 
 class OneDimSolver{
     public:
-        OneDimSolver(char *filename, double h_in, double end_t_in, double dx, double L_in);
+        OneDimSolver(char *filename, double dt_in, double end_t_in, double dx, double L_in);
         ~OneDimSolver(){
             fclose(file);
             delete [] x;
@@ -21,7 +21,7 @@ class OneDimSolver{
         void Crank_Nicolson(int output_dn);
     private:
         FILE *file;
-        double end_t, L, alpha, h;
+        double end_t, L, alpha, dt;
         double *x, *t, *u, *u_new;
         int n_t, n_x;
 };
