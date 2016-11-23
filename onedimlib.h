@@ -18,6 +18,7 @@ class OneDimSolver{
         void output(int i);
         void forward_Euler(int output_dn);
         void backward_Euler(int output_dn);
+        void Crank_Nicolson(int output_dn);
     private:
         FILE *file;
         double end_t, L, alpha, h;

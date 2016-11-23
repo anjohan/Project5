@@ -10,16 +10,19 @@ int main(int argc, char* argv[]){
     }
     char *outfile = argv[1];
     char *method = argv[2];
-    double h = atof(argv[3]);
+    double dt = atof(argv[3]);
     double dx = atof(argv[4]);
     int dn = atoi(argv[5]);
     double L = 1, end_t = 1;
-    OneDimSolver *solver = new OneDimSolver(outfile,h,end_t,dx,L);
+    OneDimSolver *solver = new OneDimSolver(outfile,dt,end_t,dx,L);
     if(strcmp(method,"forward_Euler") == 0){
         solver->forward_Euler(dn);
     }
     else if(strcmp(method,"backward_Euler") == 0){
         solver->backward_Euler(dn);
+    }
+    else if(strcmp(method,"Crank_Nicolson") == 0){
+        solver->Crank_Nicolson(dn);
     }
     else{
         printf("Invalid method!");
