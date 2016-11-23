@@ -110,6 +110,7 @@ void OneDimSolver::Crank_Nicolson(int output_dn){
     }
     output(0);
     for(int i = 0; i<n_t; i++){
+        #pragma omp parallel for
         for(int j = 1; j<n_x; j++){
             rhs[j] = alpha*u[j-1] + beta2*u[j] + alpha*u[j+1];
         }
