@@ -419,13 +419,13 @@ c_k &= 2\int_0^1(0-x)\cdot\sin(xk\pi)dx \\
 &=  \frac{2(-1)^k}{k\pi}
 \end{align*}
 
-\subsection{Discretization}
+\subsection{Discretisation}
 
-\todo[inline]{Forslag: Since the solution is an infinite series of Fourier coefficients, it cannot be computed directly numerically. Therefore, it must be discretized.}
+\todo[inline]{Forslag: Since the solution is an infinite series of Fourier coefficients, it cannot be computed directly numerically. Therefore, it must be discretised.}
 
-For the diffusion equation to be numerically solvable, it must be discretized.
+For the diffusion equation to be numerically solvable, it must be discretised.
 
-This is done in the standard way: Discretize \(x\) as \(x_0,x_1,\dots,x_n\) with \(\Delta x=\qty(x_n-x_0)/n\), and \(t\) as \(t_0,t_1,\dots,t_m\) with \(\Delta t = \qty(t_m-t_0)/m\). The function itself is also discretized, with the notation \(u_{i,j} \approx u(x_i,t_j)\).
+This is done in the standard way: Discretise \(x\) as \(x_0,x_1,\dots,x_n\) with \(\Delta x=\qty(x_n-x_0)/n\), and \(t\) as \(t_0,t_1,\dots,t_m\) with \(\Delta t = \qty(t_m-t_0)/m\). The function itself is also discretised, with the notation \(u_{i,j} \approx u(x_i,t_j)\).
 
 We will now take a look into how we can numerically approximate the given problem. As there exist many different approaches, we have chosen to look at three different methods, namely Forward Euler, Backward Euler and Crank-Nicolson. The difference between Forward Euler and Backward Euler is how the time derivative is approximated, as the Crank-Nicolson method is a combination of both.
 %  _____                                _   _____      _
@@ -711,8 +711,34 @@ The matrix is once again tridiagonal, so the solver from project 1 can be reused
 
 \subsubsection{Stability analysis}
 
+\section{Two dimensions}
+The derivation of Fick's laws can be generalised to higher dimensions, giving
+\[
+    \vec{J} = -D\nabla C \qquad\qquad \pdv{C}{t} = D\nabla^2C
+\]
+Our differential equation can therefore be written in two dimensions as
+\[
+     \pdv[2]{u}{x} + \pdv[2]{u}{y} = \pdv{u}{t}
+\]
+Time and position are again discretised, with the notation \(u_{i,j,k} = u(x_i,y_j,t_k)\).
 
-
+\subsection{An implicit algorithm}
+In order to derive an implicit scheme for solving the diffusion equation in two dimensions, the same approximations to derivatives as in the derivation on the Backward Euler scheme is used. The error terms are also the same.
+\begin{alignat*}{2}
+    \pdv{u}{t} &\approx \frac{u_{i,j,k} - u_{i,j,k-1}}{\Delta t}\\
+    \pdv[2]{u}{x} &\approx \frac{u_{i+1,j,k} + u_{i-1,j,k} - 2u_{i,j,k}}{\qty(\Delta x)^2}\\
+    \pdv[2]{u}{y} &\approx \frac{u_{i,j+1,k} + u_{i,j-1,k} - 2u_{i,j,k}}{\qty(\Delta y)^2}
+\end{alignat*}
+When inserting these into the two-dimensional diffusion equation, we get
+\[
+    \frac{u_{i+1,j,k} + u_{i-1,j,k} - 2u_{i,j,k}}{\qty(\Delta x)^2} +
+    \frac{u_{i,j+1,k} + u_{i,j-1,k} - 2u_{i,j,k}}{\qty(\Delta y)^2} =
+    \frac{u_{i,j,k} - u_{i,j,k-1}}{\Delta t}
+\]
+We are once again interested in the values at \(t_k\). Multiplying by \(-\Delta t\), defining \(\alpha_x=\Delta t/\qty(\Delta x)^2\) and \(\alpha_y=\Delta t/\qty(\Delta y)^2\) and solving for the interesting values gives
+\[
+    -\alpha_x u_{i-1,j,k} + \qty(1+2\alpha_x+2\alpha_y)u_{i,j,k} - \alpha_x u_{i+1,j,k} - \alpha_y i_{i,j-1,k} - \alpha_y u_{i,j+1,k} = u_{i,j,k-1}
+\]
 
 \clearpage
 \addcontentsline{toc}{section}{References}
