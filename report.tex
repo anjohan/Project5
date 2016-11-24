@@ -371,9 +371,10 @@ G_k'(t) = -\lambda_k G_k(t)
 \]
 this gives
 \[
-G_k(t) = e^{-\qty(\frac{k \pi}{L})^2t}
+G_k(t) = Ce^{-\qty(\frac{k \pi}{L})^2t}
 \]
-and so we have found the \(k\)th particular solution of \(G(t)\). \\
+Since \(C\) is arbitrary, we could for simplicity set \( C = 1\). The contribution of \(C\) will anyway be indirectly a part of  \(c_k\). 
+So, we have found the \(k\)th particular solution of \(G(t)\). \\
 Therefore, we have that
 \[
 v_k(x,t) = c_ke^{-\qty(\frac{k \pi}{L})^2t}\sin(x\frac{k \pi}{L})
@@ -463,7 +464,7 @@ The goal is to find the value of \(u\) at the next time step, i.e. \(u_{i,j+1}\)
     u_{i,j+1} &=&& \qty(1-2\alpha)u_{i,j} + \alpha\qty(u_{i+1,j}+u_{i-1,j})\\
     &&& +  \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_i,\tilde{t})}{t} - \Delta t\cdot\frac{1}{12}\qty(\Delta x)^2\pdv[4]{u(\tilde{x},t_j)}{x}
 \end{alignat*}
-The two error terms are proportional to \(\qty(\Delta t)^2\) and \(\Delta t\cdot \qty(\Delta x)^2\). As per usual, the global error is one order lower, as the error is accumulated. This gives one error term proportional to \(h\) and one propotional to \(\qty(\Delta x)^2\). The order of \(\qty(\Delta x)\) is not reduced, as this error is not accumulated. If we truncate the errors in \(u_{i,j}\) , we get the numerical approximation of \(u(x_i,t_{j+1})\) to be
+The two error terms are proportional to \(\qty(\Delta t)^2\) and \(\Delta t\cdot \qty(\Delta x)^2\). As per usual, the global error is one order lower, as the error is accumulated. This gives one error term proportional to \(h\) and one proportional to \(\qty(\Delta x)^2\). The order of \(\qty(\Delta x)\) is not reduced, as this error is not accumulated. If we truncate the errors in \(u_{i,j}\) , we get the numerical approximation of \(u(x_i,t_{j+1})\) to be
 \begin{equation}\label{eq:forwardEuler}
 u_{i,j+1} = \qty(1-2\alpha)u_{i,j} + \alpha\qty(u_{i+1,j}+u_{i-1,j})
 \end{equation}
@@ -473,8 +474,6 @@ As we now have set up the algorithm using Forward Euler to approximate the deriv
 
 
 The problem of approximating \(u(x,t)\) is to sufficiently approximate the infinite series given in \vref{eq:analyticalSolution} and the exact value of the \(c_k\)s. Since \( x\) does not include infinity and therefore can be computed directly, we can assume that \(x\) will not contribute to the propagation of error. Therefore, we must look at the stability when calculating \( \sum_{k=1}^\infty c_ke^{-(k\pi)^2t}\sin(xk\pi) \), i.e the solution of \(v(x,t)\) to make sure it will not blow up the solution of \(u(x,t)\).
-
-As stated in \vref{sec:ForwardEulerDerivation}, the errors accumulates for every timestep, and not for every spatial step. The error we are doing in \(v_{i,j}\) is therefore a function of time. We must therefore take a look at the time dependent part of \(v_{i,j}\).
 
 If we proceed in the similar manner as for finding the analytical solution and making the ansatz that
 \[
@@ -489,7 +488,7 @@ which gives that
 \frac{\qty(D_x^2F_k(x))_i }{ F(x_i)} = \frac{\qty(D_tG_k(t))_j}{G_k(t_j)} = -\mu_{k_{i,j}}
 \end{equation}
 The second derivative of \(x\) is approximated using the second order central difference equation, i.e \vref{andrederivert}.
-and from the analytical solution, we can assume that \(F(x) = \sin(k \pi x)\). This gives
+From the analytical solution, we can assume that \(F(x_i) = \sin(k \pi x_i)\). This gives
 \begin{align*}
 \qty(D_x^2F_k(x))_i &= -\mu_{k_{i,j}}F(x_i) \\
 \frac{F(x_{i-1}) -2F(x_i) + F(x_{i+1}) }{h^2} &= -\mu_{k_{i,j}}F(x_i) \\
@@ -503,7 +502,7 @@ we get
 \[
 \sin(k\pi x_i)(2\cos(k\pi h) - 2) = -h^2\mu_{k_{i,j}}\sin(k \pi x_i)
 \]
-The \(\sin(k\pi x_i) \) can never be zero, as we differentiate over \(x \in (0,1) \) since we know the values of \( v(x,t) \) at the boundaries. The eigenvalue \(\mu_{k_{i,j}}\) of the approximation of the second derivative over\(x \), \( D_x^2 \), is therefore
+The factor \(\sin(k\pi x_i) \) can never be zero, as we differentiate over \(x \in (0,1) \) since we know the values of \( v(x,t) \) at the boundaries. The eigenvalue \(\mu_{k_{i,j}}\) of the approximation of the second derivative over\(x \), \( D_x^2 \), is therefore
 \begin{equation}\label{eq:eigenvalue1}
 -2\frac{\cos(k\pi h) - 1}{h^2} =\mu_{k_{i,j}}
 \end{equation}
@@ -520,22 +519,18 @@ and by inserting this into \vref{eq:eigenvalue1}, we get the following eigenvalu
 
 Now we have proven that assuming \(F_k(x_i) = \sin(k\pi x_i)\) is not a such bad idea. The discrete ratio \vref{eq:discreteRatios} for \(F_k(x_i)\) holds, and therefore we have found the eigenvalue of both \(D_x^2\) and \(D_t\).
 
-We see from the analytical solution that the function of time, \(G_k(t) = \exp{-\lambda_k^2 t}\) is decreasing for every time step \(t_{j+1} > t_j\). Therefore, 
+We see from the analytical solution that the function of time, \(G_k(t) = \exp{-\lambda_k t}\) is decreasing for increasing values of \(t\). 
+
+ Actually, when \(t \to \infty \) the function of time converges into a steady state. 
+
+Therefore the computed function of time, \(G_k(t_j)\), must hold the following constraints
 \[
-\frac{\exp{{-\lambda_k^2 t_{j+1}}}}{\exp{-\lambda_k^2 t_j}} = \exp{-\lambda_k^2\Delta t} < 1
+G_k(t_{0}) = 1 \quad \text{ and }\quad \abs{\frac{G_k(t_{j+1}) } {G_k(t_j) } }\leq 1 \:\:\text{ for } j = 0, \dots,m-1 
 \]
-We can expect that \( D_tG_k(t))_j\) includes at least one term which is either one time step ahead or behind \(G_k(t_j)\) since the approximations mostly is an interpolation of some sort.
-Since the function of time found analytically is decreasing for every time step \(t_{j+1} > t_j \), we could also expect the discrete solution to \textit{at least} not increase for every time step \(t_{j+1} > t_j \), thus giving us the following restriction 
-\[
-\abs{\frac{G_k(t_{j+1}) } {G_k(t_j) } }\leq 1
-\]
-or
-\[
-\abs{\frac{G_k(t_{j})}{G_k(t_{j-1})}} \leq 1
-\]
+We include that the fraction could be equal to one as it may happen that we could be very close to the likely state, giving us \( G_k(t_{j+1}) \approx G_k(t_{j} \). 
 When the ratio above holds, we have that the solution does not grow for every time step, ensuring that the computed solution is stable for every time step. 
 
-Since the expression of \(G_k(t_{j})\) might vary for which scheme we are looking at, we must do sufficient restrictions for every scheme such that \(G_k(t_{j})\) does not increase for an increasing time step. 
+Since the expression of \(G_k(t_{j})\) might vary for which scheme we are looking at, we must do sufficient restrictions for every scheme the we are considering in this report such that \(G_k(t_{j})\) does not increase for an increasing time step. 
 \subsubsection{Stability analysis of Forward Euler}
 To approximate the time derivative of Forward Euler, we get the ratios in \ref{eq:discreteRatios} to be
 \begin{align*}
@@ -598,6 +593,10 @@ To solve the equation above, note that it must hold for all \(i\in\qty[1,n-1]\ca
         -\alpha u_{n-2,j} &+& (1+2\alpha)u_{n-1,j} &-& \alpha \underbrace{u_{n,j}}_1 &=& u_{n-1,j-1}\\
     \end{array}
 \]
+To conclude what we found and taking away the truncation errors, we have the numerical approximation of \(u(x_i,t_{j-1})\) to be
+\begin{equation}\label{eq:backwardEuler}
+u_{i,j-1} = -\alpha u_{i-1,j} + \qty(1+2\alpha)u_{i,j} - \alpha u_{i+1,j} 
+\end{equation}
 This can then be written on a matrix form:
 \[
     \begin{bmatrix}
@@ -630,8 +629,7 @@ This can then be written on a matrix form:
     \end{bmatrix}
 \]
 
-This is a simple, linear system with a tridiagonal matrix, for which an efficient solving algorithm was developed and implemented in project 1\cite{oblig1}.
-
+This is a simple, linear system with a tridiagonal matrix, for which an efficient solving algorithm was developed and implemented in project 1 \cite{oblig1}. 
 
 \subsubsection{Stability analysis}
 For this scheme we have that \vref{eq:discreteRatios} for \(G_k(t_j)\) becomes
@@ -675,6 +673,11 @@ Inserting these expressions into the diffusion equation gives
     &&&+ \Delta t\cdot\frac{\qty(\Delta x)^2}{12}\qty(\pdv[4]{u(\tilde{x}_1,t_{j+1})}{x} + \pdv[4]{u(\tilde{x}_2,t_j)}{x}) + \frac{\qty(\Delta t)^3}{6}\pdv[3]{u(x_i,\tilde{t})}{t}
 \end{alignat*}
 Since the error is once again accumulated, the global error will have one term proportional to \(\qty(\Delta x)^2\) and one term proportional to \(\qty(\Delta t)^2\). The latter is one order better than both Euler schemes. With no possibility of solving for the next time step explicitly, this scheme is also implicit.
+
+We have therefore the following approximation
+\begin{equation*}
+-\alpha u_{i-1,j+1} + \qty(2+2\alpha)u_{i,j+1} - \alpha u_{i+1,j+1} = \alpha u_{i-1,j} - \qty(2+2\alpha)u_{i,j} + \alpha u_{i+1,j} 
+\end{equation*}
 
 Solving the above equation is done exactly the same way as for the Backward Euler scheme: As it must hold for all \(i\in\qty[1,n-1]\cap\mathbb{N}\), a linear set of equations arises, which, with \(\beta=2+2\alpha\), can be written on a matrix form as
 \[
