@@ -12,22 +12,21 @@ set multiplot layout 2,1 scale 1,1
 set xlabel "$x$"
 set ylabel "$u(x,t)$"
 
-set title "\\textbf{Simulation with $\\Delta x = \\num{0.1}$}"
-plot "transpose_forward_Euler_0.1.dat" using 1:3 title "$t=\\num{0.1}$, Forward Euler" with lines lw 5, \
-"transpose_backward_Euler_0.1.dat" using 1:3 title "$t=\\num{0.1}$, Backward Euler" with lines lw 5, \
-"transpose_Crank_Nicolson_0.1.dat" using 1:3 title "$t=\\num{0.1}$, Crank Nicolson" with lines lw 5, \
-"transpose_forward_Euler_0.1.dat" using 1:7 title "$t=\\num{0.5}$, Forward Euler" with lines lw 5, \
-"transpose_backward_Euler_0.1.dat" using 1:7 title "$t=\\num{0.5}$, Backward Euler" with lines lw 5, \
-"transpose_Crank_Nicolson_0.1.dat" using 1:7 title "$t=\\num{0.5}$, Crank Nicolson" with lines lw 5
+set title "\\textbf{Simulation with} $\\boldsymbol{\\Delta x} \\pmb{= \\num{0.1}}$"
+plot "transpose_forward_Euler_0.2.dat" using 1:3 title "$t=\\num{0.1}$, Forward Euler" with lines lw 5, \
+"transpose_backward_Euler_0.2.dat" using 1:3 title "$t=\\num{0.1}$, Backward Euler" with lines lw 5, \
+"transpose_Crank_Nicolson_0.2.dat" using 1:3 title "$t=\\num{0.1}$, Crank Nicolson" with lines lw 5, \
+"transpose_forward_Euler_0.2.dat" using 1:12 title "$t=\\num{0.5}$, Forward Euler" with lines lw 5, \
+"transpose_backward_Euler_0.2.dat" using 1:12 title "$t=\\num{0.5}$, Backward Euler" with lines lw 5, \
+"transpose_Crank_Nicolson_0.2.dat" using 1:12 title "$t=\\num{0.5}$, Crank Nicolson" with lines lw 5, \
+"analytic.dat" title "Exact" with lines lw 5 lc rgb "black"
 
-set title "\\textbf{Simulation with $\\Delta x = \\num{0.01}$}"
+set title "\\textbf{Simulation with} $\\boldsymbol{\\Delta x} \\pmb{= \\num{0.01}}$"
 plot "transpose_forward_Euler_0.01.dat" using 1:3 title "$t=\\num{0.1}$, Forward Euler" with lines lw 5, \
 "transpose_backward_Euler_0.01.dat" using 1:3 title "$t=\\num{0.1}$, Backward Euler" with lines lw 5, \
 "transpose_Crank_Nicolson_0.01.dat" using 1:3 title "$t=\\num{0.1}$, Crank Nicolson" with lines lw 5, \
-"transpose_forward_Euler_0.01.dat" using 1:7 title "$t=\\num{0.5}$, Forward Euler" with lines lw 5, \
-"transpose_backward_Euler_0.01.dat" using 1:7 title "$t=\\num{0.5}$, Backward Euler" with lines lw 5, \
-"transpose_Crank_Nicolson_0.01.dat" using 1:7 title "$t=\\num{0.5}$, Crank Nicolson" with lines lw 5
-
-
+"transpose_forward_Euler_0.01.dat" using 1:12 title "$t=\\num{0.5}$, Forward Euler" with lines lw 5, \
+"transpose_backward_Euler_0.01.dat" using 1:12 title "$t=\\num{0.5}$, Backward Euler" with lines lw 5, \
+"transpose_Crank_Nicolson_0.01.dat" using 1:12 title "$t=\\num{0.5}$, Crank Nicolson" with lines lw 5
 
 unset multiplot
