@@ -18,12 +18,15 @@ OneDimSolver::OneDimSolver(char *filename, double dt_in, double end_t_in, double
     u_new = new double[n_x+1];
     u_new[0] = 0; u_new[n_x] = 1;
 
-    //Initialise arrays for x and t, set end points explicitly
+    //Initialise array for x, set end point explicitly
     int i;
     for(i=0; i<n_x; i++){
         x[i] = i*dx;
+        u[i] = 0;
+        u_new[i] = 0;
     }
     x[n_x] = L;
+
 
     //Write first line of output file
     fprintf(file,"$x$");
@@ -40,14 +43,13 @@ void OneDimSolver::output(int i){
     }
     fprintf(file,"\n");
 }
-
 void OneDimSolver::forward_Euler(int output_dn){
     double prefactor = 1 - 2*alpha;
     double *tmp;
     output(0);
     for(int i = 0; i<n_t; i++){
         //Calculate new values in parallel
-        #pragma omp parallel for
+#pragma omp parallel for
         for(int j = 1; j<n_x; j++){
             u_new[j] = prefactor * u[j] + alpha*(u[j+1] + u[j-1]);
         }
@@ -56,7 +58,7 @@ void OneDimSolver::forward_Euler(int output_dn){
         u_new = u;
         u = tmp;
         //Print if requested
-        if(i % output_dn == 0){
+        if((i+1) % output_dn == 0){
             output(i+1);
         }
     }
@@ -78,13 +80,13 @@ void OneDimSolver::backward_Euler(int output_dn){
     output(0);
     for(int i = 0; i<n_t; i++){
         u[n_x-1] += alpha;
-        tridiagonalsolver(a,b,c,u,u_new,n_x);
+        tridiagonalsolver(a,b,c,u+1,u_new+1,n_x-1);
         //Swap new and old
         tmp = u_new;
         u_new = u;
         u = tmp;
         //Print if requested
-        if(i % output_dn == 0){
+        if((i+1) % output_dn == 0){
             output(i+1);
         }
     }
@@ -110,18 +112,18 @@ void OneDimSolver::Crank_Nicolson(int output_dn){
     }
     output(0);
     for(int i = 0; i<n_t; i++){
-        #pragma omp parallel for
+#pragma omp parallel for
         for(int j = 1; j<n_x; j++){
             rhs[j] = alpha*u[j-1] + beta2*u[j] + alpha*u[j+1];
         }
         rhs[n_x-1] += alpha;
-        tridiagonalsolver(a,b,c,rhs,u_new,n_x);
+        tridiagonalsolver(a,b,c,rhs+1,u_new+1,n_x-1);
         //Swap new and old
         tmp = u_new;
         u_new = u;
         u = tmp;
         //Print if requested
-        if(i % output_dn == 0){
+        if((i+1) % output_dn == 0){
             output(i+1);
         }
     }
