@@ -732,15 +732,24 @@ Since the Crank-Nicolson scheme is derived from using the approximation of the s
 \]
 We found in \vref{sec:ideaNeumann} that \(D_x^2F_k(x))_i = -\mu_kF_k(x_i)\), meaning that we can rewrite the equation above into 
 \begin{align*}
-\frac{1}{2}\qty(G_k(t_{j+1})\qty(D_x^2F_k(x) )_i +  G_k(t_j)\qty(D_x^2F_k(x))_i ) &= \frac{(F_k(x) )_i }{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) ) \\
-\frac{1}{2}\qty(-\mu_kF_k(x_i)G_k(t_{j+1}) -\mu_kF_k(x_i)G_k(t_j))&= \frac{(F_k(x) )_i }{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) )  \\
+\frac{1}{2}\qty(G_k(t_{j+1})\qty(D_x^2F_k(x) )_i +  G_k(t_j)\qty(D_x^2F_k(x))_i ) &= \frac{F_k(x_i) }{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) ) \\
+\frac{1}{2}\qty(-\mu_kF_k(x_i)G_k(t_{j+1}) -\mu_kF_k(x_i)G_k(t_j))&= \frac{F_k(x_i)}{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) )  \\
 \frac{-\mu_k}{2}\qty(G_k(t_{j+1}) +G_k(t_j))&= \frac{1}{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) )  \\
 -\frac{\Delta t\mu_k}{2}G_k(t_{j+1}) -\frac{\Delta t\mu_k}{2} G_k(t_j)&= G_k(t_{j+1}) - G_k(t_j)   \\
 G_k(t_j)\qty(1-\frac{\Delta t\mu_k}{2} G_k(t_j))&= G_k(t_{j+1})\qty(1+\frac{\Delta t\mu_k}{2}G_k(t_{j+1}) )    \\
 \frac{1-\frac{\Delta t\mu_k}{2}}{1+\frac{\Delta t\mu_k}{2}}&= \frac{G_k(t_{j+1}) }{G_k(t_j)}   \\
 \end{align*}
+Since
+\[
+1-\frac{\Delta t\mu_k}{2} \leq 1+\frac{\Delta t\mu_k}{2} \\
+\]
+the fraction which we found above will always satisfy
+\[
+\frac{1-\frac{\Delta t\mu_k}{2}}{1+\frac{\Delta t\mu_k}{2}} \leq 1
+\]
+independent of which \( \Delta t, \Delta x\) we choose. This means that the Crank-Nicolson scheme is stable for any choice of step lengths for \(t\) and \(x\). 
 \section{Two dimensions}
-The derivation of Fick's laws can be generalised to higher dimensions, giving
+The derivation of Fick's laws can be generalized to higher dimensions, giving
 \[
     \vec{J} = -D\nabla C \qquad\qquad \pdv{C}{t} = D\nabla^2C
 \]
@@ -748,7 +757,7 @@ Our differential equation can therefore be written in two dimensions as
 \[
      \pdv[2]{u}{x} + \pdv[2]{u}{y} = \pdv{u}{t}
 \]
-Time and position are again discretised, with the notation \(u_{i,j,k} = u(x_i,y_j,t_k)\).
+Time and position are again discretized, with the notation \(u_{i,j,k} = u(x_i,y_j,t_k)\).
 
 \subsection{An implicit algorithm}
 In order to derive an implicit scheme for solving the diffusion equation in two dimensions, the same approximations to derivatives as in the derivation on the Backward Euler scheme is used. The error terms are also the same.
