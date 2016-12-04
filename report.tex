@@ -788,7 +788,7 @@ The chosen boundaries has no physical interpretation, but is made such that it c
 
 The procedure is similar as for the one dimensional case. Since the procedure of finding a solution is very similar as what we did in \vref{sec:analyticalOneDim}, we have included the calculation in Appendix A instead. 
 
-The final result of \vref{eq:twoDim} with the boundaries \vref{eq:twoDimBoundaries} is 
+The analytical solution of \vref{eq:twoDim} with the boundaries \vref{eq:twoDimBoundaries} derived in Appendix A is 
 \begin{equation} \label{eq:analyticalSolutionTwoDim}
 u(x,y,t) = \sin(\frac{\pi}{L}x)\sin(\frac{\pi}{L}y)e^{\frac{-2\pi^2}{L^2}t}
 \end{equation}
@@ -853,9 +853,9 @@ X(x) = c_1\cos(\sqrt{\mu}x) + c_2\sin(\sqrt{\mu}x)
 \]
 Since \(u(0,y,t) = u(L,y,t) = 0\) from \vref{eq:twoDimBoundaries}, we must have that \(c_1 = 0\) and 
 \begin{align}
-\sqrt{\mu}L &= k\pi \nonumber , \quad k \in \mathbb{N}\\
-\mu L^2 &= \qty(k\pi)^2 \nonumber \\
- \mu  &=\qty(\frac{k\pi}{L})^2 \label{eq:twoDimMu}
+\sqrt{\mu_k}L &= k\pi \nonumber , \quad k \in \mathbb{N}\\
+\mu_k L^2 &= \qty(k\pi)^2 \nonumber \\
+ \mu_k  &=\qty(\frac{k\pi}{L})^2 \label{eq:twoDimMu}
 \end{align}
 which gives that \(c_2 = c_k\), and 
 \[
@@ -877,13 +877,50 @@ By using the same procedure of finding \(X\), we get that \(d_1 = 0\) and
 \[
 \nu = \qty(\frac{m\pi}{L})^2
 \]
-for \(m \in \mathbb{N}\). Setting \(d_2 = d_m\), we get the  solution of \(Y\) to be
+for \(m \in \mathbb{N}\). Setting \(d_2 = d_m\), we get the solution of \(Y\) to be
 \[
 Y(y) = d_m\sin(\frac{m\pi}{L}y)
 \]
+with 
+\begin{equation}\label{eq:notSoMysteriousNu}
+\nu_m = \qty(\frac{m\pi}{L})^2
+\end{equation}
+Therefore, we have the particular solution of F for any value of \(k,m\).  
+\[
+F_{k,m}(x,y) = c_kd_m\sin(\frac{k\pi}{L}x)\sin(\frac{m\pi}{L}y)
+\]
 
-
+In \vref{eq:solveFrom}, we can solve for \(G(t)\):
+\[
+\frac{G'(t)}{G(t)}  = -\lambda
+\]
+which gives the general solution 
+\[
+G(t) = Ce^{-\lambda t}
+\]
+where we set the constant \(C = 1\). To find \(\lambda\) we just the expression of \(\nu_m\) which we found in \vref{eq:notSoMysteriousNu}:
 \begin{align*}
-	X(x) = c_1\cos(\sqrt{\mu}x) + c_2\sin(\sqrt{\mu}y)
-\end{align*}
+\nu_m &= \qty(\frac{m\pi}{L})^2 \\
+-\qty(\frac{k\pi}{L})^2 + \lambda_{k,m} &= \qty(\frac{m\pi}{L})^2  \\
+\lambda_{k,m} &= \qty(\frac{m\pi}{L})^2+\qty(\frac{k\pi}{L})^2 
+\end{align*} 
+we see that the value of \(\lambda \) depends on the value of \(k\) and \(m\), thus giving that \(\lambda = \lambda_{k,m}\). 
+
+In total, we have the following particular solution of \(u\):
+\[
+u_{k,m}(x,y,t) =  c_kd_m\sin(\frac{k\pi}{L}x)\sin(\frac{m\pi}{L}y)e^{-\lambda_{k,m} t}
+\]
+To decide \(c_k\) and \(d_m\), we have to look at the boundary of \(u\) at \(t = 0\), which gives
+\[
+\sin(\frac{\pi}{L}x)\sin(\frac{\pi}{L}y) =  c_kd_m\sin(\frac{k\pi}{L}x)\sin(\frac{m\pi}{L}y)
+\]
+meaning that \(c_k = d_m = k = m = 1\) and therefore
+\[
+\lambda_{k,m} = 2\qty(\frac{\pi}{L})^2
+\]
+
+This gives the final solution of our problem described in \vref{eq:twoDim} and \vref{eq:twoDimBoundaries} to be 
+\[
+u(x,y,t) = \sin(\frac{\pi}{L}x)\sin(\frac{\pi}{L}y)e^{-2\qty(\frac{\pi}{L})^2 t}
+\]
 \end{document}
