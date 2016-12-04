@@ -443,7 +443,7 @@ We will now take a look into how we can numerically approximate the given proble
 % |_|  \___/|_|    \_/\_/ \__,_|_|  \__,_| |_____\__,_|_|\___|_|
 %
 \subsection{Forward Euler}
-
+Forward Euler is possibly the most "simplest" algorithm that we are considering in this report. However, we will see that even though Forward Euler is the most intuitive algorithm, it is also the only algorithm we have to be careful for which values of \(\Delta t\) and \(\Delta x\) we choose. 
 \subsubsection{Derivation and error analysis}\label{sec:ForwardEulerDerivation}
 The Forward Euler scheme is an explicit scheme based on Taylor polynomials. To find an approximation of the time derivative of \(u\) at point \((x_i,t_j)\), a first order Taylor polynomial around \(x_i,t_j\) is used to calculate \(u(x_i,t_{j+1})\):
 \[
@@ -491,7 +491,8 @@ and introducing \(D_x^2\) and \(D_t\) as the numerical approximations of the spa
 \[
 G(t_j)\:\qty(D_x^2F_k(x))_i = F(x_i)\:\qty(D_tG(t))_j
 \]
-which gives that
+where \(\qty(D_x^2F_k(x))_i\) and \(\qty(D_tG(t))_j\) means that we are taking the derivative around the \(i\)-th and \(j\)-th step respectively.  
+From what we found above, we have that
 \begin{equation}\label{eq:discreteRatios}
 \frac{\qty(D_x^2F_k(x))_i }{ F(x_i)} = \frac{\qty(D_tG_k(t))_j}{G_k(t_j)} = -\mu_{k_{i,j}}
 \end{equation}
@@ -512,7 +513,7 @@ we get
 \]
 The factor \(\sin(k\pi x_i) \) can never be zero, as we differentiate over \(x \in (0,1) \) since we know the values of \( v(x,t) \) at the boundaries. The eigenvalue \(\mu_{k_{i,j}}\) of the approximation of the second derivative over\(x \), \( D_x^2 \), is therefore
 \begin{equation}\label{eq:eigenvalue1}
--2\frac{\cos(k\pi h) - 1}{h^2} =\mu_{k_{i,j}}
+\frac{-2\qty(\cos(k\pi h) - 1)}{h^2} =\mu_{k_{i,j}}
 \end{equation}
 Furthermore, we have the identity
 \begin{align*}
@@ -525,22 +526,20 @@ and by inserting this into \vref{eq:eigenvalue1}, we get the following eigenvalu
 \frac{4\sin^2\qty(\frac{k\pi h}{2})}{h^2} =\mu_{k_{i,j}} = \mu_k
 \end{equation}
 
-Now we have proven that assuming \(F_k(x_i) = \sin(k\pi x_i)\) is not a such bad idea. The discrete ratio \vref{eq:discreteRatios} for \(F_k(x_i)\) holds, and therefore we have found the eigenvalue of both \(D_x^2\) and \(D_t\).
+Now we have proven that assuming \(F_k(x_i) = \sin(k\pi x_i)\) is not a such bad idea, as the guess is reasonable compared to the analytical solution and we have not any contradictions. 
 
-
-We see from the analytical solution that the function of time, \(G_k(t) = \exp{-\lambda_k t}\) is decreasing for increasing values of \(t\). 
-
- Actually, when \(t \to \infty \) the function of time converges into a steady state. 
+We see from the analytical solution that the function of time, \(G_k(t) = \exp{-\lambda_k t}\) is decreasing for increasing values of \(t\), meaning that the discrete functions of time should behave in equivalent manner. 
 
 Therefore the computed function of time, \(G_k(t_j)\), must hold the following constraints
 \[
 G_k(t_{0}) = 1 \quad \text{ and }\quad \abs{\frac{G_k(t_{j+1}) } {G_k(t_j) } }\leq 1 \:\:\text{ for } j = 0, \dots,m-1 
 \]
 
-We include that the fraction could be equal to one as it may happen that we could be very close to the likely state, giving us \( G_k(t_{j+1}) \approx G_k(t_{j} \). 
+We include that the fraction could be equal to one as it may happen that we could be very close to the likely state, that is when \(t \to \infty \)  , giving us \( G_k(t_{j+1}) \approx G_k(t_{j} \). 
+
 When the ratio above holds, we have that the solution does not grow for every time step, ensuring that the computed solution is stable for every time step. 
 
-Since the expression of \(G_k(t_{j})\) might vary for which scheme we are looking at, we must do sufficient restrictions for every scheme the we are considering in this report such that \(G_k(t_{j})\) does not increase for an increasing time step. 
+Since the expression of \(G_k(t_{j})\) will differ for which scheme we are looking at, we must do sufficient restrictions for every scheme the we are considering in this report such that \(G_k(t_{j})\) does not increase for an increasing time step. 
 \subsubsection{Stability analysis of Forward Euler}
 
 To approximate the time derivative of Forward Euler, we get the ratios in \ref{eq:discreteRatios} to be
@@ -574,7 +573,7 @@ which means that Forward Euler is stable only if the condition \vref{eq:stabilit
 %
 
 \subsection{Backward Euler} \label{sec:backwardEuler}
-The idea of backward Euler is similar to the forward Euler. Actually, the only difference lies in how we approximate the time derivative of \(u\).
+The idea of backward Euler is similar to the forward Euler. Actually, the only difference lies in how we approximate the time derivative of \(u\) which will give us the freedom of choosing any \(\Delta t\) and \(\Delta x\) we like.
 \subsubsection{Derivation and error analysis}
 We can also use Taylor polynomials of \(u(x_i,t_{j-1})\)to write an approximation of the time derivative of \(u\) around \(x_i,t_j\):
 \[
@@ -659,7 +658,7 @@ Since \(1+\Delta t \mu_k \geq 1\) for all \(k,\mu_k,\Delta t\) the fraction is l
 %  \____|_|  \__,_|_| |_|_|\_\    |_| \_|_|\___\___/|_|___/\___/|_| |_|
 %
 \subsection{Crank-Nicolson} \label{sec:crankNicolson}
-
+The Crank-Nicolson scheme could be thought of as a combination of the Forward and Backward Euler schemes. We will see that also the Crank-Nicolson scheme is stable for any choice of \(\Delta t \) and \(\Delta x\). 
 \subsubsection{Derivation and error analysis}
 The idea of the Crank-Nicolson algorithm is to use the derivatives at the times \(t_i+\tfrac{1}{2}\Delta t\) rather than at \(t_i\), as the asymmetric Newton quotient used in the derivation of the Forward Euler scheme will now be the symmetric Newton quotient, giving an error proportional to \(\qty(\Delta t)^2\) instead of \(\Delta t\):
 \[
@@ -732,20 +731,16 @@ Since the Crank-Nicolson scheme is derived from using the approximation of the s
 \]
 We found in \vref{sec:ideaNeumann} that \(D_x^2F_k(x))_i = -\mu_kF_k(x_i)\), meaning that we can rewrite the equation above into 
 \begin{align*}
-\frac{1}{2}\qty(G_k(t_{j+1})\qty(D_x^2F_k(x) )_i +  G_k(t_j)\qty(D_x^2F_k(x))_i ) &= \frac{F_k(x_i) }{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) ) \\
-\frac{1}{2}\qty(-\mu_kF_k(x_i)G_k(t_{j+1}) -\mu_kF_k(x_i)G_k(t_j))&= \frac{F_k(x_i)}{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) )  \\
-\frac{-\mu_k}{2}\qty(G_k(t_{j+1}) +G_k(t_j))&= \frac{1}{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) )  \\
--\frac{\Delta t\mu_k}{2}G_k(t_{j+1}) -\frac{\Delta t\mu_k}{2} G_k(t_j)&= G_k(t_{j+1}) - G_k(t_j)   \\
-G_k(t_j)\qty(1-\frac{\Delta t\mu_k}{2} G_k(t_j))&= G_k(t_{j+1})\qty(1+\frac{\Delta t\mu_k}{2}G_k(t_{j+1}) )    \\
-\frac{1-\frac{\Delta t\mu_k}{2}}{1+\frac{\Delta t\mu_k}{2}}&= \frac{G_k(t_{j+1}) }{G_k(t_j)}   \\
+\frac{1}{2}\qty(G_k(t_{j+1})\qty(D_x^2F_k(x) )_i +  G_k(t_j)\qty(D_x^2F_k(x))_i ) &= \frac{F_k(x_i) }{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) ) \\ \hfill \\
+\frac{1}{2}\qty(-\mu_kF_k(x_i)G_k(t_{j+1}) -\mu_kF_k(x_i)G_k(t_j))&= \frac{F_k(x_i)}{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) )  \\\hfill \\
+\frac{-\mu_k}{2}\qty(G_k(t_{j+1}) +G_k(t_j))&= \frac{1}{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) )  \\\hfill \\
+-\frac{\Delta t\mu_k}{2}G_k(t_{j+1}) -\frac{\Delta t\mu_k}{2} G_k(t_j)&= G_k(t_{j+1}) - G_k(t_j)   \\\hfill \\
+G_k(t_j)\qty(1-\frac{\Delta t\mu_k}{2})&= G_k(t_{j+1})\qty(1+\frac{\Delta t\mu_k}{2} )    \\\hfill \\
+\frac{1-\frac{\Delta t\mu_k}{2}}{1+\frac{\Delta t\mu_k}{2}}&= \frac{G_k(t_{j+1}) }{G_k(t_j)}   
 \end{align*}
-Since
+Since the numerator is always smaller than the denominator, the fraction which we found will always satisfy
 \[
-1-\frac{\Delta t\mu_k}{2} \leq 1+\frac{\Delta t\mu_k}{2} \\
-\]
-the fraction which we found above will always satisfy
-\[
-\frac{1-\frac{\Delta t\mu_k}{2}}{1+\frac{\Delta t\mu_k}{2}} \leq 1
+\abs{\frac{1-\frac{\Delta t\mu_k}{2}}{1+\frac{\Delta t\mu_k}{2}}} \leq 1
 \]
 independent of which \( \Delta t, \Delta x\) we choose. This means that the Crank-Nicolson scheme is stable for any choice of step lengths for \(t\) and \(x\). 
 \section{Two dimensions}
