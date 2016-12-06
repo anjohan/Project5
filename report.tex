@@ -380,7 +380,7 @@ this gives
 \[
 G_k(t) = Ce^{-\qty(\frac{k \pi}{L})^2t}
 \]
-Since \(C\) is arbitrary, we could for simplicity set \( C = 1\). The contribution of \(C\) will anyway be indirectly a part of  \(c_k\). 
+Since \(C\) is arbitrary, we could for simplicity set \( C = 1\). The contribution of \(C\) will anyway be indirectly a part of  \(c_k\).
 So, we have found the \(k\)th particular solution of \(G(t)\). \\
 Therefore, we have that
 \[
@@ -443,7 +443,7 @@ We will now take a look into how we can numerically approximate the given proble
 % |_|  \___/|_|    \_/\_/ \__,_|_|  \__,_| |_____\__,_|_|\___|_|
 %
 \subsection{Forward Euler}
-Forward Euler is possibly the most "simplest" algorithm that we are considering in this report. However, we will see that even though Forward Euler is the most intuitive algorithm, it is also the only algorithm we have to be careful for which values of \(\Delta t\) and \(\Delta x\) we choose. 
+Forward Euler is possibly the most "simplest" algorithm that we are considering in this report. However, we will see that even though Forward Euler is the most intuitive algorithm, it is also the only algorithm we have to be careful for which values of \(\Delta t\) and \(\Delta x\) we choose.
 \subsubsection{Derivation and error analysis}\label{sec:ForwardEulerDerivation}
 The Forward Euler scheme is an explicit scheme based on Taylor polynomials. To find an approximation of the time derivative of \(u\) at point \((x_i,t_j)\), a first order Taylor polynomial around \(x_i,t_j\) is used to calculate \(u(x_i,t_{j+1})\):
 \[
@@ -491,7 +491,7 @@ and introducing \(D_x^2\) and \(D_t\) as the numerical approximations of the spa
 \[
 G(t_j)\:\qty(D_x^2F_k(x))_i = F(x_i)\:\qty(D_tG(t))_j
 \]
-where \(\qty(D_x^2F_k(x))_i\) and \(\qty(D_tG(t))_j\) means that we are taking the derivative around the \(i\)-th and \(j\)-th step respectively.  
+where \(\qty(D_x^2F_k(x))_i\) and \(\qty(D_tG(t))_j\) means that we are taking the derivative around the \(i\)-th and \(j\)-th step respectively.
 From what we found above, we have that
 \begin{equation}\label{eq:discreteRatios}
 \frac{\qty(D_x^2F_k(x))_i }{ F(x_i)} = \frac{\qty(D_tG_k(t))_j}{G_k(t_j)} = -\mu_{k_{i,j}}
@@ -526,21 +526,21 @@ and by inserting this into \vref{eq:eigenvalue1}, we get the following eigenvalu
 \frac{4\sin^2\qty(\frac{k\pi h}{2})}{h^2} =\mu_{k_{i,j}} = \mu_k
 \end{equation}
 
-Now we have proven that assuming \(F_k(x_i) = \sin(k\pi x_i)\) is not a such bad idea, as the guess is reasonable compared to the analytical solution and we have not any contradictions. 
+Now we have proven that assuming \(F_k(x_i) = \sin(k\pi x_i)\) is not a such bad idea, as the guess is reasonable compared to the analytical solution and we have not any contradictions.
 
-We see from the analytical solution that the function of time, \(G_k(t) = \exp{-\lambda_k t}\) is decreasing for increasing values of \(t\), meaning that the discrete functions of time should behave in equivalent manner. 
+We see from the analytical solution that the function of time, \(G_k(t) = \exp{-\lambda_k t}\) is decreasing for increasing values of \(t\), meaning that the discrete functions of time should behave in equivalent manner.
 
 Therefore the computed function of time, \(G_k(t_j)\), must hold the following constraints
 \[
-G_k(t_{0}) = 1 \quad \text{ and }\quad \abs{\frac{G_k(t_{j+1}) } {G_k(t_j) } }\leq 1 \:\:\text{ for } j = 0, \dots,m-1 
+G_k(t_{0}) = 1 \quad \text{ and }\quad \abs{\frac{G_k(t_{j+1}) } {G_k(t_j) } }\leq 1 \:\:\text{ for } j = 0, \dots,m-1
 \]
 
-We include that the fraction could be equal to one as it may happen that we could be very close to the likely state, that is when \(t \to \infty \)  , giving us \( G_k(t_{j+1}) \approx G_k(t_{j} \). 
+We include that the fraction could be equal to one as it may happen that we could be very close to the likely state, that is when \(t \to \infty \)  , giving us \( G_k(t_{j+1}) \approx G_k(t_{j} \).
 
-When the ratio above holds, we have that the solution does not grow for every time step, ensuring that the computed solution is stable for every time step. 
+When the ratio above holds, we have that the solution does not grow for every time step, ensuring that the computed solution is stable for every time step.
 
-Since the expression of \(G_k(t_{j})\) will differ for which scheme we are looking at, we must do sufficient restrictions for every scheme the we are considering in this report such that \(G_k(t_{j})\) does not increase for an increasing time step. 
-\subsubsection{Stability analysis of Forward Euler}
+Since the expression of \(G_k(t_{j})\) will differ for which scheme we are looking at, we must do sufficient restrictions for every scheme the we are considering in this report such that \(G_k(t_{j})\) does not increase for an increasing time step.
+\subsubsection{Stability analysis of Forward Euler}\label{forwardstability}
 
 To approximate the time derivative of Forward Euler, we get the ratios in \ref{eq:discreteRatios} to be
 \begin{align*}
@@ -605,7 +605,7 @@ To solve the equation above, note that it must hold for all \(i\in\qty[1,n-1]\ca
 \]
 To conclude what we found and taking away the truncation errors, we have the numerical approximation of \(u(x_i,t_{j-1})\) to be
 \begin{equation}\label{eq:backwardEuler}
-u_{i,j-1} = -\alpha u_{i-1,j} + \qty(1+2\alpha)u_{i,j} - \alpha u_{i+1,j} 
+u_{i,j-1} = -\alpha u_{i-1,j} + \qty(1+2\alpha)u_{i,j} - \alpha u_{i+1,j}
 \end{equation}
 This can then be written on a matrix form:
 \[
@@ -639,7 +639,7 @@ This can then be written on a matrix form:
     \end{bmatrix}
 \]
 
-This is a simple, linear system with a tridiagonal matrix, for which an efficient solving algorithm was developed and implemented in project 1 \cite{oblig1}. 
+This is a simple, linear system with a tridiagonal matrix, for which an efficient solving algorithm was developed and implemented in project 1 \cite{oblig1}.
 
 \subsubsection{Stability analysis}
 For this scheme we have that \vref{eq:discreteRatios} for \(G_k(t_j)\) becomes
@@ -658,7 +658,7 @@ Since \(1+\Delta t \mu_k \geq 1\) for all \(k,\mu_k,\Delta t\) the fraction is l
 %  \____|_|  \__,_|_| |_|_|\_\    |_| \_|_|\___\___/|_|___/\___/|_| |_|
 %
 \subsection{Crank-Nicolson} \label{sec:crankNicolson}
-The Crank-Nicolson scheme could be thought of as a combination of the Forward and Backward Euler schemes. We will see that also the Crank-Nicolson scheme is stable for any choice of \(\Delta t \) and \(\Delta x\). 
+The Crank-Nicolson scheme could be thought of as a combination of the Forward and Backward Euler schemes. We will see that also the Crank-Nicolson scheme is stable for any choice of \(\Delta t \) and \(\Delta x\).
 \subsubsection{Derivation and error analysis}
 The idea of the Crank-Nicolson algorithm is to use the derivatives at the times \(t_i+\tfrac{1}{2}\Delta t\) rather than at \(t_i\), as the asymmetric Newton quotient used in the derivation of the Forward Euler scheme will now be the symmetric Newton quotient, giving an error proportional to \(\qty(\Delta t)^2\) instead of \(\Delta t\):
 \[
@@ -687,7 +687,7 @@ Since the error is once again accumulated, the global error will have one term p
 
 We have therefore the following approximation
 \begin{equation*}
--\alpha u_{i-1,j+1} + \qty(2+2\alpha)u_{i,j+1} - \alpha u_{i+1,j+1} = \alpha u_{i-1,j} - \qty(2+2\alpha)u_{i,j} + \alpha u_{i+1,j} 
+-\alpha u_{i-1,j+1} + \qty(2+2\alpha)u_{i,j+1} - \alpha u_{i+1,j+1} = \alpha u_{i-1,j} - \qty(2+2\alpha)u_{i,j} + \alpha u_{i+1,j}
 \end{equation*}
 
 Solving the above equation is done exactly the same way as for the Backward Euler scheme: As it must hold for all \(i\in\qty[1,n-1]\cap\mathbb{N}\), a linear set of equations arises, which, with \(\beta=2+2\alpha\) and \(\beta'=2-2\alpha\), can be written on a matrix form as
@@ -729,20 +729,20 @@ Since the Crank-Nicolson scheme is derived from using the approximation of the s
 \[
 \frac{1}{2}\qty(G_k(t_{j+1})\qty(D_x^2F_k(x) )_i +  G_k(t_j)\qty(D_x^2F_k(x))_i ) = \frac{(F_k(x) )_i }{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) )
 \]
-We found in \vref{sec:ideaNeumann} that \(D_x^2F_k(x))_i = -\mu_kF_k(x_i)\), meaning that we can rewrite the equation above into 
+We found in \vref{sec:ideaNeumann} that \(D_x^2F_k(x))_i = -\mu_kF_k(x_i)\), meaning that we can rewrite the equation above into
 \begin{align*}
 \frac{1}{2}\qty(G_k(t_{j+1})\qty(D_x^2F_k(x) )_i +  G_k(t_j)\qty(D_x^2F_k(x))_i ) &= \frac{F_k(x_i) }{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) ) \\ \hfill \\
 \frac{1}{2}\qty(-\mu_kF_k(x_i)G_k(t_{j+1}) -\mu_kF_k(x_i)G_k(t_j))&= \frac{F_k(x_i)}{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) )  \\\hfill \\
 \frac{-\mu_k}{2}\qty(G_k(t_{j+1}) +G_k(t_j))&= \frac{1}{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) )  \\\hfill \\
 -\frac{\Delta t\mu_k}{2}G_k(t_{j+1}) -\frac{\Delta t\mu_k}{2} G_k(t_j)&= G_k(t_{j+1}) - G_k(t_j)   \\\hfill \\
 G_k(t_j)\qty(1-\frac{\Delta t\mu_k}{2})&= G_k(t_{j+1})\qty(1+\frac{\Delta t\mu_k}{2} )    \\\hfill \\
-\frac{1-\frac{\Delta t\mu_k}{2}}{1+\frac{\Delta t\mu_k}{2}}&= \frac{G_k(t_{j+1}) }{G_k(t_j)}   
+\frac{1-\frac{\Delta t\mu_k}{2}}{1+\frac{\Delta t\mu_k}{2}}&= \frac{G_k(t_{j+1}) }{G_k(t_j)}
 \end{align*}
 Since the numerator is always smaller than the denominator, the fraction which we found will always satisfy
 \[
 \abs{\frac{1-\frac{\Delta t\mu_k}{2}}{1+\frac{\Delta t\mu_k}{2}}} \leq 1
 \]
-independent of which \( \Delta t, \Delta x\) we choose. This means that the Crank-Nicolson scheme is stable for any choice of step lengths for \(t\) and \(x\). 
+independent of which \( \Delta t, \Delta x\) we choose. This means that the Crank-Nicolson scheme is stable for any choice of step lengths for \(t\) and \(x\).
 \section{Two dimensions}
 The derivation of Fick's laws can be generalized to higher dimensions, giving
 \[
@@ -774,7 +774,7 @@ We are once again interested in the values at \(t_k\). Multiplying by \(-\Delta 
 \]
 
 \subsection{Comparing with an analytical solution}
-For the two dimensional case we will not consider a general solution to \vref{eq:twoDim}. However, we will consider a specific problem of our choice such that we can compare our two dimensional solver with the solution, ensuring us that the solver gives us sufficient accurate results. 
+For the two dimensional case we will not consider a general solution to \vref{eq:twoDim}. However, we will consider a specific problem of our choice such that we can compare our two dimensional solver with the solution, ensuring us that the solver gives us sufficient accurate results.
 \subsubsection{An analytical solution}
 So, consider \vref{eq:twoDim} with the following boundaries over a spatial domain of size \(L \times L\):
 \begin{equation} \label{eq:twoDimBoundaries}
@@ -784,11 +784,11 @@ u(x,0,t) &= u(x,L,t) = 0, \quad &x \in (0,L),\quad t > 0 \\
 u(x,y,0) &= \sin(\frac{\pi}{L}x)\sin(\frac{\pi}{L}y), \quad&\text{for }x,y\in (0,L)
 \end{aligned}
 \end{equation}
-The chosen boundaries has no physical interpretation, but is made such that it can be easy for us to get an analytical solution to compare with our solver. 
+The chosen boundaries has no physical interpretation, but is made such that it can be easy for us to get an analytical solution to compare with our solver.
 
-The procedure is similar as for the one dimensional case. Since the procedure of finding a solution is very similar as what we did in \vref{sec:analyticalOneDim}, we have included the calculation in Appendix A instead. 
+The procedure is similar as for the one dimensional case. Since the procedure of finding a solution is very similar as what we did in \vref{sec:analyticalOneDim}, we have included the calculation in Appendix A instead.
 
-The analytical solution of \vref{eq:twoDim} with the boundaries \vref{eq:twoDimBoundaries} derived in Appendix A is 
+The analytical solution of \vref{eq:twoDim} with the boundaries \vref{eq:twoDimBoundaries} derived in Appendix A is
 \begin{equation} \label{eq:analyticalSolutionTwoDim}
 u(x,y,t) = \sin(\frac{\pi}{L}x)\sin(\frac{\pi}{L}y)e^{\frac{-2\pi^2}{L^2}t}
 \end{equation}
@@ -803,11 +803,11 @@ u(x,y,t) = \sin(\frac{\pi}{L}x)\sin(\frac{\pi}{L}y)e^{\frac{-2\pi^2}{L^2}t}
 \section{Results in one dimension}
 \subsection{Testing for different \(\Delta x\)}
 As derived in \ref{forwardstability}, the Forward Euler scheme requires that \(\Delta t \leq \tfrac{1}{2}\qty(\Delta x)^2\). Simulations with \(\Delta x = 1/10\) and \(\Delta x = 1/100\) and \(\Delta t = \tfrac{1}{2}\qty(\Delta x)^2\) gives the figure below.
-%\begin{figure}[H]
-%\centering
-%\input{deltaxtest.plt}
-%\caption{Results for two different values of \(\Delta x\). Generated by \program{deltaxtest.sh}.}
-%\end{figure}
+\begin{figure}[H]
+\centering
+\input{deltaxtest.plt}
+\caption{Results for two different values of \(\Delta x\). Generated by \program{deltaxtest.sh}.}
+\end{figure}
 It is clear from the figure that all methods give acceptable results for the tested values of \(\Delta x\). As expected from the error terms, the Crank Nicolson scheme slightly outperforms the others. For \(\Delta x=1/100\), there is essentially no difference. We see that the steady state requirement of linearity from \ref{steadystate} is fulfilled.
 
 
@@ -819,21 +819,21 @@ It is clear from the figure that all methods give acceptable results for the tes
 \printbibliography
 \newpage
 \section{Appendix A: Solving for the two dimensional case}
-Here, we will explain how we found the solution \vref{eq:analyticalSolutionTwoDim} with the given problem \vref{eq:twoDim} with the boundaries \vref{eq:twoDimBoundaries}. 
+Here, we will explain how we found the solution \vref{eq:analyticalSolutionTwoDim} with the given problem \vref{eq:twoDim} with the boundaries \vref{eq:twoDimBoundaries}.
 
 
 We make an ansatz that
 \[
 u(x,y,t) = F(x,y)G(t)
 \]
-\Vref{eq:twoDim} gives us that 
+\Vref{eq:twoDim} gives us that
 \begin{align}
 G(t)\qty(\pdv[2]{F(x,y)}{x}+ \pdv[2]{F(x,y)}{y} ) &= F(x,y)\pdv{G(t)}{t} \nonumber\\
 \frac{1}{F(x,y)}\qty(\pdv[2]{F(x,y)}{x}+ \pdv[2]{F(x,y)}{y} ) &= \frac{G'(t)}{G(t)} \label{eq:solveFrom}
 \end{align}
-Since the ratios of two functions with different variables are equal, we must have that they are all equal to a constant \(-\lambda\). We will first solve for \(F(x,y)\). 
+Since the ratios of two functions with different variables are equal, we must have that they are all equal to a constant \(-\lambda\). We will first solve for \(F(x,y)\).
 
-Assume that we can again separate \(F(x,y)\) into 
+Assume that we can again separate \(F(x,y)\) into
 \[
 F(x,y) = X(x)Y(y)
 \]
@@ -847,23 +847,23 @@ Since an addition of the ratios of two functions with different variables gives 
 \frac{X''}{X} &= -\qty(\frac{Y''}{Y} +\lambda) \label{eq:mysteriousMu}\\
 \frac{X''}{X} &= -\mu \nonumber
 \end{align}
-This gives a general solution 
+This gives a general solution
 \[
 X(x) = c_1\cos(\sqrt{\mu}x) + c_2\sin(\sqrt{\mu}x)
 \]
-Since \(u(0,y,t) = u(L,y,t) = 0\) from \vref{eq:twoDimBoundaries}, we must have that \(c_1 = 0\) and 
+Since \(u(0,y,t) = u(L,y,t) = 0\) from \vref{eq:twoDimBoundaries}, we must have that \(c_1 = 0\) and
 \begin{align}
 \sqrt{\mu_k}L &= k\pi \nonumber , \quad k \in \mathbb{N}\\
 \mu_k L^2 &= \qty(k\pi)^2 \nonumber \\
  \mu_k  &=\qty(\frac{k\pi}{L})^2 \label{eq:twoDimMu}
 \end{align}
-which gives that \(c_2 = c_k\), and 
+which gives that \(c_2 = c_k\), and
 \[
 X(x) = c_k\sin(\frac{k\pi}{L}x)
 \]
 Now, we have to solve for \(Y\):
 
-From \vref{eq:mysteriousMu} and \vref{eq:twoDimMu}, we have that 
+From \vref{eq:mysteriousMu} and \vref{eq:twoDimMu}, we have that
 \begin{align*}
 \frac{Y''}{Y} +\lambda  &=\qty(\frac{k\pi}{L})^2 \\
 \frac{Y''}{Y}&=-\qty(-\qty(\frac{k\pi}{L})^2 + \lambda ) \\
@@ -873,7 +873,7 @@ This gives a general solution of \(Y\):
 \[
 Y(y) = d_1\cos(\sqrt{\nu}y) + d_2\sin(\sqrt{\nu}y)
 \]
-By using the same procedure of finding \(X\), we get that \(d_1 = 0\) and 
+By using the same procedure of finding \(X\), we get that \(d_1 = 0\) and
 \[
 \nu = \qty(\frac{m\pi}{L})^2
 \]
@@ -881,11 +881,11 @@ for \(m \in \mathbb{N}\). Setting \(d_2 = d_m\), we get the solution of \(Y\) to
 \[
 Y(y) = d_m\sin(\frac{m\pi}{L}y)
 \]
-with 
+with
 \begin{equation}\label{eq:notSoMysteriousNu}
 \nu_m = \qty(\frac{m\pi}{L})^2
 \end{equation}
-Therefore, we have the particular solution of F for any value of \(k,m\).  
+Therefore, we have the particular solution of F for any value of \(k,m\).
 \[
 F_{k,m}(x,y) = c_kd_m\sin(\frac{k\pi}{L}x)\sin(\frac{m\pi}{L}y)
 \]
@@ -894,7 +894,7 @@ In \vref{eq:solveFrom}, we can solve for \(G(t)\):
 \[
 \frac{G'(t)}{G(t)}  = -\lambda
 \]
-which gives the general solution 
+which gives the general solution
 \[
 G(t) = Ce^{-\lambda t}
 \]
@@ -902,9 +902,9 @@ where we set the constant \(C = 1\). To find \(\lambda\) we just the expression 
 \begin{align*}
 \nu_m &= \qty(\frac{m\pi}{L})^2 \\
 -\qty(\frac{k\pi}{L})^2 + \lambda_{k,m} &= \qty(\frac{m\pi}{L})^2  \\
-\lambda_{k,m} &= \qty(\frac{m\pi}{L})^2+\qty(\frac{k\pi}{L})^2 
-\end{align*} 
-we see that the value of \(\lambda \) depends on the value of \(k\) and \(m\), thus giving that \(\lambda = \lambda_{k,m}\). 
+\lambda_{k,m} &= \qty(\frac{m\pi}{L})^2+\qty(\frac{k\pi}{L})^2
+\end{align*}
+we see that the value of \(\lambda \) depends on the value of \(k\) and \(m\), thus giving that \(\lambda = \lambda_{k,m}\).
 
 In total, we have the following particular solution of \(u\):
 \[
@@ -919,7 +919,7 @@ meaning that \(c_k = d_m = k = m = 1\) and therefore
 \lambda_{k,m} = 2\qty(\frac{\pi}{L})^2
 \]
 
-This gives the final solution of our problem described in \vref{eq:twoDim} and \vref{eq:twoDimBoundaries} to be 
+This gives the final solution of our problem described in \vref{eq:twoDim} and \vref{eq:twoDimBoundaries} to be
 \[
 u(x,y,t) = \sin(\frac{\pi}{L}x)\sin(\frac{\pi}{L}y)e^{-2\qty(\frac{\pi}{L})^2 t}
 \]
