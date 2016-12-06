@@ -23,6 +23,8 @@ onedim_ui.o: onedim_ui.cpp
 	${gpp} -c onedim_ui.cpp
 onedim_ui.x: onedim_ui.o onedimlib.o tridiagonalsolver.o
 	${gpp} ${parallel} -o onedim_ui.x onedim_ui.o onedimlib.o tridiagonalsolver.o
+twodim.x: twodim.cpp
+	${gpp} ${parallel} -o twodim.x twodim.cpp
 deltaxtest.plt: deltaxtest.gpi forward_Euler_0.1.dat analytic.dat
 	gnuplot deltaxtest.gpi
 analytic.dat: analytic.py
