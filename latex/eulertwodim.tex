@@ -1,0 +1,22 @@
+%             _
+%   ___ _   _| | ___ _ __
+%  / _ \ | | | |/ _ \ '__|
+% |  __/ |_| | |  __/ |
+%  \___|\__,_|_|\___|_|
+\subsection{An explicit numerical algorithm}
+In order to derive an explicit scheme for solving the diffusion equation in two dimensions, the same approximations to derivatives as in the derivation on the Forward Euler scheme is used. The error terms are also the same.
+\begin{alignat*}{2}
+    \pdv{u}{t} &\approx \frac{u_{i,j,k+1} - u_{i,j,k}}{\Delta t}\\
+    \pdv[2]{u}{x} &\approx \frac{u_{i+1,j,k} + u_{i-1,j,k} - 2u_{i,j,k}}{\qty(\Delta x)^2}\\
+    \pdv[2]{u}{y} &\approx \frac{u_{i,j+1,k} + u_{i,j-1,k} - 2u_{i,j,k}}{\qty(\Delta y)^2}
+\end{alignat*}
+When inserting these into the two-dimensional diffusion equation, we get
+\[
+    \frac{u_{i+1,j,k} + u_{i-1,j,k} - 2u_{i,j,k}}{\qty(\Delta x)^2} +
+    \frac{u_{i,j+1,k} + u_{i,j-1,k} - 2u_{i,j,k}}{\qty(\Delta y)^2} =
+    \frac{u_{i,j,k} - u_{i,j,k-1}}{\Delta t}
+\]
+We are once again interested in the values at \(t_k\). Multiplying by \(-\Delta t\), defining \(\alpha_x=\Delta t/\qty(\Delta x)^2\) and \(\alpha_y=\Delta t/\qty(\Delta y)^2\) and solving for the interesting values gives
+\[
+    -\alpha_x u_{i-1,j,k} + \qty(1+2\alpha_x+2\alpha_y)u_{i,j,k} - \alpha_x u_{i+1,j,k} - \alpha_y i_{i,j-1,k} - \alpha_y u_{i,j+1,k} = u_{i,j,k-1}
+\]

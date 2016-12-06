@@ -1,0 +1,14 @@
+%      _ _                   _   _           _   _
+%   __| (_)___  ___ _ __ ___| |_(_)___  __ _| |_(_) ___  _ __
+%  / _` | / __|/ __| '__/ _ \ __| / __|/ _` | __| |/ _ \| '_ \
+% | (_| | \__ \ (__| | |  __/ |_| \__ \ (_| | |_| | (_) | | | |
+%  \__,_|_|___/\___|_|  \___|\__|_|___/\__,_|\__|_|\___/|_| |_|
+\subsection{Discretisation}
+
+\todo[inline]{Forslag: Since the solution is an infinite series of Fourier coefficients, it cannot be computed directly numerically. Therefore, it must be discretised.}
+
+For the diffusion equation to be numerically solvable, it must be discretised.
+
+This is done in the standard way: Discretise \(x\) as \(x_0,x_1,\dots,x_n\) with \(\Delta x=\qty(x_n-x_0)/n\), and \(t\) as \(t_0,t_1,\dots,t_m\) with \(\Delta t = \qty(t_m-t_0)/m\). The function itself is also discretised, with the notation \(u_{i,j} \approx u(x_i,t_j)\).
+
+We will now take a look into how we can numerically approximate the given problem. As there exist many different approaches, we have chosen to look at three different methods, namely Forward Euler, Backward Euler and Crank-Nicolson. The difference between Forward Euler and Backward Euler is how the time derivative is approximated, as the Crank-Nicolson method is a combination of both.

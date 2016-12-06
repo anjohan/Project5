@@ -1,13 +1,16 @@
 gpp = c++ -std=c++11 -O3 -Wall
+
 ifeq (${USER},anders)
 	parallel = -fopenmp
 else
     parallel =
 endif
 
+latexsrc = report.tex latex/kilder.bib latex/analyticalonedim.tex latex/cranknicolson.tex latex/introduction.tex  latex/preamble.tex latex/analyticaltwodim.tex latex/discretisation.tex latex/vonneumann.tex latex/appendix.tex latex/eulertwodim.tex latex/onedimres.tex latex/backwardeuler.tex latex/forwardeuler.tex latex/physics.tex
+
 all: report.pdf
-report.pdf: report.tex kilder.bib deltaxtest.plt
-	latexmk -pdf
+report.pdf: ${latexsrc} deltaxtest.plt
+	latexmk -pdf report.tex
 onedimlib.o: onedimlib.cpp onedimlib.h
 	${gpp} -c ${parallel} onedimlib.cpp
 test.o: test.cpp
@@ -32,6 +35,6 @@ clean:
 	rm *.bbl *.run.xml *.o *.x
 	rm *.eps *-to.pdf
 edit:
-	vim *.tex makefile *.cpp *.h *.gpi *.sh *.py *.bib
+	vim *.tex latex/*.tex makefile *.cpp *.h *.gpi *.sh *.py latex/*.bib
 read:
 	evince report.pdf &

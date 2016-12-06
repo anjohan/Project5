@@ -1,0 +1,111 @@
+%                                   _ _
+%   __ _ _ __  _ __   ___ _ __   __| (_)_  __
+%  / _` | '_ \| '_ \ / _ \ '_ \ / _` | \ \/ /
+% | (_| | |_) | |_) |  __/ | | | (_| | |>  <
+%  \__,_| .__/| .__/ \___|_| |_|\__,_|_/_/\_\
+%       |_|   |_|
+\section{Appendix A: Solving for the two dimensional case}
+Here, we will explain how we found the solution \vref{eq:analyticalSolutionTwoDim} with the given problem \vref{eq:twoDim} with the boundaries \vref{eq:twoDimBoundaries}.
+
+
+We make an ansatz that
+\[
+u(x,y,t) = F(x,y)G(t)
+\]
+\Vref{eq:twoDim} gives us that
+\begin{align}
+G(t)\qty(\pdv[2]{F(x,y)}{x}+ \pdv[2]{F(x,y)}{y} ) &= F(x,y)\pdv{G(t)}{t} \nonumber\\
+\frac{1}{F(x,y)}\qty(\pdv[2]{F(x,y)}{x}+ \pdv[2]{F(x,y)}{y} ) &= \frac{G'(t)}{G(t)} \label{eq:solveFrom}
+\end{align}
+Since the ratios of two functions with different variables are equal, we must have that they are all equal to a constant \(-\lambda\). We will first solve for \(F(x,y)\).
+
+Assume that we can again separate \(F(x,y)\) into
+\[
+F(x,y) = X(x)Y(y)
+\]
+Inserting this into \vref{eq:solveFrom} gives us
+\begin{align*}
+\frac{Y(y)X''(x)+ Y''(y)X(x)}{X(x)Y(y)} &= -\lambda \\
+\frac{X''}{X}+ \frac{Y''}{Y} &= -\lambda
+\end{align*}
+Since an addition of the ratios of two functions with different variables gives a constant, each of the ratios must therefore be a constant.We will first solve for \(X\):
+\begin{align}
+\frac{X''}{X} &= -\qty(\frac{Y''}{Y} +\lambda) \label{eq:mysteriousMu}\\
+\frac{X''}{X} &= -\mu \nonumber
+\end{align}
+This gives a general solution
+\[
+X(x) = c_1\cos(\sqrt{\mu}x) + c_2\sin(\sqrt{\mu}x)
+\]
+Since \(u(0,y,t) = u(L,y,t) = 0\) from \vref{eq:twoDimBoundaries}, we must have that \(c_1 = 0\) and
+\begin{align}
+\sqrt{\mu_k}L &= k\pi \nonumber , \quad k \in \mathbb{N}\\
+\mu_k L^2 &= \qty(k\pi)^2 \nonumber \\
+ \mu_k  &=\qty(\frac{k\pi}{L})^2 \label{eq:twoDimMu}
+\end{align}
+which gives that \(c_2 = c_k\), and
+\[
+X(x) = c_k\sin(\frac{k\pi}{L}x)
+\]
+Now, we have to solve for \(Y\):
+
+From \vref{eq:mysteriousMu} and \vref{eq:twoDimMu}, we have that
+\begin{align*}
+\frac{Y''}{Y} +\lambda  &=\qty(\frac{k\pi}{L})^2 \\
+\frac{Y''}{Y}&=-\qty(-\qty(\frac{k\pi}{L})^2 + \lambda ) \\
+\frac{Y''}{Y}&=-\nu
+\end{align*}
+This gives a general solution of \(Y\):
+\[
+Y(y) = d_1\cos(\sqrt{\nu}y) + d_2\sin(\sqrt{\nu}y)
+\]
+By using the same procedure of finding \(X\), we get that \(d_1 = 0\) and
+\[
+\nu = \qty(\frac{m\pi}{L})^2
+\]
+for \(m \in \mathbb{N}\). Setting \(d_2 = d_m\), we get the solution of \(Y\) to be
+\[
+Y(y) = d_m\sin(\frac{m\pi}{L}y)
+\]
+with
+\begin{equation}\label{eq:notSoMysteriousNu}
+\nu_m = \qty(\frac{m\pi}{L})^2
+\end{equation}
+Therefore, we have the particular solution of F for any value of \(k,m\).
+\[
+F_{k,m}(x,y) = c_kd_m\sin(\frac{k\pi}{L}x)\sin(\frac{m\pi}{L}y)
+\]
+
+In \vref{eq:solveFrom}, we can solve for \(G(t)\):
+\[
+\frac{G'(t)}{G(t)}  = -\lambda
+\]
+which gives the general solution
+\[
+G(t) = Ce^{-\lambda t}
+\]
+where we set the constant \(C = 1\). To find \(\lambda\) we just the expression of \(\nu_m\) which we found in \vref{eq:notSoMysteriousNu}:
+\begin{align*}
+\nu_m &= \qty(\frac{m\pi}{L})^2 \\
+-\qty(\frac{k\pi}{L})^2 + \lambda_{k,m} &= \qty(\frac{m\pi}{L})^2  \\
+\lambda_{k,m} &= \qty(\frac{m\pi}{L})^2+\qty(\frac{k\pi}{L})^2
+\end{align*}
+we see that the value of \(\lambda \) depends on the value of \(k\) and \(m\), thus giving that \(\lambda = \lambda_{k,m}\).
+
+In total, we have the following particular solution of \(u\):
+\[
+u_{k,m}(x,y,t) =  c_kd_m\sin(\frac{k\pi}{L}x)\sin(\frac{m\pi}{L}y)e^{-\lambda_{k,m} t}
+\]
+To decide \(c_k\) and \(d_m\), we have to look at the boundary of \(u\) at \(t = 0\), which gives
+\[
+\sin(\frac{\pi}{L}x)\sin(\frac{\pi}{L}y) =  c_kd_m\sin(\frac{k\pi}{L}x)\sin(\frac{m\pi}{L}y)
+\]
+meaning that \(c_k = d_m = k = m = 1\) and therefore
+\[
+\lambda_{k,m} = 2\qty(\frac{\pi}{L})^2
+\]
+
+This gives the final solution of our problem described in \vref{eq:twoDim} and \vref{eq:twoDimBoundaries} to be
+\[
+u(x,y,t) = \sin(\frac{\pi}{L}x)\sin(\frac{\pi}{L}y)e^{-2\qty(\frac{\pi}{L})^2 t}
+\]

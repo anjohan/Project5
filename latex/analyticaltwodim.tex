@@ -1,0 +1,25 @@
+%                    _       _   _           _
+%   __ _ _ __   __ _| |_   _| |_(_) ___ __ _| |
+%  / _` | '_ \ / _` | | | | | __| |/ __/ _` | |
+% | (_| | | | | (_| | | |_| | |_| | (_| (_| | |
+%  \__,_|_| |_|\__,_|_|\__, |\__|_|\___\__,_|_|
+%                      |___/
+\subsection{Analytical solution of the diffusion equation}
+For the two dimensional case we will not consider a general solution to \vref{eq:twoDim}. However, we will consider a specific problem of our choice such that we can compare our two dimensional solver with the solution, ensuring us that the solver gives us sufficient accurate results.
+\subsubsection{An analytical solution}
+So, consider \vref{eq:twoDim} with the following boundaries over a spatial domain of size \(L \times L\):
+\begin{equation} \label{eq:twoDimBoundaries}
+\begin{aligned}
+u(0,y,t) &= u(L,y,t) = 0, \quad &y \in (0,L),\quad t > 0 \\
+u(x,0,t) &= u(x,L,t) = 0, \quad &x \in (0,L),\quad t > 0 \\
+u(x,y,0) &= \sin(\frac{\pi}{L}x)\sin(\frac{\pi}{L}y), \quad&\text{for }x,y\in (0,L)
+\end{aligned}
+\end{equation}
+The chosen boundaries has no physical interpretation, but is made such that it can be easy for us to get an analytical solution to compare with our solver.
+
+The procedure is similar as for the one dimensional case. Since the procedure of finding a solution is very similar as what we did in \vref{sec:analyticalOneDim}, we have included the calculation in Appendix A instead.
+
+The analytical solution of \vref{eq:twoDim} with the boundaries \vref{eq:twoDimBoundaries} derived in Appendix A is
+\begin{equation} \label{eq:analyticalSolutionTwoDim}
+u(x,y,t) = \sin(\frac{\pi}{L}x)\sin(\frac{\pi}{L}y)e^{\frac{-2\pi^2}{L^2}t}
+\end{equation}

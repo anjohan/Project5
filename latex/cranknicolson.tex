@@ -1,0 +1,99 @@
+%   ____                 _         _   _ _           _
+%  / ___|_ __ __ _ _ __ | | __    | \ | (_) ___ ___ | |___  ___  _ __
+% | |   | '__/ _` | '_ \| |/ /____|  \| | |/ __/ _ \| / __|/ _ \| '_ \
+% | |___| | | (_| | | | |   <_____| |\  | | (_| (_) | \__ \ (_) | | | |
+%  \____|_|  \__,_|_| |_|_|\_\    |_| \_|_|\___\___/|_|___/\___/|_| |_|
+%
+\subsection{Crank-Nicolson} \label{sec:crankNicolson}
+The Crank-Nicolson scheme could be thought of as a combination of the Forward and Backward Euler schemes. We will see that also the Crank-Nicolson scheme is stable for any choice of \(\Delta t \) and \(\Delta x\).
+\subsubsection{Derivation and error analysis}
+The idea of the Crank-Nicolson algorithm is to use the derivatives at the times \(t_i+\tfrac{1}{2}\Delta t\) rather than at \(t_i\), as the asymmetric Newton quotient used in the derivation of the Forward Euler scheme will now be the symmetric Newton quotient, giving an error proportional to \(\qty(\Delta t)^2\) instead of \(\Delta t\):
+\[
+    \pdv{u(x_i,t_j+\tfrac{1}{2}\Delta t)}{t} = \frac{u_{i,j+1} - u_{i,j}}{\Delta t} + \frac{\qty(\Delta t)^2}{12}\pdv[3]{u(x_i,\tilde{t})}{t}
+\]
+with \(\tilde{t}\in\qty(t_j,t_{j+1})\).
+
+The three-point formula is again used to approximate the second derivative with respect to \(x\), but as there is no known value of \(u\) at \(t_j+\tfrac{1}{2}\Delta t\), the second derivative at this point is approximated by the mean of the second derivatives at \(t_{j+1}\) and \(t_j\):
+\begin{alignat*}{2}
+    \pdv[2]{u(x_i,t_j+\tfrac{1}{2}\Delta t)}{x} &=&& \frac{1}{2}\qty(\frac{u_{i+1,j+1} + u_{i-1,j+1} - 2u_{i,j+1})}{\qty(\Delta x)^2} + \frac{u_{i+1,j} + u_{i-1,j} - 2u_{i,j}}{\qty(\Delta x)^2})\\
+    &&&+ \frac{\qty(\Delta x)^2}{24}\qty(\pdv[4]{u(\tilde{x}_1,t_{j+1})}{x} + \pdv[4]{u(\tilde{x}_2,t_j)}{x})
+\end{alignat*}
+with both \(\tilde{x}_1\) and \(\tilde{x}_2\) in \(\qty(x_{i-1},x_{i+1})\).
+
+Inserting these expressions into the diffusion equation gives
+\begin{alignat*}{2}
+    \frac{u_{i,j+1} - u_{i,j}}{\Delta t}
+    &=&& \frac{1}{2}\qty(\frac{u_{i+1,j+1} + u_{i-1,j+1} - 2u_{i,j+1})}{\qty(\Delta x)^2} + \frac{u_{i+1,j} + u_{i-1,j} - 2u_{i,j}}{\qty(\Delta x)^2})\\
+    &&&+ \frac{\qty(\Delta x)^2}{24}\qty(\pdv[4]{u(\tilde{x}_1,t_{j+1})}{x} + \pdv[4]{u(\tilde{x}_2,t_j)}{x}) + \frac{\qty(\Delta t)^2}{12}\pdv[3]{u(x_i,\tilde{t})}{t}
+    \intertext{We are interested in the solution at \(t_{j+1}\). Multiplying by \(2\Delta t\) on both sides and reusing \(\alpha=\Delta t/\qty(\Delta x)^2\) gives}
+    -\alpha u_{i-1,j+1} + \qty(2+2\alpha)u_{i,j+1} - \alpha u_{i+1,j+1} &=&& \alpha u_{i-1,j} + \qty(2-2\alpha)u_{i,j} + \alpha u_{i+1,j}\\
+    &&&+ \Delta t\cdot\frac{\qty(\Delta x)^2}{12}\qty(\pdv[4]{u(\tilde{x}_1,t_{j+1})}{x} + \pdv[4]{u(\tilde{x}_2,t_j)}{x}) + \frac{\qty(\Delta t)^3}{6}\pdv[3]{u(x_i,\tilde{t})}{t}
+\end{alignat*}
+Since the error is once again accumulated, the global error will have one term proportional to \(\qty(\Delta x)^2\) and one term proportional to \(\qty(\Delta t)^2\). The latter is one order better than both Euler schemes. With no possibility of solving for the next time step explicitly, this scheme is also implicit.
+
+
+We have therefore the following approximation
+\begin{equation*}
+-\alpha u_{i-1,j+1} + \qty(2+2\alpha)u_{i,j+1} - \alpha u_{i+1,j+1} = \alpha u_{i-1,j} - \qty(2+2\alpha)u_{i,j} + \alpha u_{i+1,j}
+\end{equation*}
+
+Solving the above equation is done exactly the same way as for the Backward Euler scheme: As it must hold for all \(i\in\qty[1,n-1]\cap\mathbb{N}\), a linear set of equations arises, which, with \(\beta=2+2\alpha\) and \(\beta'=2-2\alpha\), can be written on a matrix form as
+
+\[
+    \begin{bmatrix}
+        \beta & -\alpha & 0 & 0 & 0 & \dots & 0 & 0  \\
+        -\alpha & \beta & -\alpha & 0 & 0 & \dots & 0 & 0  \\
+        0 & -\alpha & \beta & -\alpha & 0 & \dots & 0 & 0 \\
+        \vdots & \vdots &  \ddots & \ddots & \ddots & \vdots & \vdots & \vdots\\
+        0 & 0 & 0 & \dots & -\alpha & \beta & - \alpha & 0\\
+        0 & 0 & 0 & 0 & \dots & -\alpha & \beta & - \alpha\\
+        0 & 0 & 0 & 0 & 0 & \dots & -\alpha & \beta\\
+    \end{bmatrix}
+    \begin{bmatrix}
+        u_{1,j+1}\\
+        u_{2,j+1}\\
+        u_{3,j+1}\\
+        \vdots\\
+        u_{n-3,j+1}\\
+        u_{n-2,j+1}\\
+        u_{n-1,j+1}\\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \beta' u_{1,j} + \alpha u_{2,j}\\
+        \alpha u_{n-1,j} + \beta' u_{2,j} + \alpha u_{2,j}\\
+        \alpha u_{n-2,j} + \beta' u_{3,j} + \alpha u_{3,j}\\
+        \vdots\\
+        \alpha u_{n-4,j} + \beta' u_{n-3,j} + \alpha u_{n-2,j}\\
+        \alpha u_{n-3,j} + \beta' u_{n-2,j} + \alpha u_{n-1,j}\\
+        \alpha u_{n-2,j} + \beta' u_{n-1,j} + 2\alpha\\
+    \end{bmatrix}
+\]
+The matrix is once again tridiagonal, so the solver from project 1 can be reused.
+
+
+%      _        _     _ _ _ _
+%  ___| |_ __ _| |__ (_) (_) |_ _   _
+% / __| __/ _` | '_ \| | | | __| | | |
+% \__ \ || (_| | |_) | | | | |_| |_| |
+% |___/\__\__,_|_.__/|_|_|_|\__|\__, |
+%                               |___/
+\subsubsection{Stability analysis}
+Since the Crank-Nicolson scheme is derived from using the approximation of the second derivative with respect to \(x\) at \(v_k(x_i,t_j)\) and \(v_k(x_i,t_{j+1})\), we can use the ansatz in \vref{eq:discreteAnsatz} and rewrite the scheme in the following matter:
+\[
+\frac{1}{2}\qty(G_k(t_{j+1})\qty(D_x^2F_k(x) )_i +  G_k(t_j)\qty(D_x^2F_k(x))_i ) = \frac{(F_k(x) )_i }{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) )
+\]
+We found in \vref{sec:ideaNeumann} that \(D_x^2F_k(x))_i = -\mu_kF_k(x_i)\), meaning that we can rewrite the equation above into
+\begin{align*}
+\frac{1}{2}\qty(G_k(t_{j+1})\qty(D_x^2F_k(x) )_i +  G_k(t_j)\qty(D_x^2F_k(x))_i ) &= \frac{F_k(x_i) }{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) ) \\ \hfill \\
+\frac{1}{2}\qty(-\mu_kF_k(x_i)G_k(t_{j+1}) -\mu_kF_k(x_i)G_k(t_j))&= \frac{F_k(x_i)}{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) )  \\\hfill \\
+\frac{-\mu_k}{2}\qty(G_k(t_{j+1}) +G_k(t_j))&= \frac{1}{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) )  \\\hfill \\
+-\frac{\Delta t\mu_k}{2}G_k(t_{j+1}) -\frac{\Delta t\mu_k}{2} G_k(t_j)&= G_k(t_{j+1}) - G_k(t_j)   \\\hfill \\
+G_k(t_j)\qty(1-\frac{\Delta t\mu_k}{2})&= G_k(t_{j+1})\qty(1+\frac{\Delta t\mu_k}{2} )    \\\hfill \\
+\frac{1-\frac{\Delta t\mu_k}{2}}{1+\frac{\Delta t\mu_k}{2}}&= \frac{G_k(t_{j+1}) }{G_k(t_j)}
+\end{align*}
+Since the numerator is always smaller than the denominator, the fraction which we found will always satisfy
+\[
+\abs{\frac{1-\frac{\Delta t\mu_k}{2}}{1+\frac{\Delta t\mu_k}{2}}} \leq 1
+\]
+independent of which \( \Delta t, \Delta x\) we choose. This means that the Crank-Nicolson scheme is stable for any choice of step lengths for \(t\) and \(x\).

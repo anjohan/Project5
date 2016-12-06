@@ -1,0 +1,82 @@
+
+%  _____                                _   _____      _
+% |  ___|__  _ ____      ____ _ _ __ __| | | ____|   _| | ___ _ __
+% | |_ / _ \| '__\ \ /\ / / _` | '__/ _` | |  _|| | | | |/ _ \ '__|
+% |  _| (_) | |   \ V  V / (_| | | | (_| | | |__| |_| | |  __/ |
+% |_|  \___/|_|    \_/\_/ \__,_|_|  \__,_| |_____\__,_|_|\___|_|
+%
+\subsection{Forward Euler}
+Forward Euler is possibly the most "simplest" algorithm that we are considering in this report. However, we will see that even though Forward Euler is the most intuitive algorithm, it is also the only algorithm we have to be careful for which values of \(\Delta t\) and \(\Delta x\) we choose.
+\subsubsection{Derivation and error analysis}\label{sec:ForwardEulerDerivation}
+The Forward Euler scheme is an explicit scheme based on Taylor polynomials. To find an approximation of the time derivative of \(u\) at point \((x_i,t_j)\), a first order Taylor polynomial around \(x_i,t_j\) is used to calculate \(u(x_i,t_{j+1})\):
+\[
+    u_{i,j+1} = u_{i,j} + h\pdv{u_{i,j}}{t} + \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_i,\tilde{t})}{t}
+    \implies \pdv{u_{i,j}}{t} = \frac{u_{i,j+1}-u_{i,j}}{\Delta t} + \frac{1}{2}\Delta t\pdv[2]{u(x_i,\tilde{t})}{t}\eqtag{asymmnewton}
+\]
+where \(\tilde{t}\in(t_j,t_{j+1})\) and the last term is the truncation error, which is proportional to \(\Delta t\).
+
+Similarly, the three point approximation to the second derivative (derived in \autocite{oblig1}) with its error is used to approximate the second derivative of \(u\) at point \((x_i,t_j)\) with respect to position:
+\[
+    \pdv[2]{u_{i,j}}{x} = \frac{u_{i+1,j} + u_{i-1,j} - 2u_{i,j}}{\qty(\Delta x)^2} - \frac{1}{12}\qty(\Delta x)^2\pdv[4]{u(\tilde{x},t_j)}{x}\eqtag{andrederivert}
+\]
+where the last term is the truncation error, which for this approximation is proportional to \(\qty(\Delta x)^2\). As shown in \autocite{oblig1}, the error term actually consists of two terms, one with \(\tilde{x}_1\in\qty(x_{i-1},x_i)\) and one with \(\tilde{x}_2\in\qty(x_i,x_{i+1})\), but this can be approximated with \(\tilde{x}\in(x_{i-1},x_{i+1})\).
+
+Inserting these two expressions into the diffusion equation gives
+\[
+    \frac{u_{i,j+1}-u_{i,j}}{\Delta t} + \frac{1}{2}\Delta t\pdv[2]{u(x_i,\tilde{t})}{t}
+    = \frac{u_{i+1,j} + u_{i-1,j} - 2u_{i,j}}{\qty(\Delta x)^2} - \frac{1}{12}\qty(\Delta x)^2\pdv[4]{u(\tilde{x},t_j)}{x}
+\]
+The goal is to find the value of \(u\) at the next time step, i.e. \(u_{i,j+1}\). Multiplying by \(\Delta t\) on both sides of the equation and moving one term to the right, we get
+\begin{alignat*}{2}
+    u_{i,j+1} &=&& u_{i,j} + \frac{\Delta t}{\qty(\Delta x)^2}\qty(u_{i+1,j} + u_{i-1,j}-2u_{i,j})\\
+    &&&+ \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_i,\tilde{t})}{t} - \Delta t\cdot\frac{1}{12}\qty(\Delta x)^2\pdv[4]{u(\tilde{x},t_j)}{x}
+    \intertext{The quantity \(\Delta t/\qty(\Delta x)^2\) can be defined as \(\alpha\), which, with a slight reorganisation yields the final expression}
+    u_{i,j+1} &=&& \qty(1-2\alpha)u_{i,j} + \alpha\qty(u_{i+1,j}+u_{i-1,j})\\
+    &&& +  \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_i,\tilde{t})}{t} - \Delta t\cdot\frac{1}{12}\qty(\Delta x)^2\pdv[4]{u(\tilde{x},t_j)}{x}
+\end{alignat*}
+The two error terms are proportional to \(\qty(\Delta t)^2\) and \(\Delta t\cdot \qty(\Delta x)^2\). As per usual, the global error is one order lower, as the error is accumulated. This gives one error term proportional to \(h\) and one proportional to \(\qty(\Delta x)^2\). The order of \(\qty(\Delta x)\) is not reduced, as this error is not accumulated. If we truncate the errors in \(u_{i,j}\) , we get the numerical approximation of \(u(x_i,t_{j+1})\) to be
+\begin{equation}\label{eq:forwardEuler}
+u_{i,j+1} = \qty(1-2\alpha)u_{i,j} + \alpha\qty(u_{i+1,j}+u_{i-1,j})
+\end{equation}
+
+
+%                     _   _
+% __   _____  _ __   | \ | | ___ _   _ _ __ ___   __ _ _ __  _ __
+% \ \ / / _ \| '_ \  |  \| |/ _ \ | | | '_ ` _ \ / _` | '_ \| '_ \
+%  \ V / (_) | | | | | |\  |  __/ |_| | | | | | | (_| | | | | | | |
+%   \_/ \___/|_| |_| |_| \_|\___|\__,_|_| |_| |_|\__,_|_| |_|_| |_|
+
+\input{latex/vonneumann.tex}
+
+
+%      _        _     _ _ _ _
+%  ___| |_ __ _| |__ (_) (_) |_ _   _
+% / __| __/ _` | '_ \| | | | __| | | |
+% \__ \ || (_| | |_) | | | | |_| |_| |
+% |___/\__\__,_|_.__/|_|_|_|\__|\__, |
+%                               |___/
+\subsubsection{Stability analysis of Forward Euler}\label{forwardstability}
+
+To approximate the time derivative of Forward Euler, we get the ratios in \ref{eq:discreteRatios} to be
+\begin{align*}
+\qty(D_tG_k(t))_j &= -G_k(t_j)\mu_k \\
+\frac{G_k(t_{j+1}) - G_k(t_j) }{\Delta t} &= -G_k(t_j)\mu_k \\
+G_k(t_{j+1}) &= -\Delta t G_k(t_j)\mu_k + G_k(t_j) \\
+\frac{G_k(t_{j+1}) }{G_k(t_j)} &= 1-\Delta t \mu_k
+\end{align*}
+As discussed in \vref{sec:ideaNeumann}, we must have that
+\begin{align*}
+\abs{\frac{G_k(t_{j+1}) }{G_k(t_j)}} &\leq 1 \\
+\implies \abs{1-\Delta t \mu_k} &\leq 1  \\
+\end{align*}
+which means that
+\begin{align*}
+\abs{\Delta t \mu_k} &\leq 2\\
+\implies \abs{\frac{4 \Delta t \sin^2\qty(\frac{k\pi \Delta x}{2})}{\Delta x^2} } &\leq 2 \\
+\implies \abs{\frac{\Delta t \sin^2\qty(\frac{k\pi \Delta x}{2})}{\Delta x^2} } &\leq \frac{1}{2}
+\end{align*}
+We note that \(\sin^2\qty(\frac{k\pi \Delta x}{2}) \leq 1\) for any \(k,\Delta x\), giving
+\begin{equation}\label{eq:stabilityForwardEuler}
+\frac{\Delta t}{\Delta x^2} \leq \frac{1}{2}
+\end{equation}
+which means that Forward Euler is stable only if the condition \vref{eq:stabilityForwardEuler} holds.

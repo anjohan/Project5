@@ -1,0 +1,191 @@
+\subsection{Analytical solution of the diffusion equation}\label{sec:analyticalOneDim}
+Consider the diffusion equation with the given boundaries:
+\begin{equation}\label{eq:problem}
+\begin{aligned}
+\pdv[2]{U(x,t)}{x} &= \pdv{U(x,t)}{t} &\: t>0, \:\:x\in[0,L] \\
+U(x,0) &= g(x)  &0 < x < L\\
+U(0,t) &=  a & a \in \mathbb{R},  t>0 \\
+U(L,t) &= b &b \in \mathbb{R}, t>0
+\end{aligned}
+\end{equation}
+First, we notice the boundaries at \(x = 0\) and \(x = L\). As we will see, having these boundaries equal to 0 would make the problem much easier to solve. Therefore, we introduce a new function
+\[
+v(x,t) = U(x,t) + w(x,t)
+\]
+where we want the following to hold:
+\begin{equation}\label{eq:dummy}
+\begin{aligned}
+\pdv[2]{v(x,t)}{x} &= \pdv{v(x,t)}{t} &\: t>0, \:\:x\in[0,L] \\
+v(x,0) &= f(x)  &0 < x < L\\
+v(0,t) &=  0 &  t>0 \\
+v(L,t) &= 0 & t>0
+\end{aligned}
+\end{equation}
+By introducing \(v(x,t)\), we have also introduced a new problem; what does \(w(x,t)\) actually look like? We note that
+\begin{alignat*}{2}
+\pdv[2]{v(x,t)}{x} &= \pdv{v(x,t)}{t}  \\
+\implies \pdv[2]{U(x,t)}{x} + \pdv[2]{w(x,t)}{x} &= \pdv{U(x,t)}{t} + \pdv{w(x,t)}{t}
+\end{alignat*}
+From \ref{eq:problem} we have that
+\[
+\pdv[2]{U(x,t)}{x} = \pdv{U(x,t)}{t}
+\]
+This means that if we set
+\begin{equation} \label{eq:dummy1}
+ \pdv[2]{w(x,t)}{x}  = 0
+\end{equation}
+and
+\begin{equation} \label{eq:dummy2}
+ \pdv{w(x,t)}{t} = 0
+\end{equation}
+the first condition for \(v(x,t)\) in \vref{eq:dummy} will hold. We can now find a general solution for \(w\). From \vref{eq:dummy1}, we have that
+\begin{align}
+	\pdv[2]{w(x,t)}{x}  &= 0 \nonumber \\
+	\implies\pdv{w(x,t)}{x} &= A  \quad A \in \mathbb{R} \nonumber \\
+	\implies w(x,t) &= Ax + B + h_1(t) \quad B \in \mathbb{R} \label{eq:wX}
+\end{align}
+From \vref{eq:dummy2}, we get that
+\begin{align}
+\pdv{w(x,t)}{t} &= 0 \nonumber \\
+w(x,t) &= C + h_2(x) , \quad C \in \mathbb{R} \label{eq:wT}
+\end{align}
+From \vref{eq:wX} and \vref{eq:wT}, we see that
+\[
+w(x,t) = w(x) = Ax + D, \quad D=B+C
+\]
+because there is no dependence of \(t\) in \vref{eq:wT}.
+We have now found how \(w\) looks like in general. \\
+However, we need to decide the values of \(A\) and \(D\). This can be done by looking at the boundaries for \vref{eq:dummy} at \(x = 0 \) and \(x = L\):
+\begin{align*}
+v(0,t) &= 0 \\
+0 &= U(0,t) + w(x=0) \\
+0 &= a+D
+\end{align*}
+which implies \(D = -a\). Same goes for the boundary at \(x = L\), which gives
+\begin{align*}
+v(L,t) &= 0 \\
+0 &= U(L,t) + w(x=L) \\
+0 &= b+AL-a \\
+\frac{a-b}{L} &= A
+\end{align*}
+In conclusion, we have
+\[
+w(x) = \frac{a-b}{L}x - a
+\]
+As the expression of \(w\) has been found, we have also found \(f(x)\) in \vref{eq:dummy}:
+\begin{align*}
+	v(x,0) &= U(x,0) + w(x) \\
+	&= g(x)+w(x) \\
+	&=f(x)
+\end{align*}
+Having set up the problem properly, we are now ready to solve for \(v(x,t)\). To do so, we make an ansatz that
+\[
+v(x,t) = F(x)G(t)
+\]
+which gives
+\begin{align}
+\pdv[2]{v(x,t)}{x} &= \pdv{v(x,t)}{t} \nonumber \\
+F''(x)G(t) &= F(x)G'(t) \nonumber \\
+\frac{F''(x)}{F(x)} &= \frac{G'(t)}{G(t)} \label{eq:ration}
+\end{align}
+Since the ratios of functions of different variables equals each other, they must be equal to a constant, thus giving
+\[
+\frac{F''(x)}{F(x)} = \frac{G'(t)}{G(t)} = -\lambda
+\]
+Solving for \(F\) we get
+\[
+	F'' = -\lambda F
+\]
+with a general solution
+\[
+F(x) = c_1\cos(x\sqrt{\lambda} ) + c_2\sin(x\sqrt{\lambda})
+\]
+To find the constants \(c_1,c_2\), we will use the boundaries for \(v(x,t)\) at \(x = 0\) and \(x = L\). At this point we will see that it is advantageous for us to have the boundaries equal to zero.\\
+Since
+\[
+v(x,t) = F(x)G(t)
+\]
+We have
+\[
+0 = F(0)G(t) \implies F(0) = 0
+\]
+and
+\[
+0 = F(L)G(t) \implies F(L) = 0
+\]
+At \(x = 0\), the general solution becomes
+\[
+0 = c_1
+\]
+and at \(x = L\):
+\[
+0 =  c_2\sin(L\sqrt{\lambda})
+\]
+Of course, we could set \(c_2 = 0\) too, but this will only give us a trivial solution which is of no interest. Therefore, we must have
+\[
+0 = \sin(L\sqrt{\lambda})
+\]
+Since sine is zero for every multiple of \(\pi\), we have that
+\begin{align*}
+L\sqrt{\lambda} &= k\pi \quad k\in \mathbb{N}\\
+\lambda &= \qty(\frac{k \pi}{L})^2
+\end{align*}
+We notice that we have infinite solutions since \(k \in \mathbb{N}\). Therefore, we might have a different scaling of sine for every \(k\), meaning \(c_2 = c_k\).\\  For every \(k\) we have the particular solution
+\[
+F_k(x) = c_k\sin(x\frac{k \pi}{L})
+\]
+Similar calculations goes for finding \(G(t)\), which also will vary with \(k\):\\
+From \vref{eq:ration} we have
+\[
+G_k'(t) = -\lambda_k G_k(t)
+\]
+this gives
+\[
+G_k(t) = Ce^{-\qty(\frac{k \pi}{L})^2t}
+\]
+Since \(C\) is arbitrary, we could for simplicity set \( C = 1\). The contribution of \(C\) will anyway be indirectly a part of  \(c_k\).
+So, we have found the \(k\)th particular solution of \(G(t)\). \\
+Therefore, we have that
+\[
+v_k(x,t) = c_ke^{-\qty(\frac{k \pi}{L})^2t}\sin(x\frac{k \pi}{L})
+\]
+What remains now is to find \(c_k\). We have not yet taken into account the boundary of \(v(x,t)\) when \(t = 0\). At \(t = 0\), we have that
+\[
+f(x) = c_k\sin(x\frac{k \pi}{L})
+\]
+Multiplying  the equation above by \(\sin(x\frac{k \pi}{L})\), integrating both sides and use the orthogonality of sine (note that this sine is \(L\)-periodic), gives us
+\begin{align*}
+\int_0^Lf(x)\sin(x\frac{k \pi}{L})dx &= c_k\frac{L}{2} \\
+\frac{2}{L}\int_0^Lf(x)\sin(x\frac{k \pi}{L})dx &= c_k
+\end{align*}
+However, we are not looking for one particular solution of \(v\), but for all solutions of \(v\). But from the principle of superposition, every particular solution contributes to another solution. Especially, this means that
+\[
+v(x,t) = \sum_{k=1}^\infty v_k(x,t)
+\]
+
+So, if we step back to what we originally started with,
+\[
+v(x,t) = U(x,t) + w(x,t)
+\]
+we now have only one unknown in the equation above, namely \(U(x,t)\), thus giving us
+\begin{align*}
+ U(x,t) &= v(x,t)- w(x,t) \\
+ &=  \sum_{k=1}^\infty v_k(x,t) - w(x) \\
+ &=\sum_{k=1}^\infty c_ke^{-\qty(\frac{k \pi}{L})^2t}\sin(x\frac{k \pi}{L})  -\qty(\frac{a-b}{L}x - a)
+\end{align*}
+with
+\[
+c_k = \frac{2}{L}\int_0^Lf(x)\sin(x\frac{k \pi}{L})dx
+\]
+\hfill \\
+For our case, that is \vref{eq:diffusion}, we have that \(a = 0\), \(b = 1\), \(g \equiv 0\) and \(L = 1\). Inserting this into the solution of \vref{eq:dummy} gives us
+\begin{equation}\label{eq:analyticalSolution}
+	u(x,t) = \sum_{k=1}^\infty c_ke^{-(k\pi)^2t}\sin(xk\pi)  + x
+\end{equation}
+with
+\begin{align*}
+c_k &= 2\int_0^1(0-x)\cdot\sin(xk\pi)dx \\
+&= - \frac{2}{k\pi}\qty[\frac{\sin(k\pi x)}{k\pi} - x\cos(k\pi x)]_0^1 \\
+&= \frac{2(-1)^{k+2}}{k\pi} \\
+&=  \frac{2(-1)^k}{k\pi}
+\end{align*}
