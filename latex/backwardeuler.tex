@@ -6,14 +6,14 @@
 %
 
 \subsection{Backward Euler} \label{sec:backwardEuler}
-The idea of backward Euler is similar to the forward Euler. Actually, the only difference lies in how we approximate the time derivative of \(u\) which will give us the freedom of choosing any \(\Delta t\) and \(\Delta x\) we like.
+The idea of Backward Euler is similar to that of Forward Euler, as the only difference lies in how we approximate the time derivative of \(u\). The result, however, is the freedom to choose \(\Delta t\) and \(\Delta x\) as we like and be guaranteed a resonable result.
 \subsubsection{Derivation and error analysis}
-We can also use Taylor polynomials of \(u(x_i,t_{j-1})\)to write an approximation of the time derivative of \(u\) around \(x_i,t_j\):
+The time derivative of \(u\) at \((x_i,t_j)\) is once again found through a first order Taylor polynomial around \((x_i,t_j)\), but the Taylor polynomial is now used to approximate \(u_{i,j-1}\), rather than \(u_{i,j+1}\) as in the derivation of the Forward Euler scheme:
 \[
     u_{i,j-1} = u_{i,j} - \Delta t\pdv{u_{i,j}}{t} + \frac{1}{2}\qty(\Delta t)^2\pdv[2]{u(x_i,\tilde{t})}{t}
     \implies \pdv{u_{i,j}}{t} = \frac{u_{i,j}-u_{i,j-1}}{\Delta t} + \frac{1}{2}\Delta t\pdv[2]{u(x_i,\tilde{t})}{t}
 \]
-where \(\tilde{t}\) and the second term are the same as defined in \vref{sec:ForwardEulerDerivation}. \Vref{andrederivert} can be reused as an approximation to the second derivative.
+where \(\tilde{t}\) and the second term are the same as defined in \vref{sec:ForwardEulerDerivation}. The same three-point approximation as in\vref{andrederivert} can be reused to approximate the second derivative with respect to \(x\).
 
 With these approximations, the diffusion equation can be written as
 \begin{alignat*}{2}
@@ -25,7 +25,7 @@ With these approximations, the diffusion equation can be written as
 \end{alignat*}
 In this equation, only the \(u\) on the right hand side is known, while the \(u\)'s on the left side are the ones we are interested in. As it is not possible to find an explicit expression for the quantities of interest, this leads to an implicit scheme. Observe that the error is the same as for the Forward Euler scheme.
 
-To solve the equation above, note that it must hold for all \(i\in\qty[1,n-1]\cap\mathbb{N}\), giving the following set of equations:
+To solve the equation above, note that it must hold for all \(i\in\qty[1,n-1]\cap\mathbb{N}\). When ignoring the error terms, we get the following set of equations:
 \[
     \begin{array}{ccccccc}
         -\alpha \overbrace{u_{0,j}}^0 &+& (1+2\alpha)u_{1,j} &-& \alpha u_{2,j} &=& u_{1,j-1}\\
@@ -36,10 +36,6 @@ To solve the equation above, note that it must hold for all \(i\in\qty[1,n-1]\ca
         -\alpha u_{n-2,j} &+& (1+2\alpha)u_{n-1,j} &-& \alpha \underbrace{u_{n,j}}_1 &=& u_{n-1,j-1}\\
     \end{array}
 \]
-To conclude what we found and taking away the truncation errors, we have the numerical approximation of \(u(x_i,t_{j-1})\) to be
-\begin{equation}\label{eq:backwardEuler}
-u_{i,j-1} = -\alpha u_{i-1,j} + \qty(1+2\alpha)u_{i,j} - \alpha u_{i+1,j}
-\end{equation}
 This can then be written on a matrix form:
 \[
     \begin{bmatrix}
@@ -89,4 +85,4 @@ For this scheme we have that \vref{eq:discreteRatios} for \(G_k(t_j)\) becomes
 -G_k(t_{j-1}) &= -\Delta t G_k(t_j)\mu_k - G_k(t_j) \\
 \frac{G_k(t_{j}) }{G_k(t_{j-1})} &= \frac{1}{1+\Delta t \mu_k}
 \end{align*}
-Since \(1+\Delta t \mu_k \geq 1\) for all \(k,\mu_k,\Delta t\) the fraction is less that one for any choice of \(\mu_k,\Delta t\). This means that Backward Euler is stable for every choice of \(\Delta x, \Delta t\) meaning we do not need, as with Forward Euler, to set restrictions on our choices of \(\Delta x \text{ and } \Delta t\).
+Since \(1+\Delta t \mu_k \geq 1\) for all \(k,\mu_k,\Delta t\), the fraction is less than one for any choice of \(\mu_k,\Delta t\). This means that the Backward Euler scheme is stable for every choice of \(\Delta x, \Delta t\), so there are no restrictions on the choice of \(\Delta x \text{ and } \Delta t\), as opposed to the case with Forward Euler.

@@ -60,14 +60,12 @@ u_{i,j+1} = \qty(1-2\alpha)u_{i,j} + \alpha\qty(u_{i+1,j}+u_{i-1,j})
 \subsubsection{Stability analysis of Forward Euler}\label{forwardstability}
 
 To approximate the time derivative of Forward Euler, we get the ratios in \ref{eq:discreteRatios} to be
-\begin{align*}
+\begin{alignat*}{2}
     \qty(D_tG_k(t))_j &= -G_k(t_j)\mu_k \\
     \frac{G_k(t_{j+1}) - G_k(t_j) }{\Delta t} &= -G_k(t_j)\mu_k \\
     G_k(t_{j+1}) &= -\Delta t G_k(t_j)\mu_k + G_k(t_j) \\
     \frac{G_k(t_{j+1}) }{G_k(t_j)} &= 1-\Delta t \mu_k
-\end{align*}
-As discussed in \vref{sec:ideaNeumann}, we must have that
-\begin{alignat*}{2}
+\intertext{As discussed in \ref{sec:ideaNeumann}, we must have that}
     \abs{\frac{G_k(t_{j+1}) }{G_k(t_j)}} &\leq 1 \\
     \abs{1-\Delta t \mu_k} &\leq 1\\
     \abs{\Delta t \mu_k} &\leq 2\\

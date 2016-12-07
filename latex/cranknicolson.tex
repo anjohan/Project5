@@ -5,7 +5,8 @@
 %  \____|_|  \__,_|_| |_|_|\_\    |_| \_|_|\___\___/|_|___/\___/|_| |_|
 %
 \subsection{Crank-Nicolson} \label{sec:crankNicolson}
-The Crank-Nicolson scheme could be thought of as a combination of the Forward and Backward Euler schemes. We will see that also the Crank-Nicolson scheme is stable for any choice of \(\Delta t \) and \(\Delta x\).
+The Crank-Nicolson scheme can be thought of as a combination of the Forward and Backward Euler schemes. We will see that like the Backward Euler scheme, Crank-Nicolson is stable for any choice of \(\Delta t \) and \(\Delta x\).
+
 \subsubsection{Derivation and error analysis}
 The idea of the Crank-Nicolson algorithm is to use the derivatives at the times \(t_i+\tfrac{1}{2}\Delta t\) rather than at \(t_i\), as the asymmetric Newton quotient used in the derivation of the Forward Euler scheme will now be the symmetric Newton quotient, giving an error proportional to \(\qty(\Delta t)^2\) instead of \(\Delta t\):
 \[
@@ -34,7 +35,7 @@ Since the error is once again accumulated, the global error will have one term p
 
 We have therefore the following approximation
 \begin{equation*}
--\alpha u_{i-1,j+1} + \qty(2+2\alpha)u_{i,j+1} - \alpha u_{i+1,j+1} = \alpha u_{i-1,j} - \qty(2+2\alpha)u_{i,j} + \alpha u_{i+1,j}
+-\alpha u_{i-1,j+1} + \qty(2+2\alpha)u_{i,j+1} - \alpha u_{i+1,j+1} = \alpha u_{i-1,j} - \qty(2-2\alpha)u_{i,j} + \alpha u_{i+1,j}
 \end{equation*}
 
 Solving the above equation is done exactly the same way as for the Backward Euler scheme: As it must hold for all \(i\in\qty[1,n-1]\cap\mathbb{N}\), a linear set of equations arises, which, with \(\beta=2+2\alpha\) and \(\beta'=2-2\alpha\), can be written on a matrix form as
@@ -79,21 +80,19 @@ The matrix is once again tridiagonal, so the solver from project 1 can be reused
 % |___/\__\__,_|_.__/|_|_|_|\__|\__, |
 %                               |___/
 \subsubsection{Stability analysis}
-Since the Crank-Nicolson scheme is derived from using the approximation of the second derivative with respect to \(x\) at \(v_k(x_i,t_j)\) and \(v_k(x_i,t_{j+1})\), we can use the ansatz in \vref{eq:discreteAnsatz} and rewrite the scheme in the following matter:
-\[
-\frac{1}{2}\qty(G_k(t_{j+1})\qty(D_x^2F_k(x) )_i +  G_k(t_j)\qty(D_x^2F_k(x))_i ) = \frac{(F_k(x) )_i }{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) )
-\]
-We found in \vref{sec:ideaNeumann} that \(D_x^2F_k(x))_i = -\mu_kF_k(x_i)\), meaning that we can rewrite the equation above into
-\begin{align*}
+Since the Crank-Nicolson scheme is derived from the approximation of the second derivative with respect to \(x\) at \(v_k(x_i,t_j)\) and \(v_k(x_i,t_{j+1})\), we can use the ansatz in \vref{eq:discreteAnsatz} and rewrite the scheme as follows:
+\begin{alignat*}{2}
+\frac{1}{2}\qty(G_k(t_{j+1})\qty(D_x^2F_k(x) )_i +  G_k(t_j)\qty(D_x^2F_k(x))_i ) &= \frac{(F_k(x) )_i }{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) )
+\intertext{We found in \ref{sec:ideaNeumann} that \(D_x^2F_k(x))_i = -\mu_kF_k(x_i)\), meaning that we can rewrite the equation above into}
 \frac{1}{2}\qty(G_k(t_{j+1})\qty(D_x^2F_k(x) )_i +  G_k(t_j)\qty(D_x^2F_k(x))_i ) &= \frac{F_k(x_i) }{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) ) \\ \hfill \\
 \frac{1}{2}\qty(-\mu_kF_k(x_i)G_k(t_{j+1}) -\mu_kF_k(x_i)G_k(t_j))&= \frac{F_k(x_i)}{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) )  \\\hfill \\
 \frac{-\mu_k}{2}\qty(G_k(t_{j+1}) +G_k(t_j))&= \frac{1}{\Delta t}\qty(G_k(t_{j+1}) - G_k(t_j) )  \\\hfill \\
 -\frac{\Delta t\mu_k}{2}G_k(t_{j+1}) -\frac{\Delta t\mu_k}{2} G_k(t_j)&= G_k(t_{j+1}) - G_k(t_j)   \\\hfill \\
 G_k(t_j)\qty(1-\frac{\Delta t\mu_k}{2})&= G_k(t_{j+1})\qty(1+\frac{\Delta t\mu_k}{2} )    \\\hfill \\
 \frac{1-\frac{\Delta t\mu_k}{2}}{1+\frac{\Delta t\mu_k}{2}}&= \frac{G_k(t_{j+1}) }{G_k(t_j)}
-\end{align*}
+\end{alignat*}
 Since the numerator is always smaller than the denominator, the fraction which we found will always satisfy
 \[
 \abs{\frac{1-\frac{\Delta t\mu_k}{2}}{1+\frac{\Delta t\mu_k}{2}}} \leq 1
 \]
-independent of which \( \Delta t, \Delta x\) we choose. This means that the Crank-Nicolson scheme is stable for any choice of step lengths for \(t\) and \(x\).
+independent of the choice of \(\Delta t\) and \(\Delta x\). This means that the Crank-Nicolson scheme is stable for any choice of step lengths for \(t\) and \(x\).

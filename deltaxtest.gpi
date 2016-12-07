@@ -1,4 +1,4 @@
-set terminal epslatex size 6,7.5 color colortext
+set terminal epslatex size 6,7 color colortext
 
 set output "deltaxtest.plt"
 
