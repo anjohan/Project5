@@ -121,7 +121,7 @@ and at \(x = L\):
 \[
 0 =  c_2\sin(L\sqrt{\lambda})
 \]
-Of course, we could set \(c_2 = 0\) too, but this will only give us a trivial solution which is of no interest. Therefore, we must have
+Of course, \(c_2\) could also be set to \(0\), but this is the trivial solution which is of no interest. Therefore, we must have
 \[
 0 = \sin(L\sqrt{\lambda})
 \]
@@ -141,22 +141,23 @@ G_k'(t) = -\lambda_k G_k(t)
 \]
 this gives
 \[
-G_k(t) = Ce^{-\qty(\frac{k \pi}{L})^2t}
+G_k(t) = C\exp{-\qty(\frac{k \pi}{L})^2t}
 \]
-Since \(C\) is arbitrary, we could for simplicity set \( C = 1\). The contribution of \(C\) will anyway be indirectly a part of  \(c_k\).
-So, we have found the \(k\)th particular solution of \(G(t)\). \\
+Since \(C\) is arbitrary, it could for simplicity be set to \(1\). The contribution of \(C\) will anyway be indirectly a part of  \(c_k\).
+So, we have found the \(k\)th particular solution of \(G(t)\).
+
 Therefore, we have that
 \[
-v_k(x,t) = c_ke^{-\qty(\frac{k \pi}{L})^2t}\sin(x\frac{k \pi}{L})
+v_k(x,t) = c_k\exp{-\qty(\frac{k \pi}{L})^2t}\sin(x\frac{k \pi}{L})
 \]
 What remains now is to find \(c_k\). We have not yet taken into account the boundary of \(v(x,t)\) when \(t = 0\). At \(t = 0\), we have that
 \[
 f(x) = c_k\sin(x\frac{k \pi}{L})
 \]
-Multiplying  the equation above by \(\sin(x\frac{k \pi}{L})\), integrating both sides and use the orthogonality of sine (note that this sine is \(L\)-periodic), gives us
+Multiplying  the equation above by \(\sin(x\frac{k \pi}{L})\), integrating both sides and using the orthogonality of sine (note that this sine is \(L\)-periodic), gives us
 \begin{align*}
-\int_0^Lf(x)\sin(x\frac{k \pi}{L})dx &= c_k\frac{L}{2} \\
-\frac{2}{L}\int_0^Lf(x)\sin(x\frac{k \pi}{L})dx &= c_k
+\int_0^Lf(x)\sin(x\frac{k \pi}{L})\dd{x} &= c_k\frac{L}{2} \\
+\frac{2}{L}\int_0^Lf(x)\sin(x\frac{k \pi}{L})\dd{x} &= c_k
 \end{align*}
 However, we are not looking for one particular solution of \(v\), but for all solutions of \(v\). But from the principle of superposition, every particular solution contributes to another solution. Especially, this means that
 \[
@@ -171,20 +172,20 @@ we now have only one unknown in the equation above, namely \(U(x,t)\), thus givi
 \begin{align*}
  U(x,t) &= v(x,t)- w(x,t) \\
  &=  \sum_{k=1}^\infty v_k(x,t) - w(x) \\
- &=\sum_{k=1}^\infty c_ke^{-\qty(\frac{k \pi}{L})^2t}\sin(x\frac{k \pi}{L})  -\qty(\frac{a-b}{L}x - a)
+ &=\sum_{k=1}^\infty c_k\exp{-\qty(\frac{k \pi}{L})^2t}\sin(x\frac{k \pi}{L})  -\qty(\frac{a-b}{L}x - a)
 \end{align*}
 with
 \[
-c_k = \frac{2}{L}\int_0^Lf(x)\sin(x\frac{k \pi}{L})dx
+c_k = \frac{2}{L}\int_0^Lf(x)\sin(x\frac{k \pi}{L})\dd{x}
 \]
 \hfill \\
 For our case, that is \vref{eq:diffusion}, we have that \(a = 0\), \(b = 1\), \(g \equiv 0\) and \(L = 1\). Inserting this into the solution of \vref{eq:dummy} gives us
 \begin{equation}\label{eq:analyticalSolution}
-	u(x,t) = \sum_{k=1}^\infty c_ke^{-(k\pi)^2t}\sin(xk\pi)  + x
+	u(x,t) = \sum_{k=1}^\infty c_k\exp{-(k\pi)^2t}\sin(xk\pi)  + x
 \end{equation}
 with
 \begin{align*}
-c_k &= 2\int_0^1(0-x)\cdot\sin(xk\pi)dx \\
+c_k &= 2\int_0^1(0-x)\cdot\sin(xk\pi)\dd{x} \\
 &= - \frac{2}{k\pi}\qty[\frac{\sin(k\pi x)}{k\pi} - x\cos(k\pi x)]_0^1 \\
 &= \frac{2(-1)^{k+2}}{k\pi} \\
 &=  \frac{2(-1)^k}{k\pi}

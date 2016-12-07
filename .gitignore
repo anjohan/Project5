@@ -2,6 +2,7 @@
 *.x
 *.dat
 *.plt
+*.swp
 
 
 ## Core latex/pdflatex auxiliary files:

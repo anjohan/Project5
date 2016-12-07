@@ -43,7 +43,7 @@ Our differential equation can therefore be written in two dimensions as
 \pdv[2]{u}{x} + \pdv[2]{u}{y} = \pdv{u}{t}
 \end{equation}
 
-Time and position are again discretised, with the notation \(u_{i,j,k} = u(x_i,y_j,t_k)\).
+Time and position are again discretised, with the notation \(u_{i,j,k} = u(x_i,y_j,t_k)\). For all simulations, \(\Delta y\) will be set equal to \(\Delta x\).
 
 \input{latex/analyticaltwodim.tex}
 
@@ -57,6 +57,8 @@ Time and position are again discretised, with the notation \(u_{i,j,k} = u(x_i,y
 \printbibliography
 \newpage
 
+\setcounter{section}{0}
+\renewcommand{\thesection}{Appendix \Alph{section}}
 \input{latex/appendix.tex}
 
 
