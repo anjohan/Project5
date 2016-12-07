@@ -8,9 +8,13 @@ endif
 
 latexsrc = report.tex latex/kilder.bib latex/analyticalonedim.tex latex/cranknicolson.tex latex/introduction.tex  latex/preamble.tex latex/analyticaltwodim.tex latex/discretisation.tex latex/vonneumann.tex latex/appendix.tex latex/eulertwodim.tex latex/onedimres.tex latex/backwardeuler.tex latex/forwardeuler.tex latex/physics.tex latex/twodimres.tex
 
-all: report.pdf
+all: report.pdf animation.gif
 report.pdf: ${latexsrc} deltaxtest.plt twodim001.plt twodim01.plt
 	latexmk -pdf report.tex
+animation.gif: animate1d.py animation.dat
+	python animate1d.py animation.dat
+animation.dat: onedim_ui.x
+	./onedim_ui.x animation.dat Crank_Nicolson 0.00001 0.3 0.01 300
 onedimlib.o: onedimlib.cpp onedimlib.h
 	${gpp} -c ${parallel} onedimlib.cpp
 test.o: test.cpp

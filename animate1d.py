@@ -19,9 +19,9 @@ for line in lines[1:]:
     ylabel("u")
     plot(x,u,label="t=%.2f" % t)
     legend(loc="upper left")
-    savefig("%s%08d.png" % (name,i))
+    savefig("%s%08d.png" % (name,i), dpi=75)
     i += 1
 
-delay = int(round(1000.0/i))
+delay = int(round(2000.0/i))
 os.system("convert -delay %d -loop 0 %s*.png %s.gif" % (delay,name,name))
 os.system("rm *.png")
