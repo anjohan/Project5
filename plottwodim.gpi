@@ -1,0 +1,29 @@
+set terminal epslatex size 6,7.5 color colortext
+
+set output sprintf("%s.plt",filename)
+
+set nokey
+set size ratio -1
+
+set format xy "$\\num{%g}$"
+set format cb "$\\num{%g}$"
+set xrange [0:1]
+set yrange [0:1]
+set palette gray
+
+stats sprintf("%s0.00000000.dat",filename) skip 1 nooutput
+
+normaliser = 1.0/(STATS_columns-1)
+
+exact(x,y,t) = sin(pi*x)*sin(pi*y)*exp(-2*pi*pi*t)
+
+set multiplot layout 3,2 scale 1,1
+
+do for [t in "0.00 0.05 0.50"] {
+    set cbrange [0:1]
+    set title sprintf("\\textbf{Numerical simulation, $\\pmb{t=\\num{%s}}$}",t)
+    plot sprintf("%s%s000000.dat",filename,t) matrix using ($1*normaliser):($2*normaliser):3 with image
+    set title sprintf("\\textbf{Difference from analytical solution}")
+    unset cbrange
+    plot sprintf("%s%s000000.dat",filename,t) matrix using ($1*normaliser):($2*normaliser):(abs($3-exact($1*normaliser,$2*normaliser,t))) with image
+}

@@ -2,95 +2,82 @@
 Consider the diffusion equation with the given boundaries:
 \begin{equation}\label{eq:problem}
 \begin{aligned}
-\pdv[2]{U(x,t)}{x} &= \pdv{U(x,t)}{t} &\: t>0, \:\:x\in[0,L] \\
-U(x,0) &= g(x)  &0 < x < L\\
-U(0,t) &=  a & a \in \mathbb{R},  t>0 \\
-U(L,t) &= b &b \in \mathbb{R}, t>0
+\pdv[2]{u(x,t)}{x} &= \pdv{u(x,t)}{t} &\: t>0, \:\:x\in[0,L] \\
+u(x,0) &= g(x)  &0 < x < L\\
+u(0,t) &=  a & a \in \mathbb{R},  t>0 \\
+u(L,t) &= b &b \in \mathbb{R}, t>0
 \end{aligned}
 \end{equation}
-First, we notice the boundaries at \(x = 0\) and \(x = L\). As we will see, having these boundaries equal to 0 would make the problem much easier to solve. Therefore, we introduce a new function
+As will become clear later, life is much easier when \(a\) and \(b\) are both zero. As such, we introduce a new function
 \[
-v(x,t) = U(x,t) + w(x,t)
+v(x,t) = u(x,t) + w(x,t)
 \]
-where we want the following to hold:
+where \(u\) is a solution of \ref{eq:problem} and the following also holds:
 \begin{equation}\label{eq:dummy}
-\begin{aligned}
-\pdv[2]{v(x,t)}{x} &= \pdv{v(x,t)}{t} &\: t>0, \:\:x\in[0,L] \\
-v(x,0) &= f(x)  &0 < x < L\\
-v(0,t) &=  0 &  t>0 \\
-v(L,t) &= 0 & t>0
-\end{aligned}
+    \begin{aligned}
+        \pdv[2]{v(x,t)}{x} &= \pdv{v(x,t)}{t} &\: t>0, \:\:x\in[0,L] \\
+        v(x,0) &= f(x)  &0 < x < L\\
+        v(0,t) &=  0 &  t>0 \\
+        v(L,t) &= 0 & t>0
+    \end{aligned}
 \end{equation}
-By introducing \(v(x,t)\), we have also introduced a new problem; what does \(w(x,t)\) actually look like? We note that
+When introducing \(v(x,t)\), a new problem arises: What does \(w(x,t)\) actually look like? Inserting the definition of \(v\) into \ref{eq:dummy} gives
 \begin{alignat*}{2}
-\pdv[2]{v(x,t)}{x} &= \pdv{v(x,t)}{t}  \\
-\implies \pdv[2]{U(x,t)}{x} + \pdv[2]{w(x,t)}{x} &= \pdv{U(x,t)}{t} + \pdv{w(x,t)}{t}
+    \pdv[2]{v(x,t)}{x} &= \pdv{v(x,t)}{t}  \\
+    \pdv[2]{u(x,t)}{x} + \pdv[2]{w(x,t)}{x} &= \pdv{u(x,t)}{t} + \pdv{w(x,t)}{t}
 \end{alignat*}
-From \ref{eq:problem} we have that
+The assumption that \(u\) is a solution to the original problem, which means that
 \[
-\pdv[2]{U(x,t)}{x} = \pdv{U(x,t)}{t}
+    \pdv[2]{u(x,t)}{x} = \pdv{u(x,t)}{t}
 \]
-This means that if we set
+As a result, \ref{eq:dummy} will hold if
 \begin{equation} \label{eq:dummy1}
- \pdv[2]{w(x,t)}{x}  = 0
+    \pdv[2]{w(x,t)}{x} = 0 = \pdv{w(x,t)}{t}
 \end{equation}
-and
-\begin{equation} \label{eq:dummy2}
- \pdv{w(x,t)}{t} = 0
-\end{equation}
-the first condition for \(v(x,t)\) in \vref{eq:dummy} will hold. We can now find a general solution for \(w\). From \vref{eq:dummy1}, we have that
-\begin{align}
-	\pdv[2]{w(x,t)}{x}  &= 0 \nonumber \\
-	\implies\pdv{w(x,t)}{x} &= A  \quad A \in \mathbb{R} \nonumber \\
-	\implies w(x,t) &= Ax + B + h_1(t) \quad B \in \mathbb{R} \label{eq:wX}
-\end{align}
-From \vref{eq:dummy2}, we get that
-\begin{align}
-\pdv{w(x,t)}{t} &= 0 \nonumber \\
-w(x,t) &= C + h_2(x) , \quad C \in \mathbb{R} \label{eq:wT}
-\end{align}
-From \vref{eq:wX} and \vref{eq:wT}, we see that
-\[
-w(x,t) = w(x) = Ax + D, \quad D=B+C
-\]
+These two equalities are separately fulfilled if
+\begin{alignat*}{2}
+	\pdv[2]{w(x,t)}{x}  &= 0\\
+	\pdv{w(x,t)}{x} &= A\\
+	w(x,t) &= Ax + B + h_1(t) \eqtag{eq:wX}
+\shortintertext{and}
+    \pdv{w(x,t)}{t} &= 0\\
+    w(x,t) &= C + h_2(x)\eqtag{eq:wT}
+\intertext{Combining these two requirements for \(w\), we see that it must be on the form}
+    w(x,t) &= w(x) = Ax + D
+\end{alignat*}
 because there is no dependence of \(t\) in \vref{eq:wT}.
-We have now found how \(w\) looks like in general. \\
-However, we need to decide the values of \(A\) and \(D\). This can be done by looking at the boundaries for \vref{eq:dummy} at \(x = 0 \) and \(x = L\):
-\begin{align*}
-v(0,t) &= 0 \\
-0 &= U(0,t) + w(x=0) \\
-0 &= a+D
-\end{align*}
-which implies \(D = -a\). Same goes for the boundary at \(x = L\), which gives
-\begin{align*}
-v(L,t) &= 0 \\
-0 &= U(L,t) + w(x=L) \\
-0 &= b+AL-a \\
-\frac{a-b}{L} &= A
-\end{align*}
+
+We have now found a possible form for \(w\). However, the values of \(A\) and \(D\) still need to be determined. This can be done by looking at the boundary conditions for \(v\) at \(x = 0 \) and \(x = L\) and using the assumption that \(u\) fulfills the boundary conditions of \ref{eq:problem}, i.e. \(u(0,t)=a\):
+\[
+    0 = v(0,t) = u(0,t) + w(x=0) = a+D
+\]
+which implies \(D = -a\). Similarly, the boundary at \(x=L\) gives
+\[
+    0 = v(L,t) = u(L,t) + w(x=L) = b+AL-a \implies A = \frac{a-b}{L}
+\]
 In conclusion, we have
 \[
-w(x) = \frac{a-b}{L}x - a
+    w(x) = \frac{a-b}{L}x - a
 \]
 As the expression of \(w\) has been found, we have also found \(f(x)\) in \vref{eq:dummy}:
 \begin{align*}
-	v(x,0) &= U(x,0) + w(x) \\
+	v(x,0) &= u(x,0) + w(x) \\
 	&= g(x)+w(x) \\
 	&=f(x)
 \end{align*}
-Having set up the problem properly, we are now ready to solve for \(v(x,t)\). To do so, we make an ansatz that
+Having set up the problem properly, we are now ready to solve for \(v(x,t)\). To do so, we make the assumption that \(v\) is separable, i.e. it can be written as
 \[
-v(x,t) = F(x)G(t)
+    v(x,t) = F(x)G(t)
 \]
-which gives
-\begin{align}
-\pdv[2]{v(x,t)}{x} &= \pdv{v(x,t)}{t} \nonumber \\
-F''(x)G(t) &= F(x)G'(t) \nonumber \\
-\frac{F''(x)}{F(x)} &= \frac{G'(t)}{G(t)} \label{eq:ration}
-\end{align}
-Since the ratios of functions of different variables equals each other, they must be equal to a constant, thus giving
+which means that
+\begin{alignat*}{2}
+    \pdv[2]{v(x,t)}{x} &= \pdv{v(x,t)}{t}\\
+    F''(x)G(t) &= F(x)G'(t)\\
+    \frac{F''(x)}{F(x)} &= \frac{G'(t)}{G(t)}
+\end{alignat*}
+As the two sides of the last equation depend on different variables which can be varied independently, both sides must equal some constant \(-\lambda\):
 \[
-\frac{F''(x)}{F(x)} = \frac{G'(t)}{G(t)} = -\lambda
+    \frac{F''(x)}{F(x)} = \frac{G'(t)}{G(t)} = -\lambda\eqtag{eq:ration}
 \]
 Solving for \(F\) we get
 \[
@@ -98,95 +85,79 @@ Solving for \(F\) we get
 \]
 with a general solution
 \[
-F(x) = c_1\cos(x\sqrt{\lambda} ) + c_2\sin(x\sqrt{\lambda})
+    F(x) = c_1\cos(x\sqrt{\lambda} ) + c_2\sin(x\sqrt{\lambda})
 \]
-To find the constants \(c_1,c_2\), we will use the boundaries for \(v(x,t)\) at \(x = 0\) and \(x = L\). At this point we will see that it is advantageous for us to have the boundaries equal to zero.\\
-Since
+To find the constants \(c_1\) and \(c_2\), we will use the boundaries for \(v(x,t)\) at \(x = 0\) and \(x = L\). The advantage of having the boundary conditions equal to zero now becomes apparent, as this implies
+\begin{alignat*}{8}
+    0 &= v(0,t) &= F(0)G(t) \implies F(0) &= 0
+    \shortintertext{and}
+    0 &= v(L,t) &= F(L)G(t) \implies F(L) &= 0
+\end{alignat*}
+Since \(\sin(0)=0\neq\cos(0)\), we must have that
+\begin{alignat*}{2}
+    0 &= c_1
+    \shortintertext{and}
+    0 &=  c_2\sin(L\sqrt{\lambda})
+\intertext{Of course, \(c_2\) could also be set to \(0\), but this is the trivial solution which is of no interest. Therefore, we must have}
+    0 &= \sin(L\sqrt{\lambda})
+\end{alignat*}
+Since sine is zero for every integer multiple of \(\pi\), we have that
+\begin{alignat*}{2}
+    L\sqrt{\lambda} &= k\pi \quad k\in \mathbb{N}\\
+    \lambda &= \qty(\frac{k \pi}{L})^2
+\end{alignat*}
+In conclusion, the following is a solution for all \(k\in\mathbb{N}\):
 \[
-v(x,t) = F(x)G(t)
+    F_k(x) = c_k\sin(x\frac{k \pi}{L})
 \]
-We have
+Similarly, \ref{eq:ration} implies that
 \[
-0 = F(0)G(t) \implies F(0) = 0
+    G_k'(t) = -\lambda_k G_k(t) \implies
+    G_k(t) = C_k\exp{-\qty(\frac{k \pi}{L})^2t}
 \]
-and
-\[
-0 = F(L)G(t) \implies F(L) = 0
-\]
-At \(x = 0\), the general solution becomes
-\[
-0 = c_1
-\]
-and at \(x = L\):
-\[
-0 =  c_2\sin(L\sqrt{\lambda})
-\]
-Of course, \(c_2\) could also be set to \(0\), but this is the trivial solution which is of no interest. Therefore, we must have
-\[
-0 = \sin(L\sqrt{\lambda})
-\]
-Since sine is zero for every multiple of \(\pi\), we have that
-\begin{align*}
-L\sqrt{\lambda} &= k\pi \quad k\in \mathbb{N}\\
-\lambda &= \qty(\frac{k \pi}{L})^2
-\end{align*}
-We notice that we have infinite solutions since \(k \in \mathbb{N}\). Therefore, we might have a different scaling of sine for every \(k\), meaning \(c_2 = c_k\).\\  For every \(k\) we have the particular solution
-\[
-F_k(x) = c_k\sin(x\frac{k \pi}{L})
-\]
-Similar calculations goes for finding \(G(t)\), which also will vary with \(k\):\\
-From \vref{eq:ration} we have
-\[
-G_k'(t) = -\lambda_k G_k(t)
-\]
-this gives
-\[
-G_k(t) = C\exp{-\qty(\frac{k \pi}{L})^2t}
-\]
-Since \(C\) is arbitrary, it could for simplicity be set to \(1\). The contribution of \(C\) will anyway be indirectly a part of  \(c_k\).
-So, we have found the \(k\)th particular solution of \(G(t)\).
+For simplicity, \(C_k\) can be absorbed into \(c_k\).
 
-Therefore, we have that
+We are now close to an expression for \(v\):
 \[
-v_k(x,t) = c_k\exp{-\qty(\frac{k \pi}{L})^2t}\sin(x\frac{k \pi}{L})
+    v_k(x,t) = c_k\exp{-\qty(\frac{k \pi}{L})^2t}\sin(x\frac{k \pi}{L})
 \]
-What remains now is to find \(c_k\). We have not yet taken into account the boundary of \(v(x,t)\) when \(t = 0\). At \(t = 0\), we have that
+What remains is to find \(c_k\). The final, unused piece of information is the initial condition, i.e. \(v(x,0)\). Inserting \(t=0\) in the equation above makes the exponential \(1\), i.e.
 \[
-f(x) = c_k\sin(x\frac{k \pi}{L})
+    f(x) = c_k\sin(x\frac{k \pi}{L})
 \]
 Multiplying  the equation above by \(\sin(x\frac{k \pi}{L})\), integrating both sides and using the orthogonality of sine (note that this sine is \(L\)-periodic), gives us
 \begin{align*}
-\int_0^Lf(x)\sin(x\frac{k \pi}{L})\dd{x} &= c_k\frac{L}{2} \\
-\frac{2}{L}\int_0^Lf(x)\sin(x\frac{k \pi}{L})\dd{x} &= c_k
+    \int_0^Lf(x)\sin(x\frac{k \pi}{L})\dd{x} &= c_k\frac{L}{2} \\
+    \frac{2}{L}\int_0^Lf(x)\sin(x\frac{k \pi}{L})\dd{x} &= c_k
 \end{align*}
-However, we are not looking for one particular solution of \(v\), but for all solutions of \(v\). But from the principle of superposition, every particular solution contributes to another solution. Especially, this means that
+However, we are not looking for one particular solution of \ref{eq:dummy}, but for all solutions. From the principle of superposition, every particular solution contributes to another solution. Specifically, this means that
 \[
-v(x,t) = \sum_{k=1}^\infty v_k(x,t)
+    v(x,t) = \sum_{k=1}^\infty v_k(x,t)
 \]
 
-So, if we step back to what we originally started with,
+Remember now the original ansatz
 \[
-v(x,t) = U(x,t) + w(x,t)
+    v(x,t) = u(x,t) + w(x,t)
 \]
-we now have only one unknown in the equation above, namely \(U(x,t)\), thus giving us
+As \(v\) and \(w\) have now been determined, \(u\) can be found through a reorganisation:
 \begin{align*}
- U(x,t) &= v(x,t)- w(x,t) \\
- &=  \sum_{k=1}^\infty v_k(x,t) - w(x) \\
- &=\sum_{k=1}^\infty c_k\exp{-\qty(\frac{k \pi}{L})^2t}\sin(x\frac{k \pi}{L})  -\qty(\frac{a-b}{L}x - a)
+    u(x,t) &= v(x,t)- w(x,t) \\
+    &=  \sum_{k=1}^\infty v_k(x,t) - w(x) \\
+    &=\sum_{k=1}^\infty c_k\exp{-\qty(\frac{k \pi}{L})^2t}\sin(x\frac{k \pi}{L})  -\qty(\frac{a-b}{L}x - a)
 \end{align*}
 with
 \[
-c_k = \frac{2}{L}\int_0^Lf(x)\sin(x\frac{k \pi}{L})\dd{x}
+    c_k = \frac{2}{L}\int_0^Lf(x)\sin(x\frac{k \pi}{L})\dd{x}
 \]
 \hfill \\
-For our case, that is \vref{eq:diffusion}, we have that \(a = 0\), \(b = 1\), \(g \equiv 0\) and \(L = 1\). Inserting this into the solution of \vref{eq:dummy} gives us
+For our case, that is \vref{eq:diffusion}, we have that \(a = 0\), \(b = 1\), \(g(x) = 0\) and \(L = 1\). Inserting this into the solution of \vref{eq:dummy} gives us
 \begin{equation}\label{eq:analyticalSolution}
 	u(x,t) = \sum_{k=1}^\infty c_k\exp{-(k\pi)^2t}\sin(xk\pi)  + x
 \end{equation}
 with
 \begin{align*}
-c_k &= 2\int_0^1(0-x)\cdot\sin(xk\pi)\dd{x} \\
-&= - \frac{2}{k\pi}\qty[\frac{\sin(k\pi x)}{k\pi} - x\cos(k\pi x)]_0^1 \\
-&= \frac{2(-1)^{k+2}}{k\pi} \\
-&=  \frac{2(-1)^k}{k\pi}
+    c_k &= 2\int_0^1(0-x)\cdot\sin(xk\pi)\dd{x}
+    = - \frac{2}{k\pi}\qty[\frac{\sin(k\pi x)}{k\pi} - x\cos(k\pi x)]_0^1
+    = \frac{2(-1)^{k+2}}{k\pi}
+    =  \frac{2(-1)^k}{k\pi}
 \end{align*}

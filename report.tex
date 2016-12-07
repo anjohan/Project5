@@ -16,8 +16,7 @@ Hei.
 % | (_) | | | |  __/ (_| | | | | | | |
 %  \___/|_| |_|\___|\__,_|_|_| |_| |_|
 \section{Mathematical theory in one dimension}
-Before we can begin our analysis on how it is possible to numerically solve \vref{eq:diffusion}, we will first take a look at the analytical solution. When having an analytical solution at hand, we can use it further to find which conditions the numerical methods must hold to give us stable results.
-
+Before we can begin our analysis on how it is possible to numerically solve the diffusion equation, we will first take a look at the analytical solution. This analytical solution can be used in von Neumann analysis to find requirements for the numerical parameters to ensure that a reasonable solution is found.
 \input{latex/analyticalonedim.tex}
 
 \input{latex/discretisation.tex}
@@ -50,6 +49,8 @@ Time and position are again discretised, with the notation \(u_{i,j,k} = u(x_i,y
 \input{latex/eulertwodim.tex}
 
 \input{latex/onedimres.tex}
+
+\input{latex/twodimres.tex}
 
 \clearpage
 \addcontentsline{toc}{section}{References}

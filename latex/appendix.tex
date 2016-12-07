@@ -83,7 +83,7 @@ In \vref{eq:solveFrom}, we can solve for \(G(t)\):
 \]
 which gives the general solution
 \[
-G(t) = Ce^{-\lambda t}
+G(t) = C\exp{-\lambda t}
 \]
 where we set the constant \(C = 1\). To find \(\lambda\) we just the expression of \(\nu_m\) which we found in \vref{eq:notSoMysteriousNu}:
 \begin{align*}
@@ -95,7 +95,7 @@ we see that the value of \(\lambda \) depends on the value of \(k\) and \(m\), t
 
 In total, we have the following particular solution of \(u\):
 \[
-u_{k,m}(x,y,t) =  c_kd_m\sin(\frac{k\pi}{L}x)\sin(\frac{m\pi}{L}y)e^{-\lambda_{k,m} t}
+u_{k,m}(x,y,t) =  c_kd_m\sin(\frac{k\pi}{L}x)\sin(\frac{m\pi}{L}y)\exp{-\lambda_{k,m} t}
 \]
 To decide \(c_k\) and \(d_m\), we have to look at the boundary of \(u\) at \(t = 0\), which gives
 \[
@@ -108,5 +108,5 @@ meaning that \(c_k = d_m = k = m = 1\) and therefore
 
 This gives the final solution of our problem described in \vref{eq:twoDim} and \vref{eq:twoDimBoundaries} to be
 \[
-u(x,y,t) = \sin(\frac{\pi}{L}x)\sin(\frac{\pi}{L}y)e^{-2\qty(\frac{\pi}{L})^2 t}
+u(x,y,t) = \sin(\frac{\pi}{L}x)\sin(\frac{\pi}{L}y)\exp{-2\qty(\frac{\pi}{L})^2 t}
 \]

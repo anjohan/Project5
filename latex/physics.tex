@@ -11,7 +11,7 @@ The two most important equations in diffusion are Fick's laws, which, in one dim
 \[
 J = -D\pdv{C}{x} \qquad \qquad \pdv{C}{t} = D\pdv[2]{C}{x}
 \]
-where \(D\) is the diffusion coefficient, \(J\) the flux, i.e. the number of particles moving per area, and \(C\) the concentration, i.e. the number of particles per volume. Observe that Fick's second law, which is also simply called the diffusion equation, is the partial differential equation which is solved numerically on a dimensionless form in this project.
+where \(D\) is the diffusion coefficient, \(J\) the flux, i.e. the number of particles moving per area, and \(C\) the concentration, i.e. the number of particles per volume. Fick's second law, which is also simply called the diffusion equation, is the partial differential equation which is solved numerically on a dimensionless form in this project.
 
 
 %  _____ _      _    _        __ _          _
@@ -44,7 +44,7 @@ where \(D\) is the diffusion coefficient, \(J\) the flux, i.e. the number of par
         \draw (6,2,0) -- (10,2,0);
         \draw (10,0,0) -- (10,0,2) -- (10,2,2) -- (10,2,0) -- (10,0,0);
     \end{tikzpicture}
-    \caption{Sketch of the infinitesimal volume element used the derivation of Fick's laws in one dimension.}\label{fig:fick}
+    \caption{Sketch of the infinitesimal volume element used in the derivation of Fick's laws in one dimension.}\label{fig:fick}
 \end{figure}
 
 As stated above, diffusion is the process of random walk. In one dimension, this means that each particle will have a \(\SI{50}{\percent}\) probability of moving one step to the left, and a \(\SI{50}{\percent}\) probability of moving one step to the right. As such, the net movement of particles to the right between \(x\) and \(x+\Delta x\) equals half the particles at point \(x\) minus half the particles at point \(x+\Delta x\). Since the flux is the movement of particles per cross-section area \(A\) (marked with grey in the figure) per time interval \(\Delta t\), this can be formulated mathematically as
@@ -92,9 +92,31 @@ Inserting Fick's first law for \(J\) on the left hand side, Fick's second law ap
     D\pdv[2]{C}{x} &= \pdv{C}{t}
 \end{alignat*}
 
+
+%      _                 _             _        _
+%  ___| |_ ___  __ _  __| |_   _   ___| |_ __ _| |_ ___
+% / __| __/ _ \/ _` |/ _` | | | | / __| __/ _` | __/ _ \
+% \__ \ ||  __/ (_| | (_| | |_| | \__ \ || (_| | ||  __/
+% |___/\__\___|\__,_|\__,_|\__, | |___/\__\__,_|\__\___|
+%                          |___/
 \subsection{Steady state}\label{steadystate}
 When \(t\to\infty\), the system will reach a steady state where the concentration at each point does not change with time. A different formulation is that for each volume element, the number of particles entering must be the same as the number of particles leaving, which means that the flux must be the same at all points. Using Fick's first law, this can be formulated as
 \[
 \text{constant} = J = -D\pdv{C}{x}
 \]
 which means that the concentration must be a linear function of \(x\). This is a test which both the analytical and the numerical solutions must pass.
+
+
+%  _       _ _   _       _     _                           _
+% (_)_ __ (_) |_(_) __ _| |   | |__   ___  _   _ _ __   __| | __ _ _ __ _   _
+% | | '_ \| | __| |/ _` | |   | '_ \ / _ \| | | | '_ \ / _` |/ _` | '__| | | |
+% | | | | | | |_| | (_| | |_  | |_) | (_) | |_| | | | | (_| | (_| | |  | |_| |
+% |_|_| |_|_|\__|_|\__,_|_( ) |_.__/ \___/ \__,_|_| |_|\__,_|\__,_|_|   \__, |
+%                         |/                                            |___/
+\subsection{Initial and boundary conditions}
+We will study a situation with a constant source at \(x=L\) and a drain at \(x=0\), with the system initially containing \(0\) particles everywhere but at the source. In the dimensionless form, this can be formulated as
+\begin{alignat*}{6}
+u(x,0) &= 0\qquad & x&\in\left[0,1\right)\\
+u(0,t) &= 0\qquad & t&\in\mathbb{R}\\
+u(L,t) &= 1\qquad & t&\in\mathbb{R}
+\end{alignat*}

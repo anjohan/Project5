@@ -1,16 +1,12 @@
 \section{Introduction}
-Partial differential equations is a subject of many fields. These equations can describe the behavior of many natural phenomenas such as waves of sound or sea, the flow of a liquid, growth of a population or diffusion of different processes.
+Partial differential equations is a subject of many fields. These equations can describe the behavior of many natural phenomenas such as waves of sound or sea, the flow of a liquid, growth of a population or diffusion, which is the phenomenon studied in this report. Diffusion is an important process which we find everywhere around us, from water softening spaghetti by diffusing into it to the random motion of viruses on the hunt for fresh cells to destroy.
 
-These equations are often solved numerically since an analytical solution is difficult, or perhaps impossible to find. An example is the Navier-Stokes equation to model the flow of a viscous flow when not certain assumptions to simplify the equations has been made.
-\todo[inline]{skrive noe kult om diffusjon?}
-In this report we will focus on how we can numerically solve the diffusion equation, which is given by
+Partial differential equations are often solved numerically since an analytical solution is difficult, or perhaps impossible to find. An example is the Navier-Stokes equation to model the flow of a viscous fluid when not certain assumptions to simplify the equations has been made.
+
+In this report we will focus on how we can numerically solve the diffusion equation on a dimensionless form, which is given by
 \begin{equation}\label{eq:diffusion}
 \begin{aligned}
-\pdv[2]{u(x,t)}{x} &= \pdv{u(x,t)}{t} &\: t>0, \:\:x\in[0,L] \\
-u(x,0) &= 0  &0 < x < L\\
-u(0,t) &= 0 &t>0 \\
-u(L,t) &= 1&t>0
+\pdv{u}{t} = \nabla^2 u
 \end{aligned}
 \end{equation}
-with \(L = 1\).
-\todo[inline]{noen fysiske forklaringer paa boundaries}
+After deriving Fick's laws of diffusion, we derive and analyse methods for solving the equation in both one and two dimensions. Only the explicit Forward Euler scheme is used in two dimensions, while the one-dimensional equation is also solved with the implicit Backward Euler and Crank-Nicolson schemes. In one dimension, von Neumann stability analysis is used to find criterions which guarantee the stability of the methods.

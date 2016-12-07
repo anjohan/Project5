@@ -1,64 +1,64 @@
 \subsubsection{The idea behind von Neumann stability analysis}\label{sec:ideaNeumann}
-As we now have set up the algorithm using Forward Euler to approximate the derivatives, we might ask ourselves whether this method gives us stable results. This is an important question, since it may happen that the numerical errors that we are doing propagate in such matter that it will corrupt our final results. To see whether this is the case, we will use the method of Von Neumann to study the stability of the Forward Euler scheme, as well as for the Backward Euler in \vref{sec:backwardEuler} and Crank-Nicolson in \vref{sec:crankNicolson}.
+As we now have set up the algorithm using Forward Euler to approximate the derivatives, we might ask ourselves whether this method gives us stable results. This is an important question, since it may happen that the numerical errors propagate in such a manner that it will corrupt the final results. To see whether this is the case, we will use the method of von Neumann to study the stability of the Forward Euler scheme, as well as the Backward Euler and Crank-Nicolson schemes.
 
 
 The problem of approximating \(u(x,t)\) is to sufficiently approximate the infinite series given in \vref{eq:analyticalSolution} and the exact value of the \(c_k\)s. Since \( x\) does not include infinity and therefore can be computed directly, we can assume that \(x\) will not contribute to the propagation of error. Therefore, we must look at the stability when calculating \( \sum_{k=1}^\infty c_ke^{-(k\pi)^2t}\sin(xk\pi) \), i.e the solution of \(v(x,t)\) to make sure it will not blow up the solution of \(u(x,t)\).
 
 If we proceed in the similar manner as for finding the analytical solution and making the ansatz that
 \begin{equation}\label{eq:discreteAnsatz}
-v_{k_{i,j}} = F_k(x_i)G_k(t_j)
+    v_{k_{i,j}} = F_k(x_i)G_k(t_j)
 \end{equation}
 
 and introducing \(D_x^2\) and \(D_t\) as the numerical approximations of the spatial and time derivatives respectively, we get that
 \[
-G(t_j)\:\qty(D_x^2F_k(x))_i = F(x_i)\:\qty(D_tG(t))_j
+    G(t_j)\:\qty(D_x^2F_k(x))_i = F(x_i)\:\qty(D_tG(t))_j
 \]
 where \(\qty(D_x^2F_k(x))_i\) and \(\qty(D_tG(t))_j\) means that we are taking the derivative around the \(i\)-th and \(j\)-th step respectively.
 From what we found above, we have that
 \begin{equation}\label{eq:discreteRatios}
-\frac{\qty(D_x^2F_k(x))_i }{ F(x_i)} = \frac{\qty(D_tG_k(t))_j}{G_k(t_j)} = -\mu_{k_{i,j}}
+    \frac{\qty(D_x^2F_k(x))_i }{ F(x_i)} = \frac{\qty(D_tG_k(t))_j}{G_k(t_j)} = -\mu_{k_{i,j}}
 \end{equation}
 The second derivative of \(x\) is approximated using the second order central difference equation, i.e \vref{andrederivert}.
 From the analytical solution, we can assume that \(F(x_i) = \sin(k \pi x_i)\). This gives
 \begin{align*}
-\qty(D_x^2F_k(x))_i &= -\mu_{k_{i,j}}F(x_i) \\
-\frac{F(x_{i-1}) -2F(x_i) + F(x_{i+1}) }{h^2} &= -\mu_{k_{i,j}}F(x_i) \\
-\sin(k\pi x_{i-1}) -2\sin(k\pi x_i) + \sin(k \pi x_{i+1}) &= -h^2\mu_{k_{i,j}}\sin(k \pi x_i)
+    \qty(D_x^2F_k(x))_i &= -\mu_{k_{i,j}}F(x_i) \\
+    \frac{F(x_{i-1}) -2F(x_i) + F(x_{i+1}) }{\Delta t^2} &= -\mu_{k_{i,j}}F(x_i) \\
+    \sin(k\pi x_{i-1}) -2\sin(k\pi x_i) + \sin(k \pi x_{i+1}) &= -\Delta t^2\mu_{k_{i,j}}\sin(k \pi x_i)
 \end{align*}
 Using the trigonometric identities
 \[
-\sin(k\pi x_{i-1}) + \sin(k\pi x_{i+1}) = 2\cos(k\pi h)\sin(k\pi x_i)
+    \sin(k\pi x_{i-1}) + \sin(k\pi x_{i+1}) = 2\cos(k\pi \Delta t)\sin(k\pi x_i)
 \]
 we get
 \[
-\sin(k\pi x_i)(2\cos(k\pi h) - 2) = -h^2\mu_{k_{i,j}}\sin(k \pi x_i)
+    \sin(k\pi x_i)(2\cos(k\pi \Delta t) - 2) = -\Delta t^2\mu_{k_{i,j}}\sin(k \pi x_i)
 \]
-The factor \(\sin(k\pi x_i) \) can never be zero, as we differentiate over \(x \in (0,1) \) since we know the values of \( v(x,t) \) at the boundaries. The eigenvalue \(\mu_{k_{i,j}}\) of the approximation of the second derivative over\(x \), \( D_x^2 \), is therefore
+The factor \(\sin(k\pi x_i) \) can never be zero, as the derivative is taken at points in \((0,1) \) since the boundary values are known. The eigenvalue \(\mu_{k_{i,j}}\) of the approximation of the second derivative with respect to \(x \), \( D_x^2 \), is therefore
 \begin{equation}\label{eq:eigenvalue1}
-\frac{-2\qty(\cos(k\pi h) - 1)}{h^2} =\mu_{k_{i,j}}
+    \frac{-2\qty(\cos(k\pi \Delta t) - 1)}{\Delta t^2} =\mu_{k_{i,j}}
 \end{equation}
 Furthermore, we have the identity
 \begin{align*}
-\cos(x) &= \cos^2\qty(\frac{x}{2}) - \sin^2\qty(\frac{x}{2}) \\
-&= 1- 2\sin^2\qty(\frac{x}{2}) \\
-1-\cos(x) &= 2\sin^2\qty(\frac{x}{2})
+    \cos(x) &= \cos^2\qty(\frac{x}{2}) - \sin^2\qty(\frac{x}{2}) \\
+    &= 1- 2\sin^2\qty(\frac{x}{2}) \\
+    1-\cos(x) &= 2\sin^2\qty(\frac{x}{2})
 \end{align*}
 and by inserting this into \vref{eq:eigenvalue1}, we get the following eigenvalue
 \begin{equation} \label{eq:mu}
-\frac{4\sin^2\qty(\frac{k\pi h}{2})}{h^2} =\mu_{k_{i,j}} = \mu_k
+    \frac{4\sin^2\qty(\frac{k\pi \Delta t}{2})}{\Delta t^2} =\mu_{k_{i,j}} = \mu_k
 \end{equation}
 
-Now we have proven that assuming \(F_k(x_i) = \sin(k\pi x_i)\) is not a such bad idea, as the guess is reasonable compared to the analytical solution and we have not any contradictions.
+Now we have proven that assuming \(F_k(x_i) = \sin(k\pi x_i)\) is not a such bad idea, as the guess is reasonable compared to the analytical solution and no other contradictions have arised.
 
 We see from the analytical solution that the function of time, \(G_k(t) = \exp{-\lambda_k t}\) is decreasing for increasing values of \(t\), meaning that the discrete functions of time should behave in equivalent manner.
 
 Therefore the computed function of time, \(G_k(t_j)\), must hold the following constraints
 \[
-G_k(t_{0}) = 1 \quad \text{ and }\quad \abs{\frac{G_k(t_{j+1}) } {G_k(t_j) } }\leq 1 \:\:\text{ for } j = 0, \dots,m-1
+    G_k(t_{0}) = 1 \quad \text{ and }\quad \abs{\frac{G_k(t_{j+1}) } {G_k(t_j) } }\leq 1 \:\:\text{ for } j = 0, \dots,m-1
 \]
 
-We include that the fraction could be equal to one as it may happen that we could be very close to the likely state, that is when \(t \to \infty \)  , giving us \( G_k(t_{j+1}) \approx G_k(t_{j} \).
+We include that the fraction could be equal to one as it may happen that we could be very close to the likely state, that is when \(t \to \infty \)  , giving us \( G_k(t_{j+1}) \approx G_k(t_{j})\).
 
 When the ratio above holds, we have that the solution does not grow for every time step, ensuring that the computed solution is stable for every time step.
 
-Since the expression of \(G_k(t_{j})\) will differ for which scheme we are looking at, we must do sufficient restrictions for every scheme the we are considering in this report such that \(G_k(t_{j})\) does not increase for an increasing time step.
+Since the expression of \(G_k(t_{j})\) will depend on the choice of numerical scheme, we must do sufficient restrictions for every scheme  such that \(G_k(t_{j})\) does not increase for an increasing time step.
