@@ -4,8 +4,8 @@
 % | (_| | | | | (_| | | |_| | |_| | (_| (_| | |
 %  \__,_|_| |_|\__,_|_|\__, |\__|_|\___\__,_|_|
 %                      |___/
-\subsection{Analytical solution of the diffusion equation}
-For the two dimensional case we will not consider a general solution to \vref{eq:twoDim}. However, we will consider a specific problem of our choice such that we can compare our two dimensional solver with the solution, ensuring us that the solver gives us sufficient accurate results.
+\subsection{Analytical solution in two dimensions}
+For the two-dimensional case, we have chosen to look at a specific set of initial and boundary conditions which make the analytical solution much easier. This analytical solution will later be used to verify that the numerical solver gives acceptably accurate results.
 
 So, consider \vref{eq:twoDim} with the following boundaries over a spatial domain of size \(L \times L\):
 \begin{equation} \label{eq:twoDimBoundaries}
@@ -15,11 +15,11 @@ u(x,0,t) &= u(x,L,t) = 0, \quad &x \in (0,L),\quad t > 0 \\
 u(x,y,0) &= \sin(\frac{\pi}{L}x)\sin(\frac{\pi}{L}y), \quad&\text{for }x,y\in (0,L)
 \end{aligned}
 \end{equation}
-This choice of boundary conditions has no physical interpretation, and is chosen purely because it greatly simplifies the analytical solution.
+This choice of boundary conditions has no physical interpretation, and is chosen purely because it greatly simplifies the analytical solution. These boundary conditions physically correspond to a predeposition of matter in the middle of the grid, with drains at all borders. In the steady state, it is therefore expected that all matter has left the grid, i.e. \(u(x,y)=0\) everywhere.
 
-The procedure is similar as for the one dimensional case. Since the procedure of finding a solution is very similar as what we did in \vref{sec:analyticalOneDim}, the calculation has been placed in \ref{twodimappendix}.
+Solving the two-dimensional case is done in almost exactly the same way as for the one-dimensional case. Because of the similarity to what we did in \vref{sec:analyticalOneDim}, the calculation has been placed in \ref{twodimappendix}.
 
-The analytical solution of \vref{eq:twoDim} with the boundaries \vref{eq:twoDimBoundaries} derived in \ref{twodimappendix} is
+The analytical result is
 \begin{equation} \label{eq:analyticalSolutionTwoDim}
 u(x,y,t) = \sin(\frac{\pi}{L}x)\sin(\frac{\pi}{L}y)\exp{\frac{-2\pi^2}{L^2}t}
 \end{equation}
