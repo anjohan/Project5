@@ -1,0 +1,20 @@
+set terminal epslatex size 6,4 color colortext
+
+set format xy "$\\num{%g}$"
+
+set output "stability1d.plt"
+
+set xlabel "$\\Delta t/\\qty(\\Delta x^2)$"
+set ylabel "Maximal error"
+
+set yrange [0:3]
+
+set key top left
+
+plot "stability1d.dat" using 1:2 title "Forward Euler" with lines lw 5, "" using 1:3 title "Backward Euler" with lines lw 5, "" using 1:4 title "Crank-Nicolson" with lines lw 5
+
+set output "error1d.plt"
+set xlabel "$\\Delta t$"
+unset yrange
+set logscale xy
+plot "error1d.dat" using 1:2 title "Forward Euler" with lines lw 5, "" using 1:3 title "Backward Euler" with lines lw 5, "" using 1:4 title "Crank-Nicolson" with lines lw 5

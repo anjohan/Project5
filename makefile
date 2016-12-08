@@ -9,7 +9,7 @@ endif
 latexsrc = report.tex latex/kilder.bib latex/analyticalonedim.tex latex/cranknicolson.tex latex/introduction.tex  latex/preamble.tex latex/analyticaltwodim.tex latex/discretisation.tex latex/vonneumann.tex latex/appendix.tex latex/eulertwodim.tex latex/onedimres.tex latex/backwardeuler.tex latex/forwardeuler.tex latex/physics.tex latex/twodimres.tex latex/implementation.tex
 
 all: report.pdf animation.gif
-report.pdf: ${latexsrc} deltaxtest.plt twodim001.plt twodim01.plt
+report.pdf: ${latexsrc} deltaxtest.plt twodim001.plt twodim01.plt stability1d.plt
 	latexmk -pdf report.tex
 animation.gif: animate1d.py animation.dat
 	python animate1d.py animation.dat
@@ -39,6 +39,10 @@ twodim01.plt: plottwodim.gpi twodim010.00000000.dat
 	gnuplot -e "filename='twodim01'" plottwodim.gpi
 twodim010.00000000.dat: twodim.x
 	./twodim.x "twodim01" 0.001 0.1 10
+stability1d.plt: analysis1d.gpi stability1d.dat
+	gnuplot analysis1d.gpi
+stability1d.dat: analysis1d.py
+	python analysis1d.py
 clean:
 	latexmk -c
 	rm *.dat *.plt

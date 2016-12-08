@@ -46,6 +46,8 @@ void OneDimSolver::output(int i){
 void OneDimSolver::forward_Euler(int output_dn){
     double prefactor = 1 - 2*alpha;
     double *tmp;
+    if(output_dn < 1) output_dn = 1;
+    if(output_dn > n_t) output_dn = n_t;
     output(0);
     for(int i = 0; i<n_t; i++){
         //Calculate new values in parallel
@@ -63,7 +65,6 @@ void OneDimSolver::forward_Euler(int output_dn){
         }
     }
     //Print final result
-    output(n_t);
 }
 
 void OneDimSolver::backward_Euler(int output_dn){
