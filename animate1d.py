@@ -19,7 +19,7 @@ for line in lines[1:]:
     ylabel("u")
     plot(x,u,label="t=%.2f" % t)
     legend(loc="upper left")
-    savefig("%s%08d.png" % (name,i), dpi=75)
+    savefig("%s%08d.png" % (name,i), dpi=60)
     i += 1
 
 delay = int(round(2000.0/i))
