@@ -6,7 +6,7 @@ else
     parallel =
 endif
 
-latexsrc = report.tex latex/kilder.bib latex/analyticalonedim.tex latex/cranknicolson.tex latex/introduction.tex  latex/preamble.tex latex/analyticaltwodim.tex latex/discretisation.tex latex/vonneumann.tex latex/appendix.tex latex/eulertwodim.tex latex/onedimres.tex latex/backwardeuler.tex latex/forwardeuler.tex latex/physics.tex latex/twodimres.tex latex/implementation.tex
+latexsrc = report.tex latex/kilder.bib latex/analyticalonedim.tex latex/cranknicolson.tex latex/introduction.tex  latex/preamble.tex latex/analyticaltwodim.tex latex/discretisation.tex latex/vonneumann.tex latex/appendix.tex latex/eulertwodim.tex latex/onedimres.tex latex/backwardeuler.tex latex/forwardeuler.tex latex/physics.tex latex/twodimres.tex latex/implementation.tex latex/conclusion.tex
 
 all: report.pdf animation.gif
 report.pdf: ${latexsrc} deltaxtest.plt twodim001.plt twodim01.plt stability1d.plt

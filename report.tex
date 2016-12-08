@@ -4,10 +4,10 @@
 In this report we have presented three different numerical methods to solve the diffusion equation in one dimension. The three presented methods are the Forward Euler, Backward Euler and Crank-Nicolson scheme. We will see that the we have to use the Forward Euler with precaution as it may give erroneous results. However, this will not be the case for the Backward Euler and Crank-Nicolson. We will also see that the Crank-Nicolson gives us the most accurate results.
 Furthermore, we will look at a similar solver for solving the equation in two dimensions using the very same idea as for the Forward Euler in one dimension.
 \end{abstract}
-\clearpage
 
 \input{latex/introduction.tex}
 
+\clearpage
 \input{latex/physics.tex}
 
 %                       _ _
@@ -15,6 +15,7 @@ Furthermore, we will look at a similar solver for solving the equation in two di
 %  / _ \| '_ \ / _ \/ _` | | '_ ` _ \
 % | (_) | | | |  __/ (_| | | | | | | |
 %  \___/|_| |_|\___|\__,_|_|_| |_| |_|
+\clearpage
 \section{Mathematical theory in one dimension}
 Before we can begin our analysis on how it is possible to numerically solve the diffusion equation, we will first take a look at the analytical solution. This analytical solution can be used in von Neumann analysis to find requirements for the numerical parameters to ensure that a reasonable solution is found.
 \input{latex/analyticalonedim.tex}
@@ -32,6 +33,7 @@ Before we can begin our analysis on how it is possible to numerically solve the 
 % | __\ \ /\ / / _ \ _____ / _` | | '_ ` _ \
 % | |_ \ V  V / (_) |_____| (_| | | | | | | |
 %  \__| \_/\_/ \___/       \__,_|_|_| |_| |_|
+\clearpage
 \section{Mathematical theory in two dimensions}
 The derivation of Fick's laws can be generalised to higher dimensions, giving
 \[
@@ -48,11 +50,16 @@ Time and position are again discretised, with the notation \(u_{i,j,k} = u(x_i,y
 
 \input{latex/eulertwodim.tex}
 
+\clearpage
 \input{latex/implementation.tex}
 
+\clearpage
 \input{latex/onedimres.tex}
 
+\clearpage
 \input{latex/twodimres.tex}
+
+\clearpage
 \input{latex/conclusion.tex}
 \clearpage
 \addcontentsline{toc}{section}{References}
