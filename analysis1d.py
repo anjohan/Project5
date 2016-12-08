@@ -4,8 +4,7 @@ from numpy import *
 
 dx = 0.1
 ratios = linspace(0.1,1,19)
-#dt = ratios*dx**2
-dt = array(list(ratios*dx**2) + list(10**linspace(-3,-6,4)))
+dt = ratios*dx**2
 t_max = 0.5
 filename = "stability1d.dat"
 
@@ -28,9 +27,7 @@ def data(line):
 for i in range(3):
     method = methods[i]
     for j in range(len(dt)):
-        dn = 1 # int(round(t_max/dt[j]/100))
-        if j >= len(ratios):
-            dn = int(round(t_max/dt[j]*0.01))
+        dn = 1
         os.system("./onedim_ui.x %s %s %g %g %g %d" % (filename,method,dt[j],t_max,dx,dn))
         with open(filename,"r") as infile:
             lines = infile.readlines()
@@ -44,13 +41,6 @@ for i in range(3):
 with open(filename,"w") as outfile:
     for i in range(len(ratios)):
         outfile.write("%g" % ratios[i])
-        for j in range(3):
-            outfile.write(" %g" % maxerror[j][i])
-        outfile.write("\n")
-
-with open("error1d.dat","w") as outfile:
-    for i in range(len(ratios),len(dt)):
-        outfile.write("%g" % dt[i])
         for j in range(3):
             outfile.write(" %g" % maxerror[j][i])
         outfile.write("\n")

@@ -25,9 +25,9 @@ onedim_ui.x: onedim_ui.o onedimlib.o tridiagonalsolver.o
 	${gpp} ${parallel} -o onedim_ui.x onedim_ui.o onedimlib.o tridiagonalsolver.o
 twodim.x: twodim.cpp
 	${gpp} ${parallel} -o twodim.x twodim.cpp
-deltaxtest.plt: deltaxtest.gpi forward_Euler_0.1.dat analytic.dat
+deltaxtest.plt: deltaxtest.gpi forward_Euler_0.1.dat analytic1.dat
 	gnuplot deltaxtest.gpi
-analytic.dat: analytic.py
+analytic1.dat: analytic.py
 	python analytic.py
 forward_Euler_0.1.dat: deltaxtest.sh onedim_ui.x
 	./deltaxtest.sh
@@ -47,7 +47,7 @@ clean:
 	latexmk -c
 	rm *.dat *.plt
 	rm *.bbl *.run.xml *.o *.x
-	rm *.eps *-to.pdf *.tdo
+	rm *.eps *-to.pdf
 edit:
 	vim *.tex latex/*.tex makefile *.cpp *.h *.gpi *.sh *.py latex/*.bib
 read:

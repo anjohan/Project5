@@ -1,4 +1,4 @@
-set terminal epslatex size 6,7 color colortext
+set terminal epslatex size 6,6 color colortext
 
 set output "deltaxtest.plt"
 
@@ -19,8 +19,9 @@ plot "transpose_forward_Euler_0.1.dat" using 1:3 title "$t=\\num{0.05}$, Forward
 "transpose_forward_Euler_0.1.dat" using 1:12 title "$t=\\num{0.5}$, Forward Euler" with lines lw 5, \
 "transpose_backward_Euler_0.1.dat" using 1:12 title "$t=\\num{0.5}$, Backward Euler" with lines lw 5, \
 "transpose_Crank_Nicolson_0.1.dat" using 1:12 title "$t=\\num{0.5}$, Crank Nicolson" with lines lw 5, \
-"analytic.dat" title "$t=\\num{0.05}$, Exact" with lines lw 5 lc rgb "black"
+"analytic1.dat" title "$t=\\num{0.05}$, Exact" with lines lw 5 lc rgb "black"
 
+set ylabel "$u(x,t)$"
 set title "\\textbf{Simulation with} $\\boldsymbol{\\Delta x} \\pmb{= \\num{0.01}}$"
 plot "transpose_forward_Euler_0.01.dat" using 1:3 title "$t=\\num{0.05}$, Forward Euler" with lines lw 5, \
 "transpose_backward_Euler_0.01.dat" using 1:3 title "$t=\\num{0.05}$, Backward Euler" with lines lw 5, \
@@ -28,5 +29,25 @@ plot "transpose_forward_Euler_0.01.dat" using 1:3 title "$t=\\num{0.05}$, Forwar
 "transpose_forward_Euler_0.01.dat" using 1:12 title "$t=\\num{0.5}$, Forward Euler" with lines lw 5, \
 "transpose_backward_Euler_0.01.dat" using 1:12 title "$t=\\num{0.5}$, Backward Euler" with lines lw 5, \
 "transpose_Crank_Nicolson_0.01.dat" using 1:12 title "$t=\\num{0.5}$, Crank Nicolson" with lines lw 5
+
+unset multiplot
+
+set output "error1d.plt"
+
+set ylabel "Error"
+set logscale y
+set format y "$\\num{%.0e}$"
+
+set multiplot layout 2,1 scale 1,1
+set title "\\textbf{Error at} $\\boldsymbol{t} \\pmb{= \\num{0.05}}$ \\textbf{with} $\\boldsymbol{\\Delta x} \\pmb{= \\num{0.1}}$ \\textbf{and} $\\boldsymbol{\\Delta t = \\tfrac{1}{2}\\Delta x^2}$"
+plot "< paste -d '' transpose_forward_Euler_0.1.dat analytic1.dat" using 1:(abs($3-$14)) title "Forward Euler" with lines lw 5, \
+"< paste -d '' transpose_backward_Euler_0.1.dat analytic1.dat" using 1:(abs($3-$14)) title "Backward Euler" with lines lw 5, \
+"< paste -d '' transpose_Crank_Nicolson_0.1.dat analytic1.dat" using 1:(abs($3-$14)) title "Crank Nicolson" with lines lw 5
+
+
+set title "\\textbf{Error at} $\\boldsymbol{t} \\pmb{= \\num{0.05}}$ \\textbf{with} $\\boldsymbol{\\Delta x} \\pmb{= \\num{0.01}}$ \\textbf{and} $\\boldsymbol{\\Delta t = \\tfrac{1}{2}\\Delta x^2}$"
+plot "< paste -d '' transpose_forward_Euler_0.01.dat analytic2.dat" using 1:(abs($3-$14)) title "Forward Euler" with lines lw 5, \
+"< paste -d '' transpose_backward_Euler_0.01.dat analytic2.dat" using 1:(abs($3-$14)) title "Backward Euler" with lines lw 5, \
+"< paste -d '' transpose_Crank_Nicolson_0.01.dat analytic2.dat" using 1:(abs($3-$14)) title "Crank Nicolson" with lines lw 5
 
 unset multiplot

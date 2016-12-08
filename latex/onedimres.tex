@@ -16,9 +16,11 @@ It is clear from the figure that all methods give acceptable results for the tes
 
 \subsection{Quantitative error analysis}
 \begin{figure}[H]
+\centering
 \input{error1d.plt}
-\caption{Maximum error as a function of \(\Delta t\) with \(\Delta x=\num{0.1}\), for values below the stability limit.}
+\caption{A closer look at the errors in the previous figure.}
 \end{figure}
+From the derivation of the methods and their error terms, we know that the Euler schemes have one error term proportional to \(\Delta t\) and one proportional to \(\Delta x^2\), while the Crank-Nicolson scheme has error terms proportional to \(\Delta t^2\) and \(\Delta x^2\). Since \(\Delta t\) has been set to \(\tfrac{1}{2}\Delta x^2\), the error in the Euler schemes should decrease by two orders of magnitude when \(\Delta x\) is reduced from \(\num{0.1}\) to \(\num{0.01}\), which fits well by the computed errors. As expected, the Crank-Nicolson error decreases more rapidly, but an exact prediction can not be made since the error term proportional to \(\Delta x^2\) should decrease by two orders of magnitude and the term proportional to \(\Delta t^2\) by four.
 
 
 \subsection{Stability analysis}

@@ -13,13 +13,14 @@ i = 0
 for line in lines[1:]:
     t = float(regex.findall(r"\{([^\}]+)\}",line)[0])
     u = [float(val) for val in line.split()[1:]]
-    figure()
+    fig = figure()
     xlabel("x")
     axis([0,1,0,1])
     ylabel("u")
     plot(x,u,label="t=%.2f" % t)
     legend(loc="upper left")
     savefig("%s%08d.png" % (name,i), dpi=60)
+    close(fig)
     i += 1
 
 delay = int(round(2000.0/i))

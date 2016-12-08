@@ -64,10 +64,11 @@ void OneDimSolver::forward_Euler(int output_dn){
             output(i+1);
         }
     }
-    //Print final result
 }
 
 void OneDimSolver::backward_Euler(int output_dn){
+    if(output_dn < 1) output_dn = 1;
+    if(output_dn > n_t) output_dn = n_t;
     double prefactor = 1 + 2*alpha;
     double *tmp;
     double *a = new double[n_x+1];
@@ -91,14 +92,14 @@ void OneDimSolver::backward_Euler(int output_dn){
             output(i+1);
         }
     }
-    //Print final result
-    output(n_t);
     delete [] a;
     delete [] b;
     delete [] c;
 }
 
 void OneDimSolver::Crank_Nicolson(int output_dn){
+    if(output_dn < 1) output_dn = 1;
+    if(output_dn > n_t) output_dn = n_t;
     double beta = 2 + 2*alpha, beta2 = 2-2*alpha;
     double *tmp;
     double *a = new double[n_x+1];
@@ -128,8 +129,6 @@ void OneDimSolver::Crank_Nicolson(int output_dn){
             output(i+1);
         }
     }
-    //Print final result
-    output(n_t);
     delete [] a;
     delete [] b;
     delete [] c;
