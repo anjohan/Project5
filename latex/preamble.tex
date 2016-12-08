@@ -22,10 +22,6 @@
 \renewcommand{\CancelColor}{\color{red}}
 \renewcommand{\exp}[1]{\mathrm{e}^{#1}}
 \newcommand{\R}{\mathbb{R}}
-\newcommand{\tittel}[1]{\title{#1 \vspace{-7ex}}\author{}\date{}\maketitle\thispagestyle{fancy}\pagestyle{fancy}\setcounter{page}{1}}
-
-\newcommand{\deloppg}[2][]{\subsection*{#2) #1}\addcontentsline{toc}{subsection}{#2)}\refstepcounter{subsection}\label{#2}}
-\newcommand{\oppg}[1]{\section*{Oppgave #1}\addcontentsline{toc}{section}{Oppgave #1}\refstepcounter{section}\label{oppg#1}}
 
 \labelformat{section}{section~#1}
 \labelformat{subsection}{section~#1}
@@ -76,8 +72,8 @@ breaklines=true,
 \tocloftpagestyle{fancy}
 
 \setcounter{secnumdepth}{4}
-\renewcommand{\thesection}{\arabic{section}}
-\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+%\renewcommand{\thesection}{\arabic{section}}
+%\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
 \renewcommand{\thesubsubsection}{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
 \setlength{\parindent}{0cm}
 \setlength{\parskip}{1em}
