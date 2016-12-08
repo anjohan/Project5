@@ -1,8 +1,9 @@
 \input{latex/preamble.tex}
 \clearpage
 \begin{abstract}
-In this report we have presented three different numerical methods to solve the diffusion equation in one dimension. The three presented methods are the Forward Euler, Backward Euler and Crank-Nicolson scheme. We will see that the we have to use the Forward Euler with precaution as it may give erroneous results. However, this will not be the case for the Backward Euler and Crank-Nicolson. We will also see that the Crank-Nicolson gives us the most accurate results.
-Furthermore, we will look at a similar solver for solving the equation in two dimensions using the very same idea as for the Forward Euler in one dimension.
+In this report we derive, analyse and implement three different numerical methods for solving the diffusion equation in one dimension. The three presented methods are the Forward Euler, Backward Euler and Crank-Nicolson schemes. As is shown analytically through von Neumann stability analysis and confirmed numerically, the Forward Euler scheme sets a criterion for the ratio of the spatial and temporal step lengths, while the other schemes always give stable results. The truncation errors are also analytically derived and numerically verified by comparison with the analytical solution, with the Crank-Nicolson scheme giving the best results.
+
+We also derive the basic physical theory of diffusion, and develop a script for animating the process for easy visualisation. Finally, a simple, explicit method is derived and implemented for simulating two-dimensional diffusion, as well as an analytical solution for comparison.
 \end{abstract}
 
 \input{latex/introduction.tex}
@@ -64,6 +65,7 @@ Time and position are again discretised, with the notation \(u_{i,j,k} = u(x_i,y
 \clearpage
 \addcontentsline{toc}{section}{References}
 \nocite{tveito2004introduction}
+\nocite{compphys}
 \printbibliography
 \newpage
 

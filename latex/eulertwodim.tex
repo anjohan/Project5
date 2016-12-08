@@ -20,4 +20,4 @@ We are once again interested in the value at \(t_{k+1}\). Multiplying by \(\Delt
 \[
     u_{i,j,k+1} = \qty(1-4\alpha)u_{i,j,k} + \alpha\qty(u_{i+1,j,k} + u_{i-1,j,k} + u_{i,j+1,k} + u_{i,j-1,k})
 \]
-Since everything on the right-hand side is known, this is an explicit scheme.
+Since everything on the right-hand side is known, this is an explicit scheme. Parallel to the one-dimensional Forward Euler scheme, the global error consists of three terms, which are proportional to \(\Delta t\), \(\qty(\Delta x)^2\) and \(\qty(\Delta y)^2\) respectively.

@@ -39,13 +39,13 @@ set logscale y
 set format y "$\\num{%.0e}$"
 
 set multiplot layout 2,1 scale 1,1
-set title "\\textbf{Error at} $\\boldsymbol{t} \\pmb{= \\num{0.05}}$ \\textbf{with} $\\boldsymbol{\\Delta x} \\pmb{= \\num{0.1}}$ \\textbf{and} $\\boldsymbol{\\Delta t = \\tfrac{1}{2}\\Delta x^2}$"
+set title "\\textbf{Error at} $\\boldsymbol{t} \\pmb{= \\num{0.05}}$ \\textbf{with} $\\boldsymbol{\\Delta x} \\pmb{= \\num{0.1}}$ \\textbf{and} $\\boldsymbol{\\Delta t = \\tfrac{1}{2}\\qty(\\Delta x)^2}$"
 plot "< paste -d '' transpose_forward_Euler_0.1.dat analytic1.dat" using 1:(abs($3-$14)) title "Forward Euler" with lines lw 5, \
 "< paste -d '' transpose_backward_Euler_0.1.dat analytic1.dat" using 1:(abs($3-$14)) title "Backward Euler" with lines lw 5, \
 "< paste -d '' transpose_Crank_Nicolson_0.1.dat analytic1.dat" using 1:(abs($3-$14)) title "Crank Nicolson" with lines lw 5
 
 
-set title "\\textbf{Error at} $\\boldsymbol{t} \\pmb{= \\num{0.05}}$ \\textbf{with} $\\boldsymbol{\\Delta x} \\pmb{= \\num{0.01}}$ \\textbf{and} $\\boldsymbol{\\Delta t = \\tfrac{1}{2}\\Delta x^2}$"
+set title "\\textbf{Error at} $\\boldsymbol{t} \\pmb{= \\num{0.05}}$ \\textbf{with} $\\boldsymbol{\\Delta x} \\pmb{= \\num{0.01}}$ \\textbf{and} $\\boldsymbol{\\Delta t = \\tfrac{1}{2}\\qty(\\Delta x)^2}$"
 plot "< paste -d '' transpose_forward_Euler_0.01.dat analytic2.dat" using 1:(abs($3-$14)) title "Forward Euler" with lines lw 5, \
 "< paste -d '' transpose_backward_Euler_0.01.dat analytic2.dat" using 1:(abs($3-$14)) title "Backward Euler" with lines lw 5, \
 "< paste -d '' transpose_Crank_Nicolson_0.01.dat analytic2.dat" using 1:(abs($3-$14)) title "Crank Nicolson" with lines lw 5

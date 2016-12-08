@@ -1,7 +1,7 @@
 \section{Introduction}
-Partial differential equations is a subject of many fields. These equations can describe the behavior of many natural phenomenas such as waves of sound or sea, the flow of a liquid, growth of a population or diffusion, which is the phenomenon studied in this report. Diffusion is an important process which we find everywhere around us, from water softening spaghetti by diffusing into it to the random motion of viruses on the hunt for fresh cells to destroy.
+Partial differential equations are important in many fields of science. These equations can describe the behaviour of many natural phenomenas such as waves of sound or sea, the flow of a liquid, growth of a population or diffusion, which is the phenomenon studied in this report. Diffusion is an important process which we find everywhere around us, from water softening spaghetti by diffusing into it to the random motion of viruses on the hunt for fresh cells to destroy.
 
-Partial differential equations are often solved numerically since an analytical solution is difficult, or perhaps impossible to find. An example is the Navier-Stokes equation to model the flow of a viscous fluid when not certain assumptions to simplify the equations has been made.
+Partial differential equations are often solved numerically since an analytical solution is difficult, or even impossible to find. An example of the latter is the Navier-Stokes equation to model the flow of a viscous fluid when not certain assumptions to simplify the equations have been made.
 
 In this report we will focus on how we can numerically solve the diffusion equation on a dimensionless form, which is given by
 \begin{equation}\label{eq:diffusion}
@@ -9,4 +9,4 @@ In this report we will focus on how we can numerically solve the diffusion equat
 \pdv{u}{t} = \nabla^2 u
 \end{aligned}
 \end{equation}
-After deriving Fick's laws of diffusion, we derive and analyse methods for solving the equation in both one and two dimensions. Only the explicit Forward Euler scheme is used in two dimensions, while the one-dimensional equation is also solved with the implicit Backward Euler and Crank-Nicolson schemes. In one dimension, von Neumann stability analysis is used to find criterions which guarantee the stability of the methods.
+After deriving Fick's laws of diffusion, we derive and analyse methods for solving the equation in both one and two dimensions. Only the explicit Forward Euler scheme is used in two dimensions, while the one-dimensional equation is also solved with the implicit Backward Euler and Crank-Nicolson schemes. In one dimension, von Neumann stability analysis is used to find criteria which guarantee the stability of the methods. Analytical solutions are found in both cases for verification of the methods and error analysis.
