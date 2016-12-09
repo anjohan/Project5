@@ -37,11 +37,11 @@ As a result, \ref{eq:dummy} will hold if
 These two equalities are separately fulfilled if
 \begin{alignat*}{2}
 	\pdv[2]{w(x,t)}{x}  &= 0\\
-	\pdv{w(x,t)}{x} &= A\\
-	w(x,t) &= Ax + B + h_1(t) \eqtag{eq:wX}
+	\pdv{w(x,t)}{x} &= A + h_1(t)\\
+	w(x,t) &= Ax +xh_1(t) + B + h_2(t) \eqtag{eq:wX}
 \shortintertext{and}
     \pdv{w(x,t)}{t} &= 0\\
-    w(x,t) &= C + h_2(x)\eqtag{eq:wT}
+    w(x,t) &= C + h_3(x)\eqtag{eq:wT}
 \intertext{Combining these two requirements for \(w\), we see that it must be on the form}
     w(x,t) &= w(x) = Ax + D
 \end{alignat*}
