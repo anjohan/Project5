@@ -7,7 +7,7 @@ set output "stability1d.plt"
 set xlabel "$\\Delta t/\\qty(\\Delta x)^2$"
 set ylabel "Maximal error"
 
-set yrange [0:3]
+set logscale y
 
 set key top left
 

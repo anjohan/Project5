@@ -9,6 +9,7 @@
 \section*{Appendix}
 \addcontentsline{toc}{section}{Appendix}
 \renewcommand{\thesubsection}{\Alph{subsection}}
+\labelformat{subsection}{appendix~#1}
 \subsection{Solving for the two dimensional case}\label{twodimappendix}
 Here, we will explain how we found the solution \vref{eq:analyticalSolutionTwoDim} with the given problem \vref{eq:twoDim} with the boundaries \vref{eq:twoDimBoundaries}.
 
@@ -114,3 +115,12 @@ This gives the final solution of our problem described in \vref{eq:twoDim} and \
 \[
 u(x,y,t) = \sin(\frac{\pi}{L}x)\sin(\frac{\pi}{L}y)\exp{-2\qty(\frac{\pi}{L})^2 t}
 \]
+
+
+\clearpage
+\subsection{Simple simulation of diffusion in Python}\label{sec:simplediffusion}
+As discussed in the derivation of Fick's laws in \ref{sec:physics}, diffusion is simply the random walk of many particles, resulting in a net flux if there's a concentration gradient. This can be modelled as particles jumping one step length either to the left or to the right, with \(\SI{50}{\percent}\) probability for each. When the number of particles goes to infinity, the law of large numbers says that exactly half the particles will jump to the left while the other half jump to the right.
+
+This means that at the time \(t_{j+1}\), the concentration at a point \(x_i\) will equal half the concentration at \(x_{i-1}\) and half the concentration at \(x_{i+1}\) at the time \(t_j\). For fun, we have implemented this way of thinking about diffusion in the short script \program{simple\_diffusion.py}, and the results look very reasonable!
+
+\lstinputlisting[language=Python,caption={simple\_diffusion.py}]{simple_diffusion.py}
