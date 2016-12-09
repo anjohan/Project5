@@ -33,6 +33,7 @@ plot "transpose_forward_Euler_0.01.dat" using 1:3 title "$t=\\num{0.05}$, Forwar
 unset multiplot
 
 set output "error1d.plt"
+set grid
 
 set ylabel "Error"
 set logscale y
